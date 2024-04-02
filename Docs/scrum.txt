@@ -1,0 +1,159 @@
+         ____        _ __         _____                         
+        / __ \____ _(_) /_  __   / ___/____________  ______ ___ 
+       / / / / __ `/ / / / / /   \__ \/ ___/ ___/ / / / __ `__ \          
+      / /_/ / /_/ / / / /_/ /   ___/ / /__/ /  / /_/ / / / / / /
+     /_____/\__,_/_/_/\__, /   /____/\___/_/   \__,_/_/ /_/ /_/      
+                     /____/                                     
+===============================================================================
+Team #1:
+	Nicholas Comeau
+	Soliloquy Yarrow
+	Benjamin Pye
+	Sophie Hsu
+
+Project: Clone of Trello with Chat
+
+===============================================================================
+Day01: 2024-04-02 12:00pm Tues
+==============================
+
+Next meeting: Brief Teams call at 9:30 tonight
+
+Benjamin:
+	Done:
+		- Brainstorm Topic, Name, Tech Stack
+		- Create & Revise Logos, Icons
+		
+	Not-Done:
+		- N/A
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- Finish Proposal Doc
+			- Mockups / Snapshots (pg4-5)
+		- Research No-SQL, MongoDB
+		- Transfer the Trello to Jira
+
+Soliloquy:
+	Done:
+		- Create GitHub
+		- Create OneDrive Folder
+		- Project Info Notes from mtg with Gregory
+		- Brainstorm Topic, Name, Tech Stack
+		- Create Scrum doc & write first scrum entry
+		
+	Not-Done:
+		- N/A
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- Finish Proposal Doc
+			- Project info (pg1) + General Formatting
+		- Research No-SQL, MongoDB
+
+Nicholas: 
+	Done:
+		- Brainstorm Topic, Name, Tech Stack
+		- Set up Heroku CD
+		
+	Not-Done:
+		- N/A
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- Research CI
+		- Finish Proposal Doc
+			- DB design (pg2)
+		- Research No-SQL, MongoDB
+
+Sophie: 
+	Done:
+		- Create Trello Board
+		- Brainstorm Topic, Name, Tech Stack
+		- Create Proposal Doc
+		
+	Not-Done:
+		- N/A
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- Finish Proposal Doc
+			- Use Case Diagrams & User Roles (pg3)
+		- Research No-SQL, MongoDB
+
+
+===============================================================================
+===============================================================================
+===============================================================================
+      ____  ____  __  __  ____  __      __   ____  ____   
+     (_  _)( ___)(  \/  )(  _ \(  )    /__\ (_  _)( ___) ()
+       )(   )__)  )    (  )___/ )(__  /(__)\  )(   )__)   
+      (__) (____)(_/\/\_)(__)  (____)(__)(__)(__) (____) ()            
+===============================================================================
+DayXX: 2024-04-YY 
+===================
+
+Benjamin:
+	Done:
+		- 
+		
+	Not-Done:
+		- 
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- 
+
+Soliloquy:
+	Done:
+		- 
+		
+	Not-Done:
+		- 
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- 
+
+Nicholas: 
+	Done:
+		- 
+		
+	Not-Done:
+		- 
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- 
+
+Sophie: 
+	Done:
+		- 
+		
+	Not-Done:
+		- 
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- 
+
+
+====
+END
+====
