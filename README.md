@@ -1,2 +1,4 @@
-# Integration-Project
-The Last Final Project in JAC FSD
+# ProjecTile-FE
+The Frontend App for the ProjecTile Project.
+
+
