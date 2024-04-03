@@ -89,6 +89,81 @@ Sophie:
 			- Use Case Diagrams & User Roles (pg3)
 		- Research No-SQL, MongoDB
 
+===============================================================================
+Day02: 2024-04-03 10:00am Wed
+=============================
+
+Benjamin:
+	Done:
+		- Project Proposal - Mockups
+		- Research NoSQL (tested login)
+		- Created JIRA
+		
+	Not-Done:
+		- N/A
+	
+	Needs Assistance:
+		- N/A
+
+	Todo Before Next Scrum:
+		- attempt to setup login & regi
+		- research Gantt charts 
+		- improve Jira (setup sprints?)
+
+Soliloquy:
+	Done:
+		- Proposal Doc -- Project Description (pg1,6)
+		- Proposal Doc -- Finalize & Format/Design
+		
+	Not-Done:
+		- N/A
+	
+	Needs Assistance:
+		- N/A
+
+	Todo Before Next Scrum:
+		- Upload notes & changes / Gregory's input for Proposal
+		- Make second GitHub Repo (FE & BE)
+		- Connect FE & BE to new Heroku Apps
+		- Submit proposal after ER & UML changes
+		- Research Websockets & start test project
+
+Nicholas: 
+	Done:
+		- Finished DB schema
+		- Researched NoSQL / MongoDB
+		- Will implement unit tests through GitHub Actions
+		- Setup Storage
+		
+	Not-Done:
+		- N/A
+	
+	Needs Assistance:
+		- N/A
+
+	Todo Before Next Scrum:
+		- Remake 2 Heroku Apps for FE & BE
+		- Revise ER Diagram for Proposal Doc
+		- Create buckets for storage
+		- Research Herokus implemenation of GitHub Actions
+		- Setup hosted MongoDB database
+		- Design MongoDB db
+
+Sophie: 
+	Done:
+		- Use case diagram
+		- Project Description (page6)
+		- Research on NoSQL/MongoDB
+		 
+	Not-Done:
+		- N/A
+	
+	Needs Assistance:
+		- N/A
+
+	Todo Before Next Scrum:
+		- Revise UML Diagram for Proposal Doc
+		- Style Benjamin's Login/Reg pages (if finished tonight)
 
 ===============================================================================
 ===============================================================================
@@ -99,7 +174,7 @@ Sophie:
       (__) (____)(_/\/\_)(__)  (____)(__)(__)(__) (____) ()            
 ===============================================================================
 DayXX: 2024-04-YY 
-===================
+=============================
 
 Benjamin:
 	Done:
