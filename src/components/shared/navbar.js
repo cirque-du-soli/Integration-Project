@@ -8,7 +8,7 @@ const Navbar = ({ username }) => {
     return (
         <nav className='navbar'>
             <div className="navbar-links">
-                <Link to="/" className="nav-title" id='nav-title'>ProjecTile</Link>
+                <Link to="/home" className="nav-title" id='nav-title'>ProjecTile</Link>
                 <Link to="/mosaics" className="nav-link">My Mosaics</Link>
                 <Link to="/mosaics/add" className="nav-link">New Mosaic</Link>
                 <div className='nav-item'
