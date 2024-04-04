@@ -166,6 +166,79 @@ Sophie:
 		- Style Benjamin's Login/Reg pages (if finished tonight)
 
 ===============================================================================
+Day03: 2024-04-04 11:00am Thurs
+=============================
+
+Benjamin:
+	Done:
+		- initial login n regi
+			-password hashing
+			-DB connection
+		- research Gantt charts 
+		- modified jira timeline
+
+		
+	Not-Done:
+		- login & regi validation
+	
+	Needs Assistance:
+		- .env for FE (routes?) 
+
+	Todo Before Next Scrum:
+		- initial board (mosaic) functions
+
+Soliloquy:
+	Done:
+		- Upload notes & changes / Gregory's input for Proposal
+		- Make second GitHub Repo (FE & BE)
+		- Connect FE & BE to new Heroku Apps
+		- Submit proposal after ER & UML changes
+		- Research Websockets & start test project
+		
+	Not-Done:
+		- N/A
+	
+	Needs Assistance:
+		- N/A
+
+	Todo Before Next Scrum:
+		- Admin Portal setup
+			- Attempt basic User CRUD
+		- Figure out MVC format for user CRUD 
+		- [Postponed] Attempt WebSocket @ Mosaics
+
+Nicholas: 
+	Done:
+		- Remade Heroku pipeline and apps 
+		- Revised ER Diagram for Proposal Doc
+		- Created bucket for storage in Cloudflare R2
+		- Researched GitHub Actions
+		- Setup hosted MongoDB database
+		
+	Not-Done:
+		- N/A
+	
+	Needs Assistance:
+		- N/A
+
+	Todo Before Next Scrum:
+		- Create nav bar 
+
+Sophie: 
+	Done:
+		- Updated Use-Case Diagram
+		
+	Not-Done:
+		- N/A
+	
+	Needs Assistance:
+		- N/A
+
+	Todo Before Next Scrum:
+		- TBD (power outage from storm)
+		- Styling of the Login/Registration pages (if possible)
+
+===============================================================================
 ===============================================================================
 ===============================================================================
       ____  ____  __  __  ____  __      __   ____  ____   
