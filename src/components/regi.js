@@ -6,6 +6,7 @@ function Registration() {
   const history = useNavigate();
 
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   async function submit(e) {
@@ -13,14 +14,15 @@ function Registration() {
 
     try {
       await axios
-        .post("http://localhost:3001/regi", {
+        .post("http://localhost:3001/auth/regi", {
           username,
+          email,
           password,
         })
         .then((res) => {
           if (res.data == "exist") {
             alert("User already exists");
-          } else if (res.data == "notexist") {
+          } else if (res.data == "success") {
             history("/home", { state: { id: username } });
           }
         })
@@ -44,6 +46,13 @@ function Registration() {
             setUsername(e.target.value);
           }}
           placeholder="Username"
+        />
+        <input
+          type="email"
+          onChange={(e) => {
+            setEmail(e.target.value);
+          }}
+          placeholder="Email"
         />
         <input
           type="password"
