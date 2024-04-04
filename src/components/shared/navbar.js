@@ -113,7 +113,6 @@ const Navbar = ({ username }) => {
             </Button>
           </ModalBox>
         </StyledModal>
-        {/* Dropdown logic can be implemented with MUI's Menu component */}
       </Toolbar>
     </AppBar>
   );
