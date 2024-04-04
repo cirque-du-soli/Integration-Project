@@ -11,9 +11,11 @@ function Login() {
   async function submit(e) {
     e.preventDefault();
 
+    const baseUrl = process.env.REACT_APP_API_BASE_URL;
+
     try {
       await axios
-        .post("http://localhost:3001/auth", {
+        .post(`${baseUrl}/auth`, {
           username,
           password,
         })
