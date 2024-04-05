@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 import { TextField, Modal, Typography, Button, Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Navbar from "./shared/navbar";
@@ -21,32 +20,33 @@ const ModalBox = styled(Box)({
 });
 
 const UserSettings = () => {
-    const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
-    const [passwordError, setPasswordError] = useState(false);
+    // State Hooks
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    // Password states
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [newPasswordConfirm, setNewPasswordConfirm] = useState('');
-    const [newPasswordError, setNewPasswordError] = useState(false);
-    const [newPasswordErrorMessage, setNewPasswordErrorMessage] = useState('');
+    // Error states
     const [oldPasswordError, setOldPasswordError] = useState(false);
     const [oldPasswordErrorMessage, setOldPasswordErrorMessage] = useState('');
+    const [newPasswordError, setNewPasswordError] = useState(false);
+    const [newPasswordErrorMessage, setNewPasswordErrorMessage] = useState('');
+    const [newPasswordConfirmError, setNewPasswordConfirmError] = useState(false);
+    const [newPasswordConfirmErrorMessage, setNewPasswordConfirmErrorMessage] = useState('');
 
-    const userProfilePicture = "Some image link";
-    const userEmail = "Some email";
-    const userUsername = "Some username"
-
-
-    const isPasswordValid = (newPass, confirmPass) => {
-        if (newPass !== confirmPass) {
-            setNewPasswordError(true);
-            setNewPasswordErrorMessage("New passwords do not match.");
-            return false;
+    useEffect(() => {
+        // This is to catch the case where the user types in the newPasswordConfirm field first
+        // and then starts to type in the newPassword field.
+        if (newPassword && newPasswordConfirm) {
+            checkPasswordsMatch(newPassword, newPasswordConfirm);
         }
-        const isValid = validatePassword(newPass);
-        if (isValid != "") {
+    }, [newPassword, newPasswordConfirm]);
+
+    const validateNewPassword = (newPass) => {
+        const validationMessage = validatePassword(newPass);
+        if (validationMessage != "") {
             setNewPasswordError(true);
-            setNewPasswordErrorMessage(isValid);
+            setNewPasswordErrorMessage(validationMessage);
             return false;
         }
         setNewPasswordError(false);
@@ -54,87 +54,72 @@ const UserSettings = () => {
         return true;
     };
 
-    const handlePasswordChange = (setter) => (event) => {
+    const checkPasswordsMatch = (newPass, confirmPass) => {
+        if (newPass !== confirmPass) {
+            setNewPasswordConfirmError(true);
+            setNewPasswordConfirmErrorMessage("New passwords do not match.");
+            return false;
+        }
+        setNewPasswordConfirmError(false);
+        setNewPasswordConfirmErrorMessage('');
+        return true;
+    };
+
+    // Currying functions
+    const handlePasswordChange = (setter, targetField = '') => (event) => {
         const { value } = event.target;
-        setter(value);
+        setter(value); // Update the state with the new value
 
-        let nextNewPassword = newPassword;
-        let nextNewPasswordConfirm = newPasswordConfirm;
-
-        if (setter === setNewPassword) {
-            nextNewPassword = value;
-        } else if (setter === setNewPasswordConfirm) {
-            nextNewPasswordConfirm = value;
+        // Perform validation only for the new password field
+        if (targetField === 'newPassword') {
+            validateNewPassword(value);
         }
 
-        // Reset old password error state when changing new passwords
-        if (setter === setOldPassword) {
-            setOldPasswordError(false);
-            setOldPasswordErrorMessage('');
+        if (targetField === 'newPassword' || targetField === 'newPasswordConfirm') {
+            setNewPassword(currentNewPassword => {
+                if (targetField === 'newPassword') {
+                    checkPasswordsMatch(value, newPasswordConfirm);
+                    return value;
+                }
+                return currentNewPassword;
+            });
+            setNewPasswordConfirm(currentNewPasswordConfirm => {
+                if (targetField === 'newPasswordConfirm') {
+                    checkPasswordsMatch(newPassword, value);
+                    return value;
+                }
+                return currentNewPasswordConfirm;
+            });
         }
+    };
 
-        if (setter === setNewPassword || setter === setNewPasswordConfirm) {
-            isPasswordValid(nextNewPassword, nextNewPasswordConfirm);
+
+    const handleSubmit = () => {
+        if (validateNewPassword(newPassword) && checkPasswordsMatch(newPassword, newPasswordConfirm)) {
+            console.log("Password change submitted");
+        } else {
+            console.log("Password validation failed");
         }
     };
 
     return (
         <div>
             <Navbar />
-            <Box
-                component="form"
-                sx={{
-                    '& .MuiTextField-root': { m: 1, width: '25ch' },
-                }}
-                noValidate
-                autoComplete="off"
-            >
+            <Box component="form" sx={{ '& .MuiTextField-root': { m: 1, width: '25ch' } }} noValidate autoComplete="off">
                 <div>
                     <h3>Change Settings</h3>
-                    <img src={userProfilePicture} alt="alt_userProfilePicture" />
-                    <TextField
-                        disabled
-                        id="disabled"
-                        defaultValue={userUsername}
-                    />
-                    <TextField
-                        disabled
-                        id="disabled"
-                        defaultValue={userEmail}
-                    />
+                    <TextField disabled id="username" defaultValue="Some username" />
+                    <TextField disabled id="email" defaultValue="Some email" />
                     <Button color="inherit" onClick={() => setModalIsOpen(true)}>Change Password</Button>
-                    <StyledModal
-                        open={modalIsOpen}
-                        onClose={() => setModalIsOpen(false)}
-                        aria-labelledby="modal-modal-title"
-                        aria-describedby="modal-modal-description"
-                    >
+                    <StyledModal open={modalIsOpen} onClose={() => setModalIsOpen(false)} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
                         <ModalBox>
                             <Typography id="modal-modal-title" variant="h6" component="h2">
                                 Choose a New Password
                             </Typography>
-                            <TextField
-                                error={oldPasswordError}
-                                helperText={oldPasswordErrorMessage}
-                                label="Old Password"
-                                value={oldPassword}
-                                onChange={handlePasswordChange(setOldPassword, setOldPasswordError, setOldPasswordErrorMessage)}
-                            />
-                            <TextField
-                                error={newPasswordError}
-                                helperText={newPasswordErrorMessage}
-                                label="New Password"
-                                value={newPassword}
-                                onChange={handlePasswordChange(setNewPassword, setNewPasswordError, setNewPasswordErrorMessage)}
-                            />
-                            <TextField
-                                error={newPasswordError} // Note: newPasswordError applies to both new password fields for simplicity
-                                helperText={newPasswordErrorMessage}
-                                label="Re-Enter New Password"
-                                value={newPasswordConfirm}
-                                onChange={handlePasswordChange(setNewPasswordConfirm, setNewPasswordError, setNewPasswordErrorMessage)}
-                            />
-                            <Button type="submit" variant="contained">Submit</Button>
+                            <TextField error={oldPasswordError} helperText={oldPasswordErrorMessage} label="Old Password" value={oldPassword} onChange={handlePasswordChange(setOldPassword, 'oldPassword')} />
+                            <TextField error={newPasswordError} helperText={newPasswordErrorMessage} label="New Password" value={newPassword} onChange={handlePasswordChange(setNewPassword, 'newPassword')} />
+                            <TextField error={newPasswordConfirmError} helperText={newPasswordConfirmErrorMessage} label="Re-Enter New Password" value={newPasswordConfirm} onChange={handlePasswordChange(setNewPasswordConfirm, 'newPasswordConfirm')} />
+                            <Button type="submit" variant="contained" onClick={handleSubmit}>Submit</Button>
                         </ModalBox>
                     </StyledModal>
                 </div>
