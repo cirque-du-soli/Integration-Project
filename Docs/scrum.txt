@@ -239,6 +239,73 @@ Sophie:
 		- Styling of the Login/Registration pages (if possible)
 
 ===============================================================================
+Day04: 2024-04-05 Friday
+=============================
+
+Benjamin:
+	Done:
+		-
+		
+	Not-Done:
+		- login & regi validation
+	
+	Needs Assistance:
+		- .env for FE (routes?) 
+
+	Todo Before Next Scrum:
+		- initial board (mosaic) functions
+
+Soliloquy:
+	Done:
+		- Admin portal setup (side)
+		
+	Not-Done:
+		- Admin basic User CRUD
+		- Figure out MVC format for user CRUD 
+		- [Postponed] Attempt WebSocket @ Mosaics
+	
+	Needs Assistance:
+		- N/A
+
+	Todo Before Next Scrum:
+		- Admin basic User CRUD
+		- Figure out MVC format for user CRUD 
+		- Attempt WebSocket @ Mosaics
+
+Nicholas: 
+	Done:
+		- Created Navbar
+		- Styled Navbar with MUI
+		- Created settings page
+		- Created validation for password (frontend)
+		- Implemented validation for password change in settings page (frontend)
+	
+	Not-Done:
+		- N/A
+	
+	Needs Assistance:
+		- N/A
+
+	Todo Before Next Scrum:
+		- Add upload section for profile picture in settings page
+		- Create backend route for fetching user info (Waiting for JWT implementation to be finished)
+		- Create backend route for uploading profile picture
+
+Sophie: 
+	Done:
+		- N/A (sick)
+		
+	Not-Done:
+		- N/A
+	
+	Needs Assistance:
+		- N/A
+
+	Todo Before Next Scrum:
+		- Login/Reg styling
+
+
+===============================================================================
 ===============================================================================
 ===============================================================================
       ____  ____  __  __  ____  __      __   ____  ____   
@@ -246,7 +313,7 @@ Sophie:
        )(   )__)  )    (  )___/ )(__  /(__)\  )(   )__)   
       (__) (____)(_/\/\_)(__)  (____)(__)(__)(__) (____) ()            
 ===============================================================================
-DayXX: 2024-04-YY 
+DayXX: 2024-04-DD 
 =============================
 
 Benjamin:
