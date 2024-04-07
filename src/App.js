@@ -4,7 +4,7 @@ import Login from "./components/login";
 import Regi from "./components/regi";
 import Settings from "./components/UserSettings"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useState } from "react";
+import "./styles/tailwind.css";
 
 function App() {
   return (
