@@ -33,6 +33,10 @@ const UserSettings = () => {
     const [newPasswordErrorMessage, setNewPasswordErrorMessage] = useState('');
     const [newPasswordConfirmError, setNewPasswordConfirmError] = useState(false);
     const [newPasswordConfirmErrorMessage, setNewPasswordConfirmErrorMessage] = useState('');
+    // User info
+    const userProfilePicture = "Some image link";
+    const userEmail = "Some email";
+    const userUsername = "Some username";
 
     useEffect(() => {
         // This is to catch the case where the user types in the newPasswordConfirm field first
@@ -108,8 +112,9 @@ const UserSettings = () => {
             <Box component="form" sx={{ '& .MuiTextField-root': { m: 1, width: '25ch' } }} noValidate autoComplete="off">
                 <div>
                     <h3>Change Settings</h3>
-                    <TextField disabled id="username" defaultValue="Some username" />
-                    <TextField disabled id="email" defaultValue="Some email" />
+                    <img src={userProfilePicture} alt="alt_userProfilePicture" />
+                    <TextField disabled id="username" value={userUsername} defaultValue="Can't fetch username" />
+                    <TextField disabled id="email" value={userEmail} defaultValue="Can't fetch email" />
                     <Button color="inherit" onClick={() => setModalIsOpen(true)}>Change Password</Button>
                     <StyledModal open={modalIsOpen} onClose={() => setModalIsOpen(false)} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
                         <ModalBox>
