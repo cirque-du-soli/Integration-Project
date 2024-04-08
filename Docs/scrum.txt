@@ -304,6 +304,71 @@ Sophie:
 	Todo Before Next Scrum:
 		- Login/Reg styling
 
+===============================================================================
+Day05: 2024-04-08 Monday 
+=============================
+
+Benjamin:
+	Done:
+		- added mosaic routes
+		- cleaned/tweaked uer route
+		- Users can create mosaics
+		
+	Not-Done:
+		- mosaic view, & functions
+		- JWTs
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- JWTs
+		- continue mosaic functions
+
+Soliloquy:
+	Done:
+		- portal (i think)
+		
+	Not-Done:
+		- MVC
+		- Websockets 
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- Make new branch to test features
+		- Port admin portal from side app to the Heroku Pipeline app
+
+Nicholas: 
+	Done:
+		- Created backend route for uploading user profile image
+		- Created config for AWS-SDK/S3 API
+		- Created functions for Cloudflare R2 bucket modification
+		- Modified user schema
+		
+	Not-Done:
+		- 
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- Create modal, in user settings page, for changing profile pic
+		- Create backend route for password modification
+
+Sophie: 
+	Done:
+		- Login / Registration page styling
+		
+	Not-Done:
+		- N/A
+	
+	Needs Assistance:
+		- N/A
+
+	Todo Before Next Scrum:
+		- TBD
 
 ===============================================================================
 ===============================================================================
