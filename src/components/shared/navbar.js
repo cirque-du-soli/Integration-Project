@@ -1,34 +1,45 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { AppBar, Toolbar, Typography, Button, Modal, Box, TextField, Menu, MenuItem } from "@mui/material";
-import { styled } from '@mui/material/styles';
-import { Link as RouterLink } from 'react-router-dom';
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
-
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Modal,
+  Box,
+  TextField,
+  Menu,
+  MenuItem,
+} from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { Link as RouterLink } from "react-router-dom";
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
+import { AuthContext } from "./authContext";
 
 const StyledModal = styled(Modal)({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
 });
 
 const ModalBox = styled(Box)({
-  position: 'absolute',
+  position: "absolute",
   width: 400,
-  backgroundColor: 'white',
-  border: '2px solid #000',
+  backgroundColor: "white",
+  border: "2px solid #000",
   boxShadow: 24,
-  padding: '16px 32px 24px',
+  padding: "16px 32px 24px",
 });
 
 const Navbar = ({ username }) => {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [mosaicName, setMosaicName] = useState("");
+  const { userState } = useContext(AuthContext);
 
   const handleOpenDropdown = (event) => {
     setDropdownVisible(event.currentTarget);
@@ -47,7 +58,7 @@ const Navbar = ({ username }) => {
       await axios
         .post(`${baseUrl}/mosaics/create`, {
           title: mosaicName,
-          owner: "slough", // Change this to JWT user
+          owner: userState, // Change this to JWT user
         })
         .then((res) => {
           if (res.data === "success") {
@@ -68,11 +79,19 @@ const Navbar = ({ username }) => {
     <AppBar position="static">
       <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          <Button color="inherit" component={RouterLink} to="/home">ProjecTile</Button>
+          <Button color="inherit" component={RouterLink} to="/home">
+            ProjecTile
+          </Button>
         </Typography>
-        <Button color="inherit" component={RouterLink} to="/mosaics">My Mosaics</Button>
-        <Button color="inherit" onClick={() => setModalIsOpen(true)}>New Mosaic</Button>
-        <Button color="inherit" onClick={handleOpenDropdown}>{username}</Button>
+        <Button color="inherit" component={RouterLink} to="/mosaics">
+          My Mosaics
+        </Button>
+        <Button color="inherit" onClick={() => setModalIsOpen(true)}>
+          New Mosaic
+        </Button>
+        <Button color="inherit" onClick={handleOpenDropdown}>
+          {username}
+        </Button>
         <Menu
           id="simple-menu"
           anchorEl={isDropdownVisible}
@@ -80,8 +99,20 @@ const Navbar = ({ username }) => {
           open={Boolean(isDropdownVisible)}
           onClose={handleCloseDropdown}
         >
-          <MenuItem onClick={handleCloseDropdown} component={RouterLink} to="/settings">Settings</MenuItem>
-          <MenuItem onClick={handleCloseDropdown} component={RouterLink} to="/logout">Logout</MenuItem>
+          <MenuItem
+            onClick={handleCloseDropdown}
+            component={RouterLink}
+            to="/settings"
+          >
+            Settings
+          </MenuItem>
+          <MenuItem
+            onClick={handleCloseDropdown}
+            component={RouterLink}
+            to="/logout"
+          >
+            Logout
+          </MenuItem>
         </Menu>
         <StyledModal
           open={modalIsOpen}
@@ -105,7 +136,13 @@ const Navbar = ({ username }) => {
               value={mosaicName}
               onChange={(e) => setMosaicName(e.target.value)}
             />
-            <Button onClick={(e) => { createMosaic(e); setModalIsOpen(false); }} color="primary">
+            <Button
+              onClick={(e) => {
+                createMosaic(e);
+                setModalIsOpen(false);
+              }}
+              color="primary"
+            >
               Continue
             </Button>
             <Button onClick={() => setModalIsOpen(false)} color="secondary">

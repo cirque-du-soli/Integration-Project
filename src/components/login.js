@@ -1,12 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import { AuthContext } from "../components/shared/authContext";
 
 function Login() {
   const history = useNavigate();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  //authState
+  const { authState } = useContext(AuthContext);
+  const { setAuthState } = useContext(AuthContext);
+  const { userState } = useContext(AuthContext);
+  //init loggin state and check
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  //if user is already authorized send to menu
+  useEffect(() => {
+    if (authState) {
+      setIsLoggedIn(true);
+      history("/home", { state: { id: userState } });
+    }
+  }, [authState]);
 
   async function submit(e) {
     e.preventDefault();
@@ -19,7 +34,10 @@ function Login() {
         password,
       });
 
-      if (response.data === "success") {
+      if (response.status === 200) {
+        localStorage.setItem("accessToken", response.data);
+        setAuthState(true);
+
         history("/home", { state: { id: username } });
       } else if (response.data === "notexist") {
         alert("User has not signed up");
@@ -34,7 +52,9 @@ function Login() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div>
-          <h1 className="text-center text-3xl font-bold text-gray-900">Login to Your Account</h1>
+          <h1 className="text-center text-3xl font-bold text-gray-900">
+            Login to Your Account
+          </h1>
         </div>
         <form className="mt-8 space-y-6" onSubmit={submit}>
           <input
@@ -63,7 +83,10 @@ function Login() {
         <div className="text-center mt-3">
           <p className="text-sm text-gray-600">
             Don't have an account?{" "}
-            <Link to="/regi" className="font-medium text-primary-500 hover:text-primary-700">
+            <Link
+              to="/regi"
+              className="font-medium text-primary-500 hover:text-primary-700"
+            >
               Sign up here
             </Link>
           </p>
