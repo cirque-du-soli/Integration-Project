@@ -36,3 +36,24 @@
     transform: rotate(360deg);
   }
 }
+
+
+
+#standardFooter {
+  background-color: lightgray;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  min-height: 50px;
+  color: black;
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
+  display: flex;
+  z-index: 100;
+}
+
+.footerLogo {
+  height: 40px;
+  margin-right: 10px;
+}

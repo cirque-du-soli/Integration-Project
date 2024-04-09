@@ -1,6 +1,6 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Navbar from "./shared/navbar";
+import Navbar from "../components/navbars/mainNavbar";
 
 function Home() {
   const location = useLocation();
