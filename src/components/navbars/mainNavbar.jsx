@@ -41,7 +41,7 @@ const Navbar = ({ username }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [mosaicName, setMosaicName] = useState("");
   const [userMosaics, setUserMosaics] = useState([]);
-  const { userState } = useContext(AuthContext);
+  const { userState, selMosaic, setSelMosaic } = useContext(AuthContext);
 
   const handleOpenDropdown = (event) => {
     setDropdownVisible(event.currentTarget);
@@ -66,7 +66,7 @@ const Navbar = ({ username }) => {
         const response = await axios.get(
           `${process.env.REACT_APP_API_BASE_URL}/mosaics/byUsername?username=${userState}`
         );
-        console.log(userMosaics);
+        console.log(response.data);
         setUserMosaics(response.data);
       } catch (error) {
         console.log(error);
@@ -102,6 +102,10 @@ const Navbar = ({ username }) => {
     }
   }
 
+  const handleMosaicClick = (mosaicId) => {
+    setSelMosaic(mosaicId);
+  };
+
   return (
     <AppBar position="static">
       <Toolbar>
@@ -121,7 +125,12 @@ const Navbar = ({ username }) => {
           onClose={handleCloseMosaicDropdown}
         >
           {userMosaics.map((mosaic) => (
-            <MenuItem key={mosaic.id} onClick={handleCloseMosaicDropdown}>
+            <MenuItem
+              key={mosaic._id}
+              component={RouterLink}
+              to="/main"
+              onClick={() => handleMosaicClick(mosaic._id)}
+            >
               {mosaic.title}
             </MenuItem>
           ))}
