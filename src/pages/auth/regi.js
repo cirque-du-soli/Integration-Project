@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import BackgroundImg from "../../assets/bg.jpg";
-import Footer from "../../components/navbars/footer";
+import Footer from "../../components/Navbars/footer";
 
 function Registration() {
   const history = useNavigate();
@@ -99,7 +99,7 @@ function Registration() {
       </div>
       <Footer />
     </>
-    
+
   );
 }
 
