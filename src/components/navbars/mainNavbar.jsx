@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import {
@@ -36,9 +36,11 @@ const ModalBox = styled(Box)({
 });
 
 const Navbar = ({ username }) => {
+  const [isMosaicDropdownVisible, setMosaicDropdownVisible] = useState(false);
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [mosaicName, setMosaicName] = useState("");
+  const [userMosaics, setUserMosaics] = useState([]);
   const { userState } = useContext(AuthContext);
 
   const handleOpenDropdown = (event) => {
@@ -49,6 +51,31 @@ const Navbar = ({ username }) => {
     setDropdownVisible(null);
   };
 
+  const handleOpenMosaicDropdown = (event) => {
+    setMosaicDropdownVisible(event.currentTarget);
+  };
+
+  const handleCloseMosaicDropdown = () => {
+    setMosaicDropdownVisible(null);
+  };
+
+  useEffect(() => {
+    // Fetch user's mosaics from the server
+    const fetchMosaics = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_BASE_URL}/mosaics/byUsername?username=${userState}`
+        );
+        console.log(userMosaics);
+        setUserMosaics(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchMosaics();
+  }, []);
+
   async function createMosaic(e) {
     e.preventDefault();
 
@@ -58,7 +85,7 @@ const Navbar = ({ username }) => {
       await axios
         .post(`${baseUrl}/mosaics/create`, {
           title: mosaicName,
-          owner: userState, // Change this to JWT user
+          owner: userState,
         })
         .then((res) => {
           if (res.data === "success") {
@@ -83,9 +110,22 @@ const Navbar = ({ username }) => {
             ProjecTile
           </Button>
         </Typography>
-        <Button color="inherit" component={RouterLink} to="/mosaics">
+        <Button color="inherit" onClick={handleOpenMosaicDropdown}>
           My Mosaics
         </Button>
+        <Menu
+          id="mosaic-dropdown-menu"
+          anchorEl={isMosaicDropdownVisible}
+          keepMounted
+          open={Boolean(isMosaicDropdownVisible)}
+          onClose={handleCloseMosaicDropdown}
+        >
+          {userMosaics.map((mosaic) => (
+            <MenuItem key={mosaic.id} onClick={handleCloseMosaicDropdown}>
+              {mosaic.title}
+            </MenuItem>
+          ))}
+        </Menu>
         <Button color="inherit" onClick={() => setModalIsOpen(true)}>
           New Mosaic
         </Button>
