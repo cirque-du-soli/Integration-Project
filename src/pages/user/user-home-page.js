@@ -1,7 +1,7 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Navbar from "../../components/navbars/mainNavbar";
-import Footer from "../../components/navbars/footer";
+import Navbar from "../../components/Navbars/mainNavbar";
+import Footer from "../../components/Navbars/footer";
 
 function Home() {
   const location = useLocation();
@@ -12,10 +12,10 @@ function Home() {
         <Navbar username={location.state.id} />
         <h1>Hello {location.state.id} and welcome to the home</h1>
       </div>
-    
+
       <Footer />
     </>
-    
+
   );
 }
 
