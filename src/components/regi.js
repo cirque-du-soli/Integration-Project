@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import BackgroundImg from "../assets/backimg.jpg";
 
 function Registration() {
   const history = useNavigate();
@@ -33,10 +34,19 @@ function Registration() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
+    <div
+      className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8"
+      style={{
+        backgroundImage: `url(${BackgroundImg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <div className="max-w-md w-full bg-white bg-opacity-50 rounded-lg shadow-lg p-8">
         <div>
-          <h1 className="text-center text-3xl font-bold text-gray-900">Register an Account</h1>
+          <h1 className="text-center text-3xl font-bold text-gray-900">
+            Register an Account
+          </h1>
         </div>
         <form className="mt-8 space-y-6" onSubmit={submit}>
           <input
@@ -63,17 +73,22 @@ function Registration() {
             placeholder="Password"
             required
           />
-          <button
-            type="submit"
-            className="w-full py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary-500 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
-          >
-            Register
-          </button>
+          <div className="flex justify-center">
+            <button
+              type="submit"
+              className="inline-block py-2 px-4 border border-transparent text-sm font-medium rounded-md text-black bg-primary-500 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all"
+            >
+              Register
+            </button>
+          </div>
         </form>
         <div className="text-center mt-3">
           <p className="text-sm text-gray-600">
             Already have an account?{" "}
-            <Link to="/" className="font-medium text-primary-500 hover:text-primary-700">
+            <Link
+              to="/"
+              className="font-medium text-primary-500 hover:text-primary-700"
+            >
               Login here
             </Link>
           </p>

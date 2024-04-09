@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../components/shared/authContext";
+import BackgroundImg from "../assets/backimg.jpg";
 
 function Login() {
   const history = useNavigate();
@@ -9,13 +10,15 @@ function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  //authState
+  // authState
   const { authState } = useContext(AuthContext);
   const { setAuthState } = useContext(AuthContext);
   const { userState } = useContext(AuthContext);
-  //init loggin state and check
+
+  // init loggin state and check
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  //if user is already authorized send to menu
+
+  // if user is already authorized send to menu
   useEffect(() => {
     if (authState) {
       setIsLoggedIn(true);
@@ -37,7 +40,6 @@ function Login() {
       if (response.status === 200) {
         localStorage.setItem("accessToken", response.data);
         setAuthState(true);
-
         history("/home", { state: { id: username } });
       } else if (response.data === "notexist") {
         alert("User has not signed up");
@@ -49,8 +51,15 @@ function Login() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
+    <div
+      className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8"
+      style={{
+        backgroundImage: `url(${BackgroundImg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <div className="max-w-md w-full bg-white bg-opacity-50 rounded-lg shadow-lg p-8">
         <div>
           <h1 className="text-center text-3xl font-bold text-gray-900">
             Login to Your Account
@@ -73,12 +82,14 @@ function Login() {
             placeholder="Password"
             required
           />
-          <button
-            type="submit"
-            className="w-full py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary-500 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
-          >
-            Sign in
-          </button>
+          <div className="flex justify-center">
+            <button
+              type="submit"
+              className="inline-block py-2 px-4 border border-transparent text-sm font-medium rounded-md text-black bg-primary-500 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all"
+            >
+              Sign in
+            </button>
+          </div>
         </form>
         <div className="text-center mt-3">
           <p className="text-sm text-gray-600">
