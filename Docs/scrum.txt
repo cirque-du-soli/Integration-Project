@@ -371,6 +371,82 @@ Sophie:
 		- TBD
 
 ===============================================================================
+Day06: 2024-04-09 Tuesday
+=============================
+
+Benjamin:
+	Done:
+		- JWT
+		
+	Not-Done:
+		- Mosaic view
+		- mosaic functions 
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- mosaic view
+		- start mosaic functions
+
+Soliloquy:
+	Done:
+		- Create Pages:
+			- PageNotFound (404)
+			- UserNotAuthorized (code TBD)
+		- Major Restructure
+			- Implement Pages
+			- Made contexts (i.e. auth) modular
+			- Establish Views & Layouts (prep for implementation)
+			- Made routing modular (did not implement for existing pages)
+
+		- Create & implement persistent footer
+
+	Not-Done:
+		- Final implementation of Admin Dashboard 
+			- waiting on required BE routes
+	
+	Needs Assistance:
+		- how-to tailwind/css (tailwind overrides custom css) (Help from Sophie please)
+		- BE routes (admin re: user list GET incl. createdAt)
+
+	Todo Before Next Scrum:
+		- (first) finish custom auth-bypass header/routes(dev) for testing components
+		- Dev Route Mapping to Dev Layout
+		- Implement Layouts(Dev) for: main mosaic page, homepage, user pages
+			- Implement corresponding view ^
+		- If ^ successful: Implement in Standard Layout
+
+Nicholas: 
+	Done:
+		- Added route for GET http request for profile picture retrieval
+		- Modified structure of user settings page (frontend)
+		- Profile pictures now display in user settings
+		
+	Not-Done:
+		- Add ability to upload profile picture from front end
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- Add ability to upload profile picture from front end
+		- Create backend route for password modification
+
+Sophie: 
+	Done:
+		-updated login and registration page
+		
+	Not-Done:
+		- N/A
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- Test the Jira items currently marked as "Done, needs testing"
+
+===============================================================================
 ===============================================================================
 ===============================================================================
       ____  ____  __  __  ____  __      __   ____  ____   
