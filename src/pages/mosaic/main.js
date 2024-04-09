@@ -24,7 +24,7 @@ function Main() {
     };
 
     fetchMosaicInfo();
-  }, []);
+  }, [selMosaic]);
 
   return (
     <>
