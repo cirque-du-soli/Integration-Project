@@ -1,9 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import { AuthContext } from "../components/shared/authContext";
-import BackgroundImg from "../assets/backimg.jpg";
-import Footer from "../components/navbars/footer";
+import { AuthContext } from "../../contexts/authContext";
+import BackgroundImg from "../../assets/bg.jpg";
+import Footer from "../../components/navbars/footer";
 
 function Login() {
   const history = useNavigate();
@@ -106,10 +106,10 @@ function Login() {
           </div>
         </div>
       </div>
-        
+
       <Footer />
     </>
-    
+
   );
 }
 
