@@ -74,7 +74,7 @@ const Navbar = ({ username }) => {
     };
 
     fetchMosaics();
-  }, []);
+  }, [userState]);
 
   async function createMosaic(e) {
     e.preventDefault();
@@ -124,16 +124,20 @@ const Navbar = ({ username }) => {
           open={Boolean(isMosaicDropdownVisible)}
           onClose={handleCloseMosaicDropdown}
         >
-          {userMosaics.map((mosaic) => (
-            <MenuItem
-              key={mosaic._id}
-              component={RouterLink}
-              to="/main"
-              onClick={() => handleMosaicClick(mosaic._id)}
-            >
-              {mosaic.title}
-            </MenuItem>
-          ))}
+          {userMosaics === "empty" ? (
+            <MenuItem>Nothing here</MenuItem>
+          ) : (
+            userMosaics.map((mosaic) => (
+              <MenuItem
+                key={mosaic._id}
+                component={RouterLink}
+                to="/main"
+                onClick={() => handleMosaicClick(mosaic._id)}
+              >
+                {mosaic.title}
+              </MenuItem>
+            ))
+          )}
         </Menu>
         <Button color="inherit" onClick={() => setModalIsOpen(true)}>
           New Mosaic
