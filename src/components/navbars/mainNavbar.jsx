@@ -18,7 +18,7 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import { AuthContext } from "./authContext";
+import { AuthContext } from "../shared/authContext";
 
 const StyledModal = styled(Modal)({
   display: "flex",
@@ -46,7 +46,7 @@ const Navbar = ({ username }) => {
   };
 
   const handleCloseDropdown = () => {
-    setDropdownVisible(null);
+    setDropdownVisible(null); 
   };
 
   async function createMosaic(e) {

@@ -1,13 +1,14 @@
-// import './App.css'
+import './styles/App.css';
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Home from "./components/home";
-import Login from "./components/login";
-import Regi from "./components/regi";
+import Home from "./pages/home.js";
+import Login from "./pages/login.js";
+import Regi from "./pages/regi.js";
 import { AuthContext } from "./components/shared/authContext";
 import Settings from "./components/UserSettings";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./styles/tailwind.css";
+
 
 function App() {
   //check if logged in
