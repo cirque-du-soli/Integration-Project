@@ -4,8 +4,8 @@ import axios from "axios";
 import { AuthContext } from "./contexts/authContext.js";
 
 // STYLE imports
-import './styles/App.css';
 import "./styles/tailwind.css";
+import './styles/App.css';
 
 // PAGE imports
 import Login from "./pages/auth/login.js";
