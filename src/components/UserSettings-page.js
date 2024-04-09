@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { TextField, Modal, Typography, Button, Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Navbar from "./navbars/mainNavbar";
-import { validatePassword } from "../validations/validatePassword";
+import { validatePassword } from "../fe-validations/validatePassword";
 
 const StyledModal = styled(Modal)({
     display: 'flex',

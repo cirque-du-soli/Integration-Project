@@ -1,11 +1,11 @@
 import './styles/App.css';
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Home from "./pages/home.js";
-import Login from "./pages/login.js";
-import Regi from "./pages/regi.js";
-import { AuthContext } from "./components/shared/authContext";
-import Settings from "./components/UserSettings";
+import Home from "./pages/user/home.js";
+import Login from "./pages/auth/login.js";
+import Regi from "./pages/auth/regi.js";
+import { AuthContext } from "./contexts/authContext.js";
+import Settings from "./components/UserSettings-page.js";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./styles/tailwind.css";
 
