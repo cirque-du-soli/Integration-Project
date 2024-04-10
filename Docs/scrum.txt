@@ -447,6 +447,75 @@ Sophie:
 		- Test the Jira items currently marked as "Done, needs testing"
 
 ===============================================================================
+Day06: 2024-04-10 Wednesday
+=============================
+
+Benjamin:
+	Done:
+		- Initial mosaic view
+		
+	Not-Done:
+		- add tiles
+		- delete colomns
+		- rename colomns and tiles
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- add tiles
+		- delete colomns
+		- rename colomns and tiles
+
+Soliloquy:
+	Done:
+		- --
+		
+	Not-Done:
+		- Route Mapping
+ 		- Test Header
+	
+	Needs Assistance:
+		- N/A
+
+	Todo Before Next Scrum:
+		- Route Mapping
+ 		- Test Header (for admin components)
+
+Nicholas: 
+	Done:
+		- Added ability to add profile picture from frontend
+		- Added JWT verification and extraction of credentials to backend routes for userSettings
+		
+	Not-Done:
+		- Create backend routes for password modification
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- Create backend routes for password modification
+		- Start board chat
+
+Sophie: 
+	Done:
+		- testing
+		- fix canvas bug (mac)
+		- started devlayout
+		
+	Not-Done:
+		- 
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- Style Navbar and footer
+		- implement logout button functionality
+
+
+
+===============================================================================
 ===============================================================================
 ===============================================================================
       ____  ____  __  __  ____  __      __   ____  ____   
