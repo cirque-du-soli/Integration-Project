@@ -19,56 +19,21 @@ function Footer() {
     // HOOKS
 
     return (
-        <>
-            <footer id="standardFooter" >
-                <Row className='w-100'>
-                    <Col className='d-block text-start mx-3'>
-                        <div className='align-self-center'>
-                            <a href='/landing'
-                                className="
-                                link-dark 
-                                link-offset-2 
-                                link-offset-3-hover 
-                                link-underline
-                                link-underline-opacity-0
-                                link-underline-opacity-75-hover">
-                                Home
-                            </a>
-                            <span> | </span>
-                            <a href='/landing'
-                                className="
-                                link-dark 
-                                link-offset-2 
-                                link-offset-3-hover 
-                                link-underline
-                                link-underline-opacity-0
-                                link-underline-opacity-75-hover">
-                                Terms of Service
-                            </a>
-                            <span> | </span>
-                            <a href='/landing'
-                                className="
-                                link-dark 
-                                link-offset-2 
-                                link-offset-3-hover 
-                                link-underline
-                                link-underline-opacity-0
-                                link-underline-opacity-75-hover">
-                                Privacy Policy
-                            </a>
-                        </div>
+        <footer className="bg-teal-600 text-white py-4 fixed bottom-0 w-full">
+            <div className="container mx-auto flex flex-wrap justify-between items-center">
+                <div className="w-full md:w-auto mb-4 md:mb-0">
+                    <a href='/landing' className="text-black hover:text-gray-400 mr-4">Home</a>
+                    <span className="text-gray-300">|</span>
+                    <a href='/landing' className="text-black hover:text-gray-400 ml-4 mr-4">Terms of Service</a>
+                    <span className="text-gray-300">|</span>
+                    <a href='/landing' className="text-black hover:text-gray-400 ml-4">Privacy Policy</a>
+                </div>
 
-                    </Col>
-
-                    <Col className='d-block justify-content-end mx-3'>
-                        <div className='align-self-center'>
-                            ©️ 2024: Team 1 Web Development Inc.
-                        </div>
-                    </Col>
-                </Row>
-            </footer>
-
-        </>
+                <div className="w-full md:w-auto text-center md:text-right">
+                    <p className="text-black">© 2024: Team 1 Web Development Inc.</p>
+                </div>
+            </div>
+        </footer>
     );
 }
 
