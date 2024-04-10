@@ -19,6 +19,7 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { AuthContext } from "../../contexts/authContext";
+import logoIcon from "../../assets/ProjecTile-Logo-Icon-TransparentBG.png"
 
 const StyledModal = styled(Modal)({
   display: "flex",
@@ -28,12 +29,17 @@ const StyledModal = styled(Modal)({
 
 const ModalBox = styled(Box)({
   position: "absolute",
-  width: 400,
-  backgroundColor: "white",
-  border: "2px solid #000",
-  boxShadow: 24,
+  width: "100%",
+  maxWidth: 400,
+  backgroundColor: "rgba(255, 255, 255, 0.9)",
+  backdropFilter: "blur(10px)",
+  border: "none",
+  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
   padding: "16px 32px 24px",
+  borderRadius: "8px",
 });
+
+
 
 const Navbar = ({ username }) => {
   const [isMosaicDropdownVisible, setMosaicDropdownVisible] = useState(false);
@@ -107,16 +113,47 @@ const Navbar = ({ username }) => {
   };
 
   return (
-    <AppBar position="static">
-      <Toolbar>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+    <AppBar position="static" sx={{ backgroundColor: "#008080" }}>
+      <Toolbar className="justify-between">
+      <Typography variant="h6" sx={{ display: "flex", alignItems: "center" }}>
+          <img src={logoIcon} alt="Logo" style={{ marginRight: "8px", width: "40px" }} />
           <Button color="inherit" component={RouterLink} to="/home">
             ProjecTile
           </Button>
         </Typography>
-        <Button color="inherit" onClick={handleOpenMosaicDropdown}>
-          My Mosaics
-        </Button>
+        <div>
+          <Button color="inherit" onClick={handleOpenMosaicDropdown}>
+            My Mosaics
+          </Button>
+          <Button color="inherit" onClick={() => setModalIsOpen(true)}>
+            New Mosaic
+          </Button>
+          <Button color="inherit" onClick={handleOpenDropdown}>
+            {username}
+          </Button>
+          <Menu
+            id="simple-menu"
+            anchorEl={isDropdownVisible}
+            keepMounted
+            open={Boolean(isDropdownVisible)}
+            onClose={handleCloseDropdown}
+          >
+            <MenuItem
+              onClick={handleCloseDropdown}
+              component={RouterLink}
+              to="/settings"
+            >
+              Settings
+            </MenuItem>
+            <MenuItem
+              onClick={handleCloseDropdown}
+              component={RouterLink}
+              to="/logout"
+            >
+              Logout
+            </MenuItem>
+          </Menu>
+        </div>
         <Menu
           id="mosaic-dropdown-menu"
           anchorEl={isMosaicDropdownVisible}
@@ -138,34 +175,6 @@ const Navbar = ({ username }) => {
               </MenuItem>
             ))
           )}
-        </Menu>
-        <Button color="inherit" onClick={() => setModalIsOpen(true)}>
-          New Mosaic
-        </Button>
-        <Button color="inherit" onClick={handleOpenDropdown}>
-          {username}
-        </Button>
-        <Menu
-          id="simple-menu"
-          anchorEl={isDropdownVisible}
-          keepMounted
-          open={Boolean(isDropdownVisible)}
-          onClose={handleCloseDropdown}
-        >
-          <MenuItem
-            onClick={handleCloseDropdown}
-            component={RouterLink}
-            to="/settings"
-          >
-            Settings
-          </MenuItem>
-          <MenuItem
-            onClick={handleCloseDropdown}
-            component={RouterLink}
-            to="/logout"
-          >
-            Logout
-          </MenuItem>
         </Menu>
         <StyledModal
           open={modalIsOpen}
