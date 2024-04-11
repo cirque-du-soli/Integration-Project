@@ -38,7 +38,8 @@ function Main() {
   const [mosaicInfo, setMosaicInfo] = useState({});
   const [newColumnModal, setNewColumnModal] = useState(false);
   const [newColumnName, setNewColumnName] = useState("");
-  const [renameColumnModal, setReanmeColumnModal] = useState(false);
+  const [renameColumnId, setRenameColumnId] = useState("");
+  const [newTileColumnId, setNewTileColumnId] = useState("");
   const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
   // Fetch mosaic info
@@ -65,7 +66,7 @@ function Main() {
     e.preventDefault();
     try {
       await axios
-        .post(`${baseUrl}/mosaics/newColumn`, {
+        .post(`${baseUrl}/mosaics/column`, {
           title: newColumnName,
           _id: selMosaic,
         })
@@ -103,7 +104,57 @@ function Main() {
   }
 
   //rename Cloumn
-  async function renameColumn() {}
+  const handleRename = (id) => {
+    setRenameColumnId(id);
+  };
+  const handleCancelRename = () => {
+    setRenameColumnId("");
+  };
+  const handleRenameSubmit = async (id, newTitle) => {
+    console.log(`New title for column ${id}: ${newTitle}`);
+    try {
+      const response = await axios.put(`${baseUrl}/mosaics/renameColumn`, {
+        id,
+        newTitle,
+      });
+      if (response.status === 200) {
+        console.log("Colmun renamed");
+      } else {
+        console.log("Failed to rename");
+      }
+    } catch (error) {
+      console.error("Error renaming column: ", error);
+    }
+    setRenameColumnId("");
+  };
+
+  //add new tiles
+  const handleNewTile = (id) => {
+    setNewTileColumnId(id);
+  };
+  const handleCancelNewTile = () => {
+    setNewTileColumnId("");
+  };
+  const handleNewTileSubmit = async (colId, newTile) => {
+    console.log(
+      `New tile ${newTile} on column ${colId} on mosaic ${selMosaic}`
+    );
+    try {
+      const response = await axios.post(`${baseUrl}/mosaics/tile`, {
+        colId,
+        newTile,
+        _id: selMosaic,
+      });
+      if (response.status === 200) {
+        console.log("Tile added");
+      } else {
+        console.log("Failed to create");
+      }
+    } catch (error) {
+      console.error("Error creating tile: ", error);
+    }
+    setNewTileColumnId("");
+  };
 
   return (
     <>
@@ -118,11 +169,43 @@ function Main() {
             mosaicInfo.columns.map((column) => (
               <div key={column._id}>
                 <h2>{column.title}</h2>
-                <button onClick={() => setReanmeColumnModal(true)}>
-                  rename
-                </button>
+                {renameColumnId === column._id ? (
+                  <div>
+                    <input
+                      type="text"
+                      defaultValue={column.title}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          handleRenameSubmit(column._id, e.target.value);
+                        }
+                      }}
+                    />
+                    <button onClick={handleCancelRename}>Cancel</button>
+                  </div>
+                ) : (
+                  <button onClick={() => handleRename(column._id)}>
+                    Rename
+                  </button>
+                )}
                 <button onClick={() => delColumn(column._id)}>delete</button>
-                <button>add new tile</button>
+                {newTileColumnId === column._id ? (
+                  <div>
+                    <input
+                      type="text"
+                      defaultValue={"New tile"}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          handleNewTileSubmit(column._id, e.target.value);
+                        }
+                      }}
+                    />
+                    <button onClick={handleCancelNewTile}>Cancel</button>
+                  </div>
+                ) : (
+                  <button onClick={() => handleNewTile(column._id)}>
+                    Add new Tile
+                  </button>
+                )}
                 {/* change to icons */}
                 <div>{/*render tiles*/}</div>
               </div>
