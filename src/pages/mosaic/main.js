@@ -37,7 +37,7 @@ function Main() {
   const { userState, selMosaic } = useContext(AuthContext);
   const [mosaicInfo, setMosaicInfo] = useState({});
   const [newColumnModal, setNewColumnModal] = useState(false);
-  const [newColumnName, setNewColumnName] = useState("");
+  const [renameColumnModal, setReanmeColumnModal] = useState(false);
   const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
   // Fetch mosaic info
@@ -55,11 +55,11 @@ function Main() {
       console.log(error);
     }
   };
-
   useEffect(() => {
     fetchMosaicInfo();
   }, [selMosaic]);
 
+  //create new column
   async function createColumn(e) {
     e.preventDefault();
     try {
@@ -84,6 +84,7 @@ function Main() {
     }
   }
 
+  //delete column
   async function delColumn(id) {
     try {
       const response = await axios.delete(
@@ -100,6 +101,9 @@ function Main() {
     }
   }
 
+  //rename Cloumn
+  async function renameColumn() {}
+
   return (
     <>
       <div>
@@ -113,7 +117,9 @@ function Main() {
             mosaicInfo.columns.map((column) => (
               <div key={column._id}>
                 <h2>{column.title}</h2>
-                <button>rename</button>
+                <button onClick={() => setReanmeColumnModal(true)}>
+                  rename
+                </button>
                 <button onClick={() => delColumn(column._id)}>delete</button>
                 <button>add new tile</button>
                 {/* change to icons */}
@@ -153,6 +159,39 @@ function Main() {
             onClick={(e) => {
               createColumn(e);
               setNewColumnModal(false);
+            }}
+            color="primary"
+          >
+            Continue
+          </Button>
+        </ModalBox>
+      </StyledModal>
+      <StyledModal
+        open={renameColumnModal}
+        onClose={() => setReanmeColumnModal(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <ModalBox>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Rename Column
+          </Typography>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="renameColumn"
+            label="Column Name"
+            name="renameColumn"
+            autoComplete="renameColumn"
+            autoFocus
+            value={renameColumn}
+            onChange={(e) => setRenameColumn(e.target.value)}
+          />
+          <Button
+            onClick={(e) => {
+              renameColumn(e);
+              setReanmeColumnModal(false);
             }}
             color="primary"
           >
