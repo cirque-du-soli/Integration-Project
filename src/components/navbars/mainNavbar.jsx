@@ -47,7 +47,7 @@ const Navbar = ({ username }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [mosaicName, setMosaicName] = useState("");
   const [userMosaics, setUserMosaics] = useState([]);
-  const { userState, selMosaic, setSelMosaic } = useContext(AuthContext);
+  const { userState, setAuthState, selMosaic, setSelMosaic } = useContext(AuthContext);
 
   const handleOpenDropdown = (event) => {
     setDropdownVisible(event.currentTarget);
@@ -64,6 +64,11 @@ const Navbar = ({ username }) => {
   const handleCloseMosaicDropdown = () => {
     setMosaicDropdownVisible(null);
   };
+
+  const handleLogOut = () => {
+    setAuthState(false);
+    localStorage.setItem("accessToken", null);
+  }
 
   useEffect(() => {
     // Fetch user's mosaics from the server
@@ -146,9 +151,9 @@ const Navbar = ({ username }) => {
               Settings
             </MenuItem>
             <MenuItem
-              onClick={handleCloseDropdown}
+              onClick={handleLogOut}
               component={RouterLink}
-              to="/logout"
+              to="/"
             >
               Logout
             </MenuItem>

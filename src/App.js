@@ -25,7 +25,7 @@ function App() {
   //check if logged in
   const [authState, setAuthState] = useState(false);
   const [userState, setUserState] = useState("");
-
+  
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_BASE_URL}/auth`, {
@@ -37,7 +37,6 @@ function App() {
         } else {
           console.log(response.data);
           setUserState(response.data);
-
           setAuthState(true);
         }
       });
@@ -60,7 +59,7 @@ function App() {
       >
         <Router>
           <Routes>
-            <Route path="/" element={<Navigate to="/login" />} />
+            <Route path="/" element={<Navigate to={authState ? "/home" : "/login" }/>} />
             <Route path="/login" element={<Login />} />
             <Route path="/regi" element={<Regi />} />
             <Route path="/home" element={<Home />} />
