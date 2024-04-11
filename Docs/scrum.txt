@@ -447,7 +447,7 @@ Sophie:
 		- Test the Jira items currently marked as "Done, needs testing"
 
 ===============================================================================
-Day06: 2024-04-10 Wednesday
+Day07: 2024-04-10 Wednesday
 =============================
 
 Benjamin:
@@ -513,6 +513,72 @@ Sophie:
 		- Style Navbar and footer
 		- implement logout button functionality
 
+===============================================================================
+Day08: 2024-04-11 Thursday
+=============================
+
+Benjamin:
+	Done:
+		- adding and deleting columns
+		
+	Not-Done:
+		- rename colo
+		- adding tiles
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- rename columns
+
+Soliloquy:
+	Done:
+		- :( blame the eclipse
+		
+	Not-Done:
+		- fix routes
+	
+	Needs Assistance:
+		- Heroku memory overflow
+
+	Todo Before Next Scrum:
+		- Look at Heroku memory overflow crash
+			- route mapping might fix?
+
+Nicholas: 
+	Done:
+		- Created backend routes for password modification
+		- Modified structure of user settings page
+		- Modified styling of user settings page
+		- Bug fixes on user settings page / backend routes 
+		
+	Not-Done:
+		- Start board chat
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- Finish front end implementation of password changing in user settings page
+		- Start board chat
+		- Look into memory issues with Heroku-hosted front end app
+
+Sophie: 
+	Done:
+		- style nav
+		- style footer
+		- add logout
+		- update validation
+
+		
+	Not-Done:
+		- 
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- drag and drop tile functionality
 
 
 ===============================================================================
