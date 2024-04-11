@@ -127,14 +127,14 @@ const UserSettings = () => {
     checkPasswordsMatch(value, newPasswordConfirm);
     checkPasswordsMatch(newPassword, value);
   };
-  const handleSubmit = () => {
-    if (
-      validateNewPassword(newPassword) &&
-      checkPasswordsMatch(newPassword, newPasswordConfirm)
-    ) {
-      console.log("Password change submitted");
-    } else {
-      console.log("Password validation failed");
+
+  const handleSubmit = async () => {
+    try {
+      await axios.patch(`${baseUrl}/settings/password`, { oldPassword: oldPassword, newPassword: newPassword }, {
+        headers: { jwtToken: localStorage.getItem("jwtToken") }
+      })
+    } catch (error) {
+      console.error("Failed to change password", error);
     }
   };
 
@@ -144,7 +144,7 @@ const UserSettings = () => {
         // Update the request to ensure response type is set to 'blob'
         const response = await axios.get(`${baseUrl}/settings/profilepicture`, {
           responseType: "blob",
-          headers: { accessToken: localStorage.getItem("accessToken") },
+          headers: { jwtToken: localStorage.getItem("jwtToken") },
         });
         // Create a URL for the blob
         const imageUrl = URL.createObjectURL(response.data);
@@ -163,7 +163,7 @@ const UserSettings = () => {
     const fetchUserSettings = async () => {
       try {
         const response = await axios.get(`${baseUrl}/settings/`, {
-          headers: { accessToken: localStorage.getItem("accessToken") },
+          headers: { jwtToken: localStorage.getItem("jwtToken") },
         });
         const { email, username } = response.data;
 
@@ -188,7 +188,7 @@ const UserSettings = () => {
           {
             headers: {
               "Content-Type": "multipart/form-data",
-              accessToken: localStorage.getItem("accessToken"),
+              jwtToken: localStorage.getItem("jwtToken"),
             },
           }
         );
@@ -222,7 +222,7 @@ const UserSettings = () => {
               >
                 <img
                   src={userProfilePictureUrl}
-                  alt="User Profile"
+                  alt=""
                   style={{ width: "100%", height: "100%" }}
                 />
                 <ImageOverlay>
