@@ -99,7 +99,6 @@ function Registration() {
       </div>
       <Footer />
     </>
-
   );
 }
 

@@ -38,6 +38,7 @@ function Main() {
   const [mosaicInfo, setMosaicInfo] = useState({});
   const [newColumnModal, setNewColumnModal] = useState(false);
   const [newColumnName, setNewColumnName] = useState("");
+  const [renameColumnModal, setReanmeColumnModal] = useState(false);
   const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
   // Fetch mosaic info
@@ -55,11 +56,11 @@ function Main() {
       console.log(error);
     }
   };
-
   useEffect(() => {
     fetchMosaicInfo();
   }, [selMosaic]);
 
+  //create new column
   async function createColumn(e) {
     e.preventDefault();
     try {
@@ -84,6 +85,7 @@ function Main() {
     }
   }
 
+  //delete column
   async function delColumn(id) {
     try {
       const response = await axios.delete(
@@ -100,6 +102,9 @@ function Main() {
     }
   }
 
+  //rename Cloumn
+  async function renameColumn() {}
+
   return (
     <>
       <div>
@@ -113,7 +118,9 @@ function Main() {
             mosaicInfo.columns.map((column) => (
               <div key={column._id}>
                 <h2>{column.title}</h2>
-                <button>rename</button>
+                <button onClick={() => setReanmeColumnModal(true)}>
+                  rename
+                </button>
                 <button onClick={() => delColumn(column._id)}>delete</button>
                 <button>add new tile</button>
                 {/* change to icons */}
