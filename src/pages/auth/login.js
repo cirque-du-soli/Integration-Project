@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/authContext";
 import BackgroundImg from "../../assets/bg.jpg";
-import Footer from "../../components/Navbars/footer";
+import Footer from "../../components/navbars/footer";
 
 function Login() {
   const history = useNavigate();

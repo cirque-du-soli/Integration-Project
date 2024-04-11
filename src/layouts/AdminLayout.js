@@ -13,8 +13,8 @@ import PerfectScrollbar from "perfect-scrollbar";
 import routes from "../routes/routes.js";
 
 // IMPORT: Components
-import Header from "../components/Navbars/Header.js";
-//import Footer from "../components/Navbars/Footer.jsx";
+import Header from "../components/navbars/Header.js";
+//import Footer from "../components/navbars/Footer.jsx";
 import PageNotFound from "../components/Pages/PageNotFound";
 
 

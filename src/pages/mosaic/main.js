@@ -13,8 +13,8 @@ import {
   MenuItem,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import Navbar from "../../components/Navbars/mainNavbar";
-import Footer from "../../components/Navbars/footer";
+import Navbar from "../../components/navbars/mainNavbar";
+import Footer from "../../components/navbars/footer";
 import { AuthContext } from "../../contexts/authContext";
 
 const StyledModal = styled(Modal)({

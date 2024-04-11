@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import BackgroundImg from "../../assets/bg.jpg";
-import Footer from "../../components/Navbars/footer";
+import Footer from "../../components/navbars/footer";
 
 function Registration() {
   const history = useNavigate();

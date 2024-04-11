@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Navbar from "../../components/Navbars/mainNavbar";
-import Footer from "../../components/Navbars/footer";
+import Navbar from "../../components/navbars/mainNavbar";
+import Footer from "../../components/navbars/footer";
 import { AuthContext } from "../../contexts/authContext";
 
 function Home() {
