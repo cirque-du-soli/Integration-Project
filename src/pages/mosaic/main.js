@@ -38,7 +38,7 @@ function Main() {
   const [mosaicInfo, setMosaicInfo] = useState({});
   const [newColumnModal, setNewColumnModal] = useState(false);
   const [newColumnName, setNewColumnName] = useState("");
-  const [renameColumnModal, setReanmeColumnModal] = useState(false);
+  const [renameColumnId, setRenameColumnId] = useState("");
   const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
   // Fetch mosaic info
@@ -103,7 +103,29 @@ function Main() {
   }
 
   //rename Cloumn
-  async function renameColumn() {}
+  const handleRename = (id) => {
+    setRenameColumnId(id);
+  };
+  const handleCancelRename = () => {
+    setRenameColumnId(-1);
+  };
+  const handleRenameSubmit = async (id, newTitle) => {
+    console.log(`New title for column ${id}: ${newTitle}`);
+    try {
+      const response = await axios.put(`${baseUrl}/mosaics/renameColumn`, {
+        id,
+        newTitle,
+      });
+      if (response.status === 200) {
+        console.log("Colmun renamed");
+      } else {
+        console.log("Failed to rename");
+      }
+    } catch (error) {
+      console.error("Error renaming column: ", error);
+    }
+    setRenameColumnId(-1);
+  };
 
   return (
     <>
@@ -118,9 +140,24 @@ function Main() {
             mosaicInfo.columns.map((column) => (
               <div key={column._id}>
                 <h2>{column.title}</h2>
-                <button onClick={() => setReanmeColumnModal(true)}>
-                  rename
-                </button>
+                {renameColumnId === column._id ? (
+                  <div>
+                    <input
+                      type="text"
+                      defaultValue={column.title}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          handleRenameSubmit(column._id, e.target.value);
+                        }
+                      }}
+                    />
+                    <button onClick={handleCancelRename}>Cancel</button>
+                  </div>
+                ) : (
+                  <button onClick={() => handleRename(column._id)}>
+                    Rename
+                  </button>
+                )}
                 <button onClick={() => delColumn(column._id)}>delete</button>
                 <button>add new tile</button>
                 {/* change to icons */}
