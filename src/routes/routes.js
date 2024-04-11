@@ -13,7 +13,7 @@ import UserProfilePublic from '../components/Pages/UserProfilePublic';
 */
 
 // IMPORT: All other components
-import Header from '../components/Navbars/mainNavbar';
+import Header from '../components/navbars/mainNavbar';
 import PageNotFound from '../components/Pages/PageNotFound';
 
 /* TODO: SOLI NEXT
@@ -108,7 +108,7 @@ var routes = [
         name: "Dev: Header",
         component: <Header />,
     },
-    
+
     {
         layout: "DevLayout",
         path: "/PageNotFound",
