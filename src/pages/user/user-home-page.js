@@ -11,7 +11,7 @@ function Home() {
   return (
     <>
       <div className="homepage">
-        <Navbar username={userState} />
+        <Navbar />
         <h1>Hello {userState} and welcome to the home</h1>
       </div>
 
