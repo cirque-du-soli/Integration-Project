@@ -36,10 +36,13 @@ function Main() {
   //userState is username, selMosaic is Mosaic ID
   const { userState, selMosaic } = useContext(AuthContext);
   const [mosaicInfo, setMosaicInfo] = useState({});
+  const [tileInfo, setTileInfo] = useState({});
   const [newColumnModal, setNewColumnModal] = useState(false);
   const [newColumnName, setNewColumnName] = useState("");
   const [renameColumnId, setRenameColumnId] = useState("");
   const [newTileColumnId, setNewTileColumnId] = useState("");
+  const [tileViewModal, setTileViewModal] = useState(false);
+  const [selTileId, setSelTileId] = useState("");
   const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
   // Fetch mosaic info
@@ -156,10 +159,37 @@ function Main() {
     setNewTileColumnId("");
   };
 
+  useEffect(() => {
+    getTileInfo(selTileId);
+  }, [selTileId]);
+  //get tile info
+  // const handleTileRender = (id) => {
+  //   setTileId(id);
+  // };
+  // const handleCancelNewTile = () => {
+  //   setNewTileColumnId("");
+  // };
+  const getTileInfo = async (id) => {
+    console.log(`fetching tile ${id}`);
+    try {
+      const response = await axios.get(`${baseUrl}/mosaics/tile`, {
+        id,
+      });
+      if (response.status === 200) {
+        console.log("Tile found");
+        setTileInfo(response.data);
+      } else {
+        console.log("Failed to find tile");
+      }
+    } catch (error) {
+      console.error("Error finding tile: ", error);
+    }
+  };
+
   return (
     <>
       <div>
-        <Navbar username={userState} />
+        <Navbar />
         <h1>{selMosaic}</h1>
         {/* ^^ can be removed later or ?now? */}
         <h1>{mosaicInfo.title}</h1>
@@ -206,8 +236,22 @@ function Main() {
                     Add new Tile
                   </button>
                 )}
-                {/* change to icons */}
-                <div>{/*render tiles*/}</div>
+                {/* for above -> change to icons */}
+                <div>
+                  {column.tiles.map((tile) => {
+                    let splitTile = tile.split(":");
+                    return (
+                      <p
+                        onClick={() => {
+                          setSelTileId(splitTile[0]);
+                          setTileViewModal(true);
+                        }}
+                      >
+                        {splitTile[1]}
+                      </p>
+                    );
+                  })}
+                </div>
               </div>
             ))}
           <div>
@@ -217,6 +261,7 @@ function Main() {
           </div>
         </div>
       </div>
+      {/* add new column modal box */}
       <StyledModal
         open={newColumnModal}
         onClose={() => setNewColumnModal(false)}
@@ -248,6 +293,19 @@ function Main() {
           >
             Continue
           </Button>
+        </ModalBox>
+      </StyledModal>
+      {/* tile view modal */}
+      <StyledModal
+        open={tileViewModal}
+        onClose={() => setTileViewModal(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <ModalBox>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            {tileInfo.title}
+          </Typography>
         </ModalBox>
       </StyledModal>
       <Footer />
