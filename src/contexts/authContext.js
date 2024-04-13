@@ -1,8 +1,11 @@
 import { createContext, useState } from "react";
 
-// SOLI TEST:
-// REMOVED: export const AuthContext = createContext("");
+export const AuthContext = createContext("");
 
+
+
+/* 
+// SOLI TEST:
 export const AuthContext = createContext({});
 
 export const Auth = ({ children }) => {
@@ -15,4 +18,6 @@ export const Auth = ({ children }) => {
     )
 }
 
-export default AuthContext;
+export default AuthContext; 
+
+*/
