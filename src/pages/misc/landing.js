@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import PageNotFound from './PageNotFound';
+import PageNotFound from './pageNotFound404.js';
 //import Footer from '../components/navbars/Footer';
 import Header from '../components/navbars/Header';
 

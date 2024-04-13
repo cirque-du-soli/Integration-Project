@@ -17,7 +17,7 @@ import Login from "./pages/auth/login.js";
 import Regi from "./pages/auth/regi.js";
 import Home from "./pages/user/user-home-page.js";
 import Settings from "./pages/user/user-settings-page.js";
-import PageNotFound from "./pages/misc/PageNotFound.js";
+import PageNotFound from "./pages/misc/pageNotFound404.js";
 import Main from "./pages/mosaic/main.js";
 import { NavigateBefore } from "@mui/icons-material";
 
