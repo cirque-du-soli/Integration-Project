@@ -10,13 +10,14 @@ function landing() {
                 <h2>It is a work in progress</h2>
                 <br />
                 <br />
-                <h1>Welcome to ProjecTile. The task managing app for <b>the best</b> teams.</h1>
+                <h1>Welcome to ProjecTile. The task managing app for <i>the best</i> teams.</h1>
                 <br />
                 <br />
-                <a href="/regi">Click here to Sign up!</a>
+                <a href="/app/register">Click here to <b>Sign up!</b></a>
                 <br />
                 <br />
-                <p>Already a winning team member? <a href="/app/login">Click here to log in.</a></p>
+                <p>Already a winning team member?</p>
+                <a href="/app/login">Click here to <b>log in</b>.</a>
                 <br />
                 <br />
             </div>

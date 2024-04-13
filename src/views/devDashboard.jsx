@@ -1,6 +1,4 @@
-
-
-// IMPORT: Routes (util)
+// IMPORT: Routes
 import devRoutes from "../routes/devRoutes.js";
 
 function DevDashboard(props) {

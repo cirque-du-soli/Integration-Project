@@ -1,6 +1,6 @@
 // IMPORT: React
 import { Route, Routes, Navigate, useLocation } from "react-router-dom";
-import { useRef } from 'react';
+import { useRef, useState, React } from 'react';
 
 // IMPORT: Styles
 import logo from '../assets/ProjecTile-Logo-Icon-TransparentBG.png';
@@ -17,6 +17,7 @@ import mainRoutes from "../routes/mainRoutes.js";
 import Footer from "../components/navbars/footer.jsx";
 import PageNotFound from "../pages/misc/pageNotFound404.js";
 
+//import EditProfile from "../components/Pages/EditProfile";
 
 const getRoutes = (routes) => {
     return routes.map((prop, key) => {
@@ -25,16 +26,27 @@ const getRoutes = (routes) => {
         );
     });
 };
-
 function MainLayout(props) {
 
+    /*  TODO: later -- implement popups / toast messages   
+    const newPopup = (msg) => {
+        console.log("StandardLayout.js: newPopup() called");
+        console.log("StandardLayout.js: msg: " + msg);
+        PopupAlert({ props: { msg: msg } });
+    } 
+    */
+    
     const mainPanelRef = useRef(null);
+
+    const [uname, setUname] = useState(sessionStorage.getItem('username'));
 
     return (
         <>
             <div className="App">
-
+                {/* Standard Header */}
+                {/* FIXME: <Header props={{ uname: uname }} /> */}
                 < Footer />
+
                 <div className="main-panel" ref={mainPanelRef}>
                     <Routes>
                         {/* Add standard routes & views */}
