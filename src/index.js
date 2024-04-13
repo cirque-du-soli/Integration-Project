@@ -27,10 +27,11 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/*" element={<MainLayout />} />
+        <Route path="/" element={<Navigate to="/app/welcome" replace />} />
+        <Route path="/app/*" element={<MainLayout />} />
         <Route path="/admin/*" element={<AdminLayout />} />
         <Route path="/dev/*" element={<DevLayout />} />
-        <Route path="/*" element={<Navigate to="/" replace />} />
+        <Route path="/*" element={<Navigate to="/app/PageNotFound" replace />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
@@ -39,4 +40,5 @@ root.render(
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+
 //reportWebVitals();

@@ -12,16 +12,20 @@ import { AuthContext } from "./contexts/authContext.js";
 import "./styles/tailwind.css";
 import "./styles/App.css";
 
-// PAGE imports
-import Login from "./pages/auth/login.js";
-import Regi from "./pages/auth/regi.js";
-import Home from "./pages/user/user-home-page.js";
-import Settings from "./pages/user/user-settings-page.js";
-import PageNotFound from "./pages/misc/pageNotFound404.js";
-import Main from "./pages/mosaic/main.js";
+
 import { NavigateBefore } from "@mui/icons-material";
 
 function App() {
+
+  return (
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+
+      </header>
+    </div>
+  );
+
   //check if logged in
   const [authState, setAuthState] = useState(false);
   const [userState, setUserState] = useState("");
