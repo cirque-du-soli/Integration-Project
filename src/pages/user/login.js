@@ -97,7 +97,7 @@ function Login({ props }) {
             <p className="text-sm text-gray-600">
               Don't have an account?{" "}
               <Link
-                to="/regi"
+                to="/app/register"
                 className="font-medium text-primary-500 hover:text-primary-700"
               >
                 Sign up here

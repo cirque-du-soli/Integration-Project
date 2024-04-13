@@ -88,7 +88,7 @@ function Registration() {
             <p className="text-sm text-gray-600">
               Already have an account?{" "}
               <Link
-                to="/"
+                to="/app/login"
                 className="font-medium text-primary-500 hover:text-primary-700"
               >
                 Login here
