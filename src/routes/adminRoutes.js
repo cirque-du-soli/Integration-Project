@@ -1,19 +1,16 @@
-import { Auth } from '../context/Auth';
-
-// IMPORT: Dashboards/Views
+// IMPORT: Dashboard/View
 // TODO: import AdminDashboard from "../views/AdminDashboard";
 
 // IMPORT: components
-import Header from '../components/navbars/mainNavbar';
-import PageNotFound from '../components/Pages/pageNotFound404';
-
 /* TODO: add more components
 import AdminTables from "../components/Tables/AdminTables";
 */
+import PageNotFound from "../pages/misc/pageNotFound404";
+
 
 // these all start from the /admin/ path
 var adminRoutes = [
-
+/* 
     {
         path: "/dashboard",
         name: "Admin Dashboard",
@@ -24,8 +21,13 @@ var adminRoutes = [
         path: "/admintables/",
         name: "Admin Tables",
         component: <AdminTables />,
+    },
+ */
+    {
+        path: "/PageNotFound",
+        name: "Dev: PageNotFound",
+        component: <PageNotFound />,
     }
-
 ];
 
 export default adminRoutes;

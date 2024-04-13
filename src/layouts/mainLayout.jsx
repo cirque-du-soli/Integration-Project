@@ -13,9 +13,9 @@ import PerfectScrollbar from "perfect-scrollbar";
 import mainRoutes from "../routes/mainRoutes.js";
 
 // IMPORT: Components
-import Header from "../components/navbars/Header.js";
-//import Footer from "../components/navbars/Footer.jsx";
-import PageNotFound from "../components/Pages/pageNotFound404.js";
+//import Header from "../components/navbars/Header.js";
+import Footer from "../components/navbars/footer.jsx";
+import PageNotFound from "../pages/misc/pageNotFound404.js";
 
 
 const getRoutes = (routes) => {
@@ -33,13 +33,12 @@ function MainLayout(props) {
     return (
         <>
             <div className="App">
-                <Header />
-                <Footer />
 
+                < Footer />
                 <div className="main-panel" ref={mainPanelRef}>
                     <Routes>
                         {/* Add standard routes & views */}
-                        {getRoutes(adminRoutes)}
+                        {getRoutes(mainRoutes)}
 
                         {/* Catch-all non-declared routes*/}
                         <Route

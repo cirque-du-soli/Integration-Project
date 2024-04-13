@@ -8,10 +8,6 @@ import '../styles/App.css';
 // IMPORT: Routes
 import devRoutes from "../routes/devRoutes.js";
 
-// IMPORT: Components
-import Header from "../components/navbars/Header.js";
-
-
 const getRoutes = (routes) => {
     return routes.map((prop, key) => {
         return (
@@ -27,9 +23,7 @@ function DevLayout(props) {
     return (
         <>
             <div className="App">
-
-                <Header />
-
+                
                 <div className="main-panel" ref={mainPanelRef}>
 
                     <Routes>

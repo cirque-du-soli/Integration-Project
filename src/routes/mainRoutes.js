@@ -1,18 +1,18 @@
-import { Auth } from '../context/Auth';
-
-// IMPORT: Dashboards/Views
-// TODO: import MainDashboard from "../views/mainDashboard";
+// IMPORT: Dashboard/View
+// TODO: 
+//import MainDashboard from "../views/mainDashboard";
+import PageNotFound from "../pages/misc/pageNotFound404";
 
 // IMPORT: components
 
 var mainRoutes = [
-
+/*
     {
         path: "/",
         name: "Main Dashboard",
         component: <MainDashboard />,
     },
-
+ 
     {
         path: "/:username",
         name: "Public profile",
@@ -29,6 +29,12 @@ var mainRoutes = [
         path: "/settings",
         name: "Settings",
         component: <EditProfile />,
+    },
+     */
+    {
+        path: "/PageNotFound",
+        name: "Dev: PageNotFound",
+        component: <PageNotFound />,
     }
 
 ];

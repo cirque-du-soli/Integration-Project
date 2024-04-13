@@ -13,9 +13,9 @@ import PerfectScrollbar from "perfect-scrollbar";
 import adminRoutes from "../routes/adminRoutes.js";
 
 // IMPORT: Components
-import Header from "../components/navbars/Header.js";
-//import Footer from "../components/navbars/Footer.jsx";
-import PageNotFound from "../components/Pages/pageNotFound404.js";
+//import Header from "../components/navbars/Header.js";
+import Footer from "../components/navbars/footer.jsx";
+import PageNotFound from "../pages/misc/pageNotFound404.js";
 
 
 const getRoutes = (routes) => {
@@ -33,7 +33,6 @@ function AdminLayout(props) {
     return (
         <>
             <div className="App">
-                <Header />
                 <Footer />
 
                 {true ?
