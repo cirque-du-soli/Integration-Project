@@ -5,8 +5,8 @@ import PageNotFound from "../pages/misc/pageNotFound404";
 import LandingPage from "../pages/misc/landing"
 
 // IMPORT: Pages
-import LoginPage from "../pages/auth/login.js";
-import RegistrationPage from "../pages/auth/regi.js";
+import LoginPage from "../pages/user/login.js";
+import RegistrationPage from "../pages/user/regi.js";
 import UserHomePage from "../pages/user/user-home-page.js";
 import UserSettingsPage from "../pages/user/user-settings-page.js";
 import MosaicMainPage from "../pages/mosaic/main.js";
@@ -20,25 +20,25 @@ var mainRoutes = [
         name: "Main Dashboard",
         component: <MainDashboard />,
     },
- /*
-    {
-        path: "/:username",
-        name: "Public profile",
-        component: <UserProfile />,
-    },
-
-    {
-        path: "/profile",
-        name: "Private profile",
-        component: <UserProfilePrivate />,
-    },
-
-    {
-        path: "/settings",
-        name: "Settings",
-        component: <EditProfile />,
-    },
-     */
+    /*
+       {
+           path: "/:username",
+           name: "Public profile",
+           component: <UserProfile />,
+       },
+   
+       {
+           path: "/profile",
+           name: "Private profile",
+           component: <UserProfilePrivate />,
+       },
+   
+       {
+           path: "/settings",
+           name: "Settings",
+           component: <EditProfile />,
+       },
+        */
     {
         path: "/PageNotFound",
         name: "Main PageNotFound",

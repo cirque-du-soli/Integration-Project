@@ -7,26 +7,26 @@ import LandingPage from "../pages/misc/landing"
 import { Lan } from "@mui/icons-material";
 
 // IMPORT: Pages
-import LoginPage from "../pages/auth/login.js";
-import RegistrationPage from "../pages/auth/regi.js";
+import LoginPage from "../pages/user/login.js";
+import RegistrationPage from "../pages/user/regi.js";
 import UserHomePage from "../pages/user/user-home-page.js";
 import UserSettingsPage from "../pages/user/user-settings-page.js";
 import MosaicMainPage from "../pages/mosaic/main.js";
 
 // these all start from the /dev/ path
-var devRoutes = [ 
-    
+var devRoutes = [
+
     {
         path: "/dashboard",
         name: "Dev: Dashboard",
         component: <DevDashboard />,
     },
- 
+
     {
         path: "/footer",
         name: "Dev: Footer",
         component: <Footer />,
-    }, 
+    },
 
     {
         path: "/404-page-not-found",
