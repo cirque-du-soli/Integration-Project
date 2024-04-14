@@ -580,6 +580,76 @@ Sophie:
 	Todo Before Next Scrum:
 		- drag and drop tile functionality
 
+===============================================================================
+Day09: 2024-04-13 Saturday
+=============================
+
+Benjamin:
+	Done:
+		- Renaming columns
+		- adding tiles
+		- tile view initial
+		- deleting tiles
+		
+	Not-Done:
+		- renaming tiles
+		- adding to dos
+		- finialize tiles / todo stucture?
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- check to make sure DB connection is ok
+
+Soliloquy:
+	Done:
+		- Fixed Heroku crashing (memory exceed)
+			- created f.e. server.js
+			- created Procfile
+			- removed auth & imports from App.js
+		- Finalized devRoutes.js, adminRoutes.js, mainRoutes.js
+		- Setup & tested dev+main layouts
+		- tested db login with postman
+		
+	Not-Done:
+		- fix bug from moving auth context around
+	
+	Needs Assistance:
+		- auth context problem (need help from Ben)
+
+	Todo Before Next Scrum:
+		- Fix auth context problem
+
+Nicholas: 
+	Done:
+		- Finished front end implementation of password modification in user settings page
+		- Started board chat
+		
+	Not-Done:
+		- 
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- N/A
+
+Sophie: 
+	Done:
+		- homepage/landing page
+		
+	Not-Done:
+		- push the code yet
+	
+	Needs Assistance:
+		- do we want to make ”  homepage “, the landing page
+
+	Todo Before Next Scrum:
+		- style main.js
+
+
+
 
 ===============================================================================
 ===============================================================================
