@@ -648,8 +648,62 @@ Sophie:
 	Todo Before Next Scrum:
 		- style main.js
 
+===============================================================================
+Day10: 2024-04-15 Monday
+=============================
 
+Benjamin:
+	Done:
+		- N/a
+		
+	Not-Done:
+		- testing DB connection 
+	
+	Needs Assistance:
+		- 
 
+	Todo Before Next Scrum:
+		- Fix merge, get authoration working again
+
+Soliloquy:
+	Done:
+		- N/a	
+		
+	Not-Done:
+		- Fix Auth problem
+	
+	Needs Assistance:
+		- auth problem (ask Ben)
+
+	Todo Before Next Scrum:
+		- auth problem
+
+Nicholas: 
+	Done:
+		- N/A
+		
+	Not-Done:
+		- Board Chat Function
+	
+	Needs Assistance:
+		- N/A
+
+	Todo Before Next Scrum:
+		- Board Chat Function 
+
+Sophie: 
+	Done: 
+		- Landing page pushed and fixed minor bugs
+		
+	Not-Done:
+		- Main.js
+	
+	Needs Assistance:
+		- fix current bugs
+
+	Todo Before Next Scrum:
+		- style main
+		- user mosaic homepage
 
 ===============================================================================
 ===============================================================================
@@ -713,7 +767,6 @@ Sophie:
 
 	Todo Before Next Scrum:
 		- 
-
 
 ====
 END
