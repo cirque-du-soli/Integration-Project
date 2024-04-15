@@ -176,6 +176,7 @@ function Main() {
       const response = await axios.get(`${baseUrl}/mosaics/tile?id=${id}`);
       if (response.status === 200) {
         console.log("Tile found");
+        setTileInfo(response.data);
       } else {
         console.log("Failed to find tile");
       }
@@ -340,44 +341,61 @@ function Main() {
         <ModalBox>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             {tileInfo.title}
-            <p>do we need a description?</p>
-            <p>To do list:</p>
-            <Button>Add To do item</Button>
-            {renameTileToggle ? (
-              <div>
-                {" "}
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="newTileName"
-                  label="Tile Name"
-                  name="newTileName"
-                  autoComplete="newTileName"
-                  autoFocus
-                  value={newTileName}
-                  onChange={(e) => setNewTileName(e.target.value)}
-                />
-                <Button
-                  onClick={() => {
-                    renameTile(selTileId, newTileName);
-                    setRenameTileToggle(false);
-                  }}
-                >
-                  Confirm
-                </Button>
-                <Button onClick={() => setRenameTileToggle(false)}>
-                  Cancel
-                </Button>
-              </div>
-            ) : (
-              <Button onClick={() => setRenameTileToggle(true)}>
-                Rename this tile
-              </Button>
-            )}
-
-            <Button onClick={() => delTile(selTileId)}>Delete this tile</Button>
           </Typography>
+          <p>
+            Created:{" "}
+            {tileInfo.creationDate
+              ? new Date(tileInfo.creationDate).toLocaleDateString()
+              : "Unknown Date"}
+          </p>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="description"
+            label="Description"
+            name="description"
+            value={tileInfo.description ? tileInfo.description : "N/A"}
+          />
+          <p>To do list:</p>
+          <Button>Add To do item</Button>
+          {renameTileToggle ? (
+            <div>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="newTileName"
+                label="Tile Name"
+                name="newTileName"
+                autoComplete="newTileName"
+                autoFocus
+                value={newTileName}
+                onChange={(e) => setNewTileName(e.target.value)}
+              />
+              <Button
+                onClick={() => {
+                  renameTile(selTileId, newTileName);
+                  setRenameTileToggle(false);
+                }}
+              >
+                Confirm
+              </Button>
+              <Button onClick={() => setRenameTileToggle(false)}>Cancel</Button>
+            </div>
+          ) : (
+            <Button onClick={() => setRenameTileToggle(true)}>
+              Rename this tile
+            </Button>
+          )}
+
+          <Button onClick={() => delTile(selTileId)}>Delete this tile</Button>
+          <p>
+            Due:{" "}
+            {tileInfo.dueDate
+              ? new Date(tileInfo.dueDate).toLocaleDateString()
+              : "Unknown Date"}
+          </p>
         </ModalBox>
       </StyledModal>
       <Footer />
