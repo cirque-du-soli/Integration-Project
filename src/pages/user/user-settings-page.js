@@ -131,8 +131,12 @@ const UserSettings = () => {
   const handleSubmit = async () => {
     try {
       await axios.patch(`${baseUrl}/settings/password`, { oldPassword: oldPassword, newPassword: newPassword }, {
-        headers: { jwtToken: localStorage.getItem("jwtToken") }
-      })
+        headers: { accessToken: localStorage.getItem("accessToken") }
+      });
+      setModalIsOpen(false);
+      setNewPassword("");
+      setOldPassword("");
+      setNewPasswordConfirm("");
     } catch (error) {
       console.error("Failed to change password", error);
     }
@@ -144,7 +148,7 @@ const UserSettings = () => {
         // Update the request to ensure response type is set to 'blob'
         const response = await axios.get(`${baseUrl}/settings/profilepicture`, {
           responseType: "blob",
-          headers: { jwtToken: localStorage.getItem("jwtToken") },
+          headers: { accessToken: localStorage.getItem("accessToken") },
         });
         // Create a URL for the blob
         const imageUrl = URL.createObjectURL(response.data);
@@ -163,7 +167,7 @@ const UserSettings = () => {
     const fetchUserSettings = async () => {
       try {
         const response = await axios.get(`${baseUrl}/settings/`, {
-          headers: { jwtToken: localStorage.getItem("jwtToken") },
+          headers: { accessToken: localStorage.getItem("accessToken") },
         });
         const { email, username } = response.data;
 
@@ -188,7 +192,7 @@ const UserSettings = () => {
           {
             headers: {
               "Content-Type": "multipart/form-data",
-              jwtToken: localStorage.getItem("jwtToken"),
+              accessToken: localStorage.getItem("accessToken"),
             },
           }
         );
