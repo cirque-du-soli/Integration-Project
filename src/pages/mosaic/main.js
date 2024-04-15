@@ -78,7 +78,7 @@ function Main() {
           _id: selMosaic,
         })
         .then((res) => {
-          if (res.data === "success") {
+          if (res.status === 200) {
             console.log("Column created");
             fetchMosaicInfo();
           } else if (res.status === 400) {
@@ -126,6 +126,7 @@ function Main() {
       });
       if (response.status === 200) {
         console.log("Colmun renamed");
+        fetchMosaicInfo();
       } else {
         console.log("Failed to rename");
       }
@@ -154,6 +155,7 @@ function Main() {
       });
       if (response.status === 200) {
         console.log("Tile added");
+        fetchMosaicInfo();
       } else {
         console.log("Failed to create");
       }
@@ -174,8 +176,6 @@ function Main() {
       const response = await axios.get(`${baseUrl}/mosaics/tile?id=${id}`);
       if (response.status === 200) {
         console.log("Tile found");
-        console.log(response.data);
-        setTileInfo(response.data);
       } else {
         console.log("Failed to find tile");
       }
@@ -211,6 +211,7 @@ function Main() {
       });
       if (response.status === 200) {
         console.log("Tile renamed");
+        fetchMosaicInfo();
       } else {
         console.log("Failed to rename");
       }
@@ -230,7 +231,7 @@ function Main() {
           {/* tailwind css ^^^^*/}
           {mosaicInfo.columns &&
             mosaicInfo.columns.map((column) => (
-              <div key={column._id}>
+              <div key={column}>
                 <h2>{column.title}</h2>
                 {renameColumnId === column._id ? (
                   <div>
@@ -275,6 +276,7 @@ function Main() {
                     let splitTile = tile.split(":");
                     return (
                       <p
+                        key={tile}
                         onClick={() => {
                           setSelTileId(splitTile[0]);
                           setTileViewModal(true);
