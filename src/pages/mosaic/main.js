@@ -99,7 +99,7 @@ function Main() {
       const response = await axios.delete(
         `${baseUrl}/mosaics/deleteColumn?id=${id}`
       );
-      if (response.data === "success") {
+      if (response.status === 200) {
         console.log("Column deleted");
         fetchMosaicInfo();
       } else {
