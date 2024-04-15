@@ -1,31 +1,15 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import { AuthContext } from "../../contexts/authContext";
 import BackgroundImg from "../../assets/bg.jpg";
 import Footer from "../../components/navbars/footer";
 
-function Login() {
+function Registration() {
   const history = useNavigate();
 
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  // authState
-  const { authState } = useContext(AuthContext);
-  const { setAuthState } = useContext(AuthContext);
-  const { userState } = useContext(AuthContext);
-
-  // init loggin state and check
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  // if user is already authorized send to menu
-  useEffect(() => {
-    if (authState) {
-      setIsLoggedIn(true);
-      history("/home", { state: { id: userState } });
-    }
-  }, [authState]);
 
   async function submit(e) {
     e.preventDefault();
@@ -33,17 +17,16 @@ function Login() {
     const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
     try {
-      const response = await axios.post(`${baseUrl}/auth`, {
+      const response = await axios.post(`${baseUrl}/auth/regi`, {
         username,
+        email,
         password,
       });
 
-      if (response.status === 200) {
-        localStorage.setItem("accessToken", response.data);
-        setAuthState(true);
+      if (response.data === "exist") {
+        alert("User already exists");
+      } else if (response.data === "success") {
         history("/home", { state: { id: username } });
-      } else if (response.data === "notexist") {
-        alert("User has not signed up");
       }
     } catch (error) {
       console.error(error);
@@ -64,7 +47,7 @@ function Login() {
         <div className="max-w-md w-full bg-white bg-opacity-50 rounded-lg shadow-lg p-8">
           <div>
             <h1 className="text-center text-3xl font-bold text-gray-900">
-              Login to Your Account
+              Register an Account
             </h1>
           </div>
           <form className="mt-8 space-y-6" onSubmit={submit}>
@@ -74,6 +57,14 @@ function Login() {
               value={username}
               className="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
               placeholder="Username"
+              required
+            />
+            <input
+              type="email"
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+              className="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm mt-3"
+              placeholder="Email"
               required
             />
             <input
@@ -89,27 +80,26 @@ function Login() {
                 type="submit"
                 className="inline-block py-2 px-4 border border-transparent text-sm font-medium rounded-md text-black bg-primary-500 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all"
               >
-                Sign in
+                Register
               </button>
             </div>
           </form>
           <div className="text-center mt-3">
             <p className="text-sm text-gray-600">
-              Don't have an account?{" "}
+              Already have an account?{" "}
               <Link
-                to="/regi"
+                to="/app/login"
                 className="font-medium text-primary-500 hover:text-primary-700"
               >
-                Sign up here
+                Login here
               </Link>
             </p>
           </div>
         </div>
       </div>
-
       <Footer />
     </>
   );
 }
 
-export default Login;
+export default Registration;

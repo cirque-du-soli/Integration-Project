@@ -19,7 +19,7 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { AuthContext } from "../../contexts/authContext";
-import logoIcon from "../../assets/ProjecTile-Logo-Icon-TransparentBG.png"
+import logoIcon from "../../assets/ProjecTile-Logo-Icon-TransparentBG.png";
 
 const StyledModal = styled(Modal)({
   display: "flex",
@@ -39,15 +39,14 @@ const ModalBox = styled(Box)({
   borderRadius: "8px",
 });
 
-
-
-const Navbar = ({ username }) => {
+const Navbar = () => {
   const [isMosaicDropdownVisible, setMosaicDropdownVisible] = useState(false);
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [mosaicName, setMosaicName] = useState("");
   const [userMosaics, setUserMosaics] = useState([]);
-  const { userState, setAuthState, selMosaic, setSelMosaic } = useContext(AuthContext);
+  const { userState, setAuthState, selMosaic, setSelMosaic } =
+    useContext(AuthContext);
 
   const handleOpenDropdown = (event) => {
     setDropdownVisible(event.currentTarget);
@@ -68,7 +67,7 @@ const Navbar = ({ username }) => {
   const handleLogOut = () => {
     setAuthState(false);
     localStorage.setItem("accessToken", null);
-  }
+  };
 
   useEffect(() => {
     // Fetch user's mosaics from the server
@@ -120,8 +119,12 @@ const Navbar = ({ username }) => {
   return (
     <AppBar position="static" sx={{ backgroundColor: "#008080" }}>
       <Toolbar className="justify-between">
-      <Typography variant="h6" sx={{ display: "flex", alignItems: "center" }}>
-          <img src={logoIcon} alt="Logo" style={{ marginRight: "8px", width: "40px" }} />
+        <Typography variant="h6" sx={{ display: "flex", alignItems: "center" }}>
+          <img
+            src={logoIcon}
+            alt="Logo"
+            style={{ marginRight: "8px", width: "40px" }}
+          />
           <Button color="inherit" component={RouterLink} to="/home">
             ProjecTile
           </Button>
@@ -134,7 +137,7 @@ const Navbar = ({ username }) => {
             New Mosaic
           </Button>
           <Button color="inherit" onClick={handleOpenDropdown}>
-            {username}
+            {userState}
           </Button>
           <Menu
             id="simple-menu"
@@ -150,11 +153,7 @@ const Navbar = ({ username }) => {
             >
               Settings
             </MenuItem>
-            <MenuItem
-              onClick={handleLogOut}
-              component={RouterLink}
-              to="/"
-            >
+            <MenuItem onClick={handleLogOut} component={RouterLink} to="/">
               Logout
             </MenuItem>
           </Menu>
