@@ -199,6 +199,26 @@ function Main() {
     }
   }
 
+  //rename tile
+  const [renameTileToggle, setRenameTileToggle] = useState(false);
+  const [newTileName, setNewTileName] = useState(tileInfo.title);
+
+  async function renameTile(id, name) {
+    try {
+      const response = await axios.put(`${baseUrl}/mosaics/renameTile`, {
+        id,
+        name,
+      });
+      if (response.status === 200) {
+        console.log("Tile renamed");
+      } else {
+        console.log("Failed to rename");
+      }
+    } catch (error) {
+      console.log("Error renaming tile: ", error);
+    }
+  }
+
   return (
     <>
       <div>
@@ -321,7 +341,39 @@ function Main() {
             <p>do we need a description?</p>
             <p>To do list:</p>
             <Button>Add To do item</Button>
-            <Button>Rename this tile</Button>
+            {renameTileToggle ? (
+              <div>
+                {" "}
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="newTileName"
+                  label="Tile Name"
+                  name="newTileName"
+                  autoComplete="newTileName"
+                  autoFocus
+                  value={newTileName}
+                  onChange={(e) => setNewTileName(e.target.value)}
+                />
+                <Button
+                  onClick={() => {
+                    renameTile(selTileId, newTileName);
+                    setRenameTileToggle(false);
+                  }}
+                >
+                  Confirm
+                </Button>
+                <Button onClick={() => setRenameTileToggle(false)}>
+                  Cancel
+                </Button>
+              </div>
+            ) : (
+              <Button onClick={() => setRenameTileToggle(true)}>
+                Rename this tile
+              </Button>
+            )}
+
             <Button onClick={() => delTile(selTileId)}>Delete this tile</Button>
           </Typography>
         </ModalBox>
