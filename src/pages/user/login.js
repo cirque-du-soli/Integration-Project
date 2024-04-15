@@ -23,7 +23,7 @@ function Login({ props }) {
   useEffect(() => {
     if (authState) {
       setIsLoggedIn(true);
-      history("/home", { state: { id: userState } });
+      history("/app/home", { state: { id: userState } });
     }
   }, [authState]);
 
@@ -41,7 +41,7 @@ function Login({ props }) {
       if (response.status === 200) {
         localStorage.setItem("accessToken", response.data);
         setAuthState(true);
-        history("/home", { state: { id: username } });
+        history("/app/home", { state: { id: username } });
       } else if (response.data === "notexist") {
         alert("User has not signed up");
       }

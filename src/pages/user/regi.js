@@ -26,7 +26,7 @@ function Registration() {
       if (response.data === "exist") {
         alert("User already exists");
       } else if (response.data === "success") {
-        history("/home", { state: { id: username } });
+        history("/app/home", { state: { id: username } });
       }
     } catch (error) {
       console.error(error);

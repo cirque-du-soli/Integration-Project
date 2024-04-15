@@ -125,7 +125,7 @@ const Navbar = () => {
             alt="Logo"
             style={{ marginRight: "8px", width: "40px" }}
           />
-          <Button color="inherit" component={RouterLink} to="/home">
+          <Button color="inherit" component={RouterLink} to="/app/home">
             ProjecTile
           </Button>
         </Typography>
@@ -149,7 +149,7 @@ const Navbar = () => {
             <MenuItem
               onClick={handleCloseDropdown}
               component={RouterLink}
-              to="/settings"
+              to="/app/settings"
             >
               Settings
             </MenuItem>
@@ -172,7 +172,7 @@ const Navbar = () => {
               <MenuItem
                 key={mosaic._id}
                 component={RouterLink}
-                to="/main"
+                to="/app/main"
                 onClick={() => handleMosaicClick(mosaic._id)}
               >
                 {mosaic.title}

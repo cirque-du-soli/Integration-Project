@@ -12,6 +12,8 @@ import UserSettingsPage from "../pages/user/user-settings-page.js";
 import MosaicMainPage from "../pages/mosaic/main.js";
 import { Settings } from "@mui/icons-material";
 
+import MosaicMain from "../pages/mosaic/main.js"
+
 import AuthContext from "../contexts/authContext";
 
 
@@ -34,12 +36,7 @@ var mainRoutes = [
            name: "Private profile",
            component: <UserProfilePrivate />,
        },
-   
-       {
-           path: "/settings",
-           name: "Settings",
-           component: <EditProfile />,
-       },
+
         */
     {
         path: "/PageNotFound",
@@ -81,6 +78,12 @@ var mainRoutes = [
         path: "/home",
         name: "User Home Page",
         component: <UserHomePage />,
+    },
+
+    {
+        path: "/main",
+        name: "Mosaic Main",
+        component: <MosaicMain />,
     }
 
 ];
