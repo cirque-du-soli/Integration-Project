@@ -12,6 +12,8 @@ import UserSettingsPage from "../pages/user/user-settings-page.js";
 import MosaicMainPage from "../pages/mosaic/main.js";
 import { Settings } from "@mui/icons-material";
 
+import AuthContext from "../contexts/authContext";
+
 
 var mainRoutes = [
 
