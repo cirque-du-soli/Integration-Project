@@ -706,6 +706,73 @@ Sophie:
 		- user mosaic homepage
 
 ===============================================================================
+Day11: 2024-04-16 Tuesday
+=============================
+
+Benjamin:
+	Done:
+		- Re-rendering fix
+		- Rename tiles
+		- added description and dates to tiles
+		- helped soli with merge issues
+		
+	Not-Done:
+		- add to dos to tiles
+		- delete to dos
+		- rename & update status of to dos
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- add to todo and todo functions
+		- Re-render on navbar not working, fix
+		- rerender on new mosaics, fix
+
+Soliloquy:
+	Done:
+		- Fix auth issues
+		
+	Not-Done:
+		- --
+	
+	Needs Assistance:
+		- --
+
+	Todo Before Next Scrum:
+		- Toast Messages
+
+Nicholas: 
+	Done:
+		- Started front end for board chat
+		- Created ChatContext with functions for connecting, disconnecting and sending to Websocket server
+		- Started websocket server for backend
+		
+	Not-Done:
+		- 
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- Finish core functionality of board chat
+
+Sophie: 
+	Done:
+		- update user-home-page
+		- style user-home-page
+		- started styling main.js
+		
+	Not-Done:
+		- finish main.js
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- continue to style main.js
+
+===============================================================================
 ===============================================================================
 ===============================================================================
       ____  ____  __  __  ____  __      __   ____  ____   
