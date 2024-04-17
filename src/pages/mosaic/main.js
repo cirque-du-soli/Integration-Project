@@ -16,6 +16,7 @@ import { styled } from "@mui/material/styles";
 import Navbar from "../../components/navbars/mainNavbar";
 import Footer from "../../components/navbars/footer";
 import { AuthContext } from "../../contexts/authContext";
+import { EditOutlined, DeleteOutline } from "@mui/icons-material";
 
 const StyledModal = styled(Modal)({
   display: "flex",
@@ -223,19 +224,22 @@ function Main() {
 
   return (
     <>
-      <div>
+      <div className="bg-gray-200 min-h-screen">
         <Navbar />
-        <h1>{selMosaic}</h1>
-        {/* ^^ can be removed later or ?now? */}
-        <h1>{mosaicInfo.title}</h1>
+        <h1 className="text-3xl font-bold text-gray-800 mb-4">
+          {mosaicInfo.title}
+        </h1>
         <div className="flex justify-evenly">
           {/* tailwind css ^^^^*/}
           {mosaicInfo.columns &&
-            mosaicInfo.columns.map((column) => (
-              <div key={column}>
-                <h2>{column.title}</h2>
+            mosaicInfo.columns.map((column, index) => (
+              <div
+                key={column}
+                className="w-80 bg-white p-4 rounded-lg shadow-md mr-4"
+              >
+                <h2 className="text-xl font-semibold mb-2">{column.title}</h2>
                 {renameColumnId === column._id ? (
-                  <div>
+                  <div className="mb-2">
                     <input
                       type="text"
                       defaultValue={column.title}
@@ -248,11 +252,15 @@ function Main() {
                     <button onClick={handleCancelRename}>Cancel</button>
                   </div>
                 ) : (
-                  <button onClick={() => handleRename(column._id)}>
-                    Rename
-                  </button>
+                  <EditOutlined
+                    onClick={() => handleRename(column._id)}
+                    className="cursor-pointer mr-2"
+                  />
                 )}
-                <button onClick={() => delColumn(column._id)}>delete</button>
+                <DeleteOutline
+                  onClick={() => delColumn(column._id)}
+                  className="cursor-pointer"
+                />
                 {newTileColumnId === column._id ? (
                   <div>
                     <input
@@ -264,10 +272,18 @@ function Main() {
                         }
                       }}
                     />
-                    <button onClick={handleCancelNewTile}>Cancel</button>
+                    <button
+                      onClick={handleCancelNewTile}
+                      className="border px-2 py-1 rounded bg-gray-300"
+                    >
+                      Cancel
+                    </button>
                   </div>
                 ) : (
-                  <button onClick={() => handleNewTile(column._id)}>
+                  <button
+                    onClick={() => handleNewTile(column._id)}
+                    className="border px-2 py-1 rounded bg-gray-300"
+                  >
                     Add new Tile
                   </button>
                 )}
@@ -282,6 +298,7 @@ function Main() {
                           setSelTileId(splitTile[0]);
                           setTileViewModal(true);
                         }}
+                        className="bg-gray-200 rounded px-2 py-1 cursor-pointer"
                       >
                         {splitTile[1]}
                       </p>
@@ -290,8 +307,12 @@ function Main() {
                 </div>
               </div>
             ))}
-          <div>
-            <button onClick={() => setNewColumnModal(true)}>
+          <div className="w-80 bg-white p-4 rounded-lg shadow-md flex flex-col justify-center items-center">
+            {" "}
+            <button
+              onClick={() => setNewColumnModal(true)}
+              className="border px-2 py-1 rounded bg-green-500 text-white"
+            >
               add new column
             </button>
           </div>
