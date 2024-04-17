@@ -26,11 +26,9 @@ const StyledModal = styled(Modal)({
 
 const ModalBox = styled(Box)({
   position: "absolute",
-  width: 400,
-  backgroundColor: "white",
-  border: "2px solid #000",
-  boxShadow: 24,
-  padding: "16px 32px 24px",
+  // width: 400,
+  // backgroundColor: "white",
+  // boxShadow: 24,
 });
 
 function Main() {
@@ -282,13 +280,13 @@ function Main() {
                 ) : (
                   <button
                     onClick={() => handleNewTile(column._id)}
-                    className="border px-2 py-1 rounded bg-gray-300"
+                    className="border px-2 py-1 rounded bg-gray-300 mb-4"
                   >
                     Add new Tile
                   </button>
                 )}
                 {/* for above -> change to icons */}
-                <div>
+                <div className="mb-4">
                   {column.tiles.map((tile) => {
                     let splitTile = tile.split(":");
                     return (
@@ -298,7 +296,7 @@ function Main() {
                           setSelTileId(splitTile[0]);
                           setTileViewModal(true);
                         }}
-                        className="bg-gray-200 rounded px-2 py-1 cursor-pointer"
+                        className="bg-gray-200 rounded px-2 py-1 cursor-pointer mb-4"
                       >
                         {splitTile[1]}
                       </p>
@@ -325,33 +323,41 @@ function Main() {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <ModalBox>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            New Column
-          </Typography>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="newColumnName"
-            label="Column Name"
-            name="newColumnName"
-            autoComplete="newColumnName"
-            autoFocus
-            value={newColumnName}
-            onChange={(e) => setNewColumnName(e.target.value)}
-          />
-          <Button
-            onClick={(e) => {
-              createColumn(e);
-              setNewColumnModal(false);
-            }}
-            color="primary"
-          >
-            Continue
-          </Button>
+        <ModalBox className="flex justify-center items-center">
+          <div className="bg-white border border-gray-200 p-6 rounded-lg shadow-lg w-96">
+            <Typography
+              id="modal-modal-title"
+              variant="h6"
+              component="h2"
+              className="text-lg font-semibold mb-4 text-center"
+            >
+              New Column
+            </Typography>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="newColumnName"
+              label="Column Name"
+              name="newColumnName"
+              autoComplete="newColumnName"
+              autoFocus
+              value={newColumnName}
+              onChange={(e) => setNewColumnName(e.target.value)}
+            />
+            <Button
+              onClick={(e) => {
+                createColumn(e);
+                setNewColumnModal(false);
+              }}
+              color="primary"
+            >
+              Continue
+            </Button>
+          </div>
         </ModalBox>
       </StyledModal>
+
       {/* tile view modal */}
       <StyledModal
         open={tileViewModal}
@@ -359,64 +365,80 @@ function Main() {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <ModalBox>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            {tileInfo.title}
-          </Typography>
-          <p>
-            Created:{" "}
-            {tileInfo.creationDate
-              ? new Date(tileInfo.creationDate).toLocaleDateString()
-              : "Unknown Date"}
-          </p>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="description"
-            label="Description"
-            name="description"
-            value={tileInfo.description ? tileInfo.description : "N/A"}
-          />
-          <p>To do list:</p>
-          <Button>Add To do item</Button>
-          {renameTileToggle ? (
-            <div>
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="newTileName"
-                label="Tile Name"
-                name="newTileName"
-                autoComplete="newTileName"
-                autoFocus
-                value={newTileName}
-                onChange={(e) => setNewTileName(e.target.value)}
-              />
+        <ModalBox className="flex justify-center items-center">
+          <div className="bg-white border border-gray-200 p-6 rounded-lg shadow-lg w-96">
+            <Typography
+              id="modal-modal-title"
+              variant="h6"
+              component="h2"
+              className="text-lg font-semibold mb-4 text-center"
+            >
+              {tileInfo.title}
+            </Typography>
+            <p className="mb-2">
+              Created:{" "}
+              {tileInfo.creationDate
+                ? new Date(tileInfo.creationDate).toLocaleDateString()
+                : "Unknown Date"}
+            </p>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="description"
+              label="Description"
+              name="description"
+              value={tileInfo.description ? tileInfo.description : "N/A"}
+              className="mb-4"
+            />
+            <p className="mb-2">To do list:</p>
+            <Button className="mb-4">Add To do item</Button>
+            {renameTileToggle ? (
+              <div className="mb-4">
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="newTileName"
+                  label="Tile Name"
+                  name="newTileName"
+                  autoComplete="newTileName"
+                  autoFocus
+                  value={newTileName}
+                  onChange={(e) => setNewTileName(e.target.value)}
+                  className="mb-2"
+                />
+                <Button
+                  onClick={() => {
+                    renameTile(selTileId, newTileName);
+                    setRenameTileToggle(false);
+                  }}
+                  className="mr-2"
+                >
+                  Confirm
+                </Button>
+                <Button onClick={() => setRenameTileToggle(false)}>
+                  Cancel
+                </Button>
+              </div>
+            ) : (
               <Button
-                onClick={() => {
-                  renameTile(selTileId, newTileName);
-                  setRenameTileToggle(false);
-                }}
+                onClick={() => setRenameTileToggle(true)}
+                className="mb-2"
               >
-                Confirm
+                Rename this tile
               </Button>
-              <Button onClick={() => setRenameTileToggle(false)}>Cancel</Button>
-            </div>
-          ) : (
-            <Button onClick={() => setRenameTileToggle(true)}>
-              Rename this tile
+            )}
+            <Button onClick={() => delTile(selTileId)} className="mb-4">
+              Delete this tile
             </Button>
-          )}
-
-          <Button onClick={() => delTile(selTileId)}>Delete this tile</Button>
-          <p>
-            Due:{" "}
-            {tileInfo.dueDate
-              ? new Date(tileInfo.dueDate).toLocaleDateString()
-              : "Unknown Date"}
-          </p>
+            <p>
+              Due:{" "}
+              {tileInfo.dueDate
+                ? new Date(tileInfo.dueDate).toLocaleDateString()
+                : "Unknown Date"}
+            </p>
+          </div>
         </ModalBox>
       </StyledModal>
       <Footer />
