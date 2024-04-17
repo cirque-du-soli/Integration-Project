@@ -69,20 +69,19 @@ const Navbar = () => {
     localStorage.setItem("accessToken", null);
   };
 
+  //fetch user mosaics
+  const fetchMosaics = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_BASE_URL}/mosaics/byUsername?username=${userState}`
+      );
+      console.log(response.data);
+      setUserMosaics(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
-    // Fetch user's mosaics from the server
-    const fetchMosaics = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_API_BASE_URL}/mosaics/byUsername?username=${userState}`
-        );
-        console.log(response.data);
-        setUserMosaics(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
     fetchMosaics();
   }, [userState]);
 
@@ -98,8 +97,9 @@ const Navbar = () => {
           owner: userState,
         })
         .then((res) => {
-          if (res.data === "success") {
+          if (res.status === 200) {
             console.log("Mosaic created");
+            fetchMosaics();
           } else if (res.status === 400) {
             console.log("Bad request");
           }
