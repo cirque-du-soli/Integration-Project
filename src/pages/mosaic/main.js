@@ -227,38 +227,49 @@ function Main() {
         <h1 className="text-3xl font-bold text-gray-800 mb-4">
           {mosaicInfo.title}
         </h1>
-        <div className="flex justify-evenly">
+        <div className="flex justify-evenly items-start">
           {/* tailwind css ^^^^*/}
           {mosaicInfo.columns &&
             mosaicInfo.columns.map((column, index) => (
               <div
                 key={column}
-                className="w-80 bg-white p-4 rounded-lg shadow-md mr-4"
+                className="w-80 bg-white p-4 rounded-lg shadow-md mr-4 flex flex-col"
+                style={{ height: `${(column.tiles.length + 1.5) * 75}px` }}
+
               >
-                <h2 className="text-xl font-semibold mb-2">{column.title}</h2>
-                {renameColumnId === column._id ? (
-                  <div className="mb-2">
-                    <input
-                      type="text"
-                      defaultValue={column.title}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          handleRenameSubmit(column._id, e.target.value);
-                        }
-                      }}
-                    />
-                    <button onClick={handleCancelRename}>Cancel</button>
+                <div className="flex justify-between items-center mb-2">
+                  <h2 className="text-xl font-semibold mb-2">{column.title}</h2>
+                  <div className="flex items-center space-x-2">
+                    {renameColumnId === column._id ? (
+                      <div className="mb-2">
+                        <input
+                          type="text"
+                          defaultValue={column.title}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              handleRenameSubmit(column._id, e.target.value);
+                            }
+                          }}
+                          className="border border-gray-300 px-2 py-1 rounded"
+                        />
+                        <button onClick={handleCancelRename}>Cancel</button>
+                      </div>
+                    ) : (
+                      <>
+                        <EditOutlined
+                          onClick={() => handleRename(column._id)}
+                          className="cursor-pointer mr-2"
+                        />
+
+                        <DeleteOutline
+                          onClick={() => delColumn(column._id)}
+                          className="cursor-pointer"
+                        />
+                      </>
+                    )}
                   </div>
-                ) : (
-                  <EditOutlined
-                    onClick={() => handleRename(column._id)}
-                    className="cursor-pointer mr-2"
-                  />
-                )}
-                <DeleteOutline
-                  onClick={() => delColumn(column._id)}
-                  className="cursor-pointer"
-                />
+                </div>
+
                 {newTileColumnId === column._id ? (
                   <div>
                     <input
@@ -272,7 +283,7 @@ function Main() {
                     />
                     <button
                       onClick={handleCancelNewTile}
-                      className="border px-2 py-1 rounded bg-gray-300"
+                      className="border px-4 py-1 mb-4 rounded bg-gray-300"
                     >
                       Cancel
                     </button>
@@ -280,8 +291,8 @@ function Main() {
                 ) : (
                   <button
                     onClick={() => handleNewTile(column._id)}
-                    className="border px-2 py-1 rounded bg-gray-300 mb-4"
-                  >
+                    className="border px-2 py-1 mb-4 rounded bg-blue-500 text-white hover:bg-blue-400"
+                    >
                     Add new Tile
                   </button>
                 )}
@@ -296,7 +307,7 @@ function Main() {
                           setSelTileId(splitTile[0]);
                           setTileViewModal(true);
                         }}
-                        className="bg-gray-200 rounded px-2 py-1 cursor-pointer mb-4"
+                        className="bg-gray-200 rounded px-4 py-4 mb-4 cursor-pointer hover:bg-gray-400"
                       >
                         {splitTile[1]}
                       </p>
@@ -305,7 +316,7 @@ function Main() {
                 </div>
               </div>
             ))}
-          <div className="w-80 bg-white p-4 rounded-lg shadow-md flex flex-col justify-center items-center">
+          <div className="w-80 bg-white p-4 rounded-lg shadow-md flex flex-col justify-center items-center ">
             {" "}
             <button
               onClick={() => setNewColumnModal(true)}
