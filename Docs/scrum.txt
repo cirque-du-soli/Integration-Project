@@ -773,6 +773,75 @@ Sophie:
 		- continue to style main.js
 
 ===============================================================================
+Day12: 2024-04-18 Thursday 
+=============================
+
+Benjamin:
+	Done:
+		- fixed navbar re-render issue
+		- adding to dos
+		
+	Not-Done:
+		- display of to dos
+		- editing to dos
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- display of to dos
+		- editing to dos
+
+Soliloquy:
+	Done:
+		- Learned how to implement Toast message
+		- Implemented in side branch
+		
+	Not-Done:
+		- Apply Toasts to main branch
+	
+	Needs Assistance:
+		- (eventually) web sockets for tile/column positions
+
+	Todo Before Next Scrum:
+		- Finish toast messages
+		- Add admin check to navbar admin button & admin panel
+		- Link admin panel to actual data 
+			- Add dummy data as necessary
+		- LATER: websockets front-end
+
+Nicholas: 
+	Done: 
+		- Rewrote websockets functions for front and backend with Socket.io
+		- Messages can now be sent to a board and displayed to all those connected to said board	
+		
+	Not-Done:
+		- 
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- Add message persistence with database storage to chat function
+		- Start unit tests
+
+Sophie: 
+	Done:
+		- Started drag and drop functionality
+		- Styled main.js page
+		
+	Not-Done:
+		- 
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- Continue dnd
+		- look into adding user to mosaic
+
+
+===============================================================================
 ===============================================================================
 ===============================================================================
       ____  ____  __  __  ____  __      __   ____  ____   
