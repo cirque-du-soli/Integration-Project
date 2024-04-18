@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { useLocation, useNavigate } from "react-router-dom"; //Not needed?
+import { useLocation } from "react-router-dom";
 import {
-  AppBar, //delete unsused
+  AppBar,
   Toolbar,
   Typography,
   Button,
@@ -27,9 +27,6 @@ const StyledModal = styled(Modal)({
 
 const ModalBox = styled(Box)({
   position: "absolute",
-  // width: 400,
-  // backgroundColor: "white",
-  // boxShadow: 24,
 });
 
 function Main() {
@@ -175,7 +172,6 @@ function Main() {
     try {
       const response = await axios.get(`${baseUrl}/mosaics/tile?id=${id}`);
       if (response.status === 200) {
-        console.log("Tile found");
         setTileInfo(response.data);
       } else {
         console.log("Failed to find tile");
@@ -203,7 +199,6 @@ function Main() {
   //rename tile
   const [renameTileToggle, setRenameTileToggle] = useState(false);
   const [newTileName, setNewTileName] = useState(tileInfo.title);
-
   async function renameTile(id, name) {
     try {
       const response = await axios.put(`${baseUrl}/mosaics/renameTile`, {
@@ -239,16 +234,11 @@ function Main() {
     }
   }
 
-  // Function to handle drag and drop end
   const onDragEnd = async (result) => {
     const { source, destination, draggableId } = result;
-
-    // Check if the destination is valid
     if (!destination) {
       return;
     }
-
-    // If the tile is dropped in the same column
     if (
       source.droppableId === destination.droppableId &&
       source.index === destination.index
@@ -256,13 +246,10 @@ function Main() {
       return;
     }
 
-    // If the tile is dropped in a different column
     const sourceColumnId = source.droppableId;
     const destinationColumnId = destination.droppableId;
 
-    // If tile is dropped within the same column
     if (sourceColumnId === destinationColumnId) {
-      // Reorder tiles within the same column
       const column = mosaicInfo.columns.find(
         (col) => col._id === sourceColumnId
       );
@@ -270,7 +257,6 @@ function Main() {
       newTiles.splice(source.index, 1);
       newTiles.splice(destination.index, 0, draggableId);
 
-      // Update state with the reordered tiles
       setMosaicInfo((prevMosaicInfo) => ({
         ...prevMosaicInfo,
         columns: prevMosaicInfo.columns.map((col) =>
@@ -278,13 +264,11 @@ function Main() {
         ),
       }));
 
-      // Make API call to update the order of tiles in the column
       try {
         await axios.put(`${baseUrl}/mosaics/updateTilesOrder`, {
           columnId: sourceColumnId,
           newTilesOrder: newTiles,
         });
-        console.log("Tiles order updated within the same column");
       } catch (error) {
         console.error(
           "Error updating tiles order within the same column: ",
@@ -292,15 +276,12 @@ function Main() {
         );
       }
     } else {
-      // If the tile is dropped in a different column
-      // Remove the tile from the source column
       const sourceColumn = mosaicInfo.columns.find(
         (col) => col._id === sourceColumnId
       );
       const newSourceTiles = Array.from(sourceColumn.tiles);
       newSourceTiles.splice(source.index, 1);
 
-      // Update state with the source column's new tiles
       setMosaicInfo((prevMosaicInfo) => ({
         ...prevMosaicInfo,
         columns: prevMosaicInfo.columns.map((col) =>
@@ -308,14 +289,12 @@ function Main() {
         ),
       }));
 
-      // Remove the tile from the destination column
       const destinationColumn = mosaicInfo.columns.find(
         (col) => col._id === destinationColumnId
       );
       const newDestinationTiles = Array.from(destinationColumn.tiles);
       newDestinationTiles.splice(destination.index, 0, draggableId);
 
-      // Update state with the destination column's new tiles
       setMosaicInfo((prevMosaicInfo) => ({
         ...prevMosaicInfo,
         columns: prevMosaicInfo.columns.map((col) =>
@@ -325,18 +304,15 @@ function Main() {
         ),
       }));
 
-      // Make API calls to update the order of tiles in both columns
       try {
         await axios.put(`${baseUrl}/mosaics/updateTilesOrder`, {
           columnId: sourceColumnId,
           newTilesOrder: newSourceTiles,
         });
-        console.log("Tiles order updated in the source column");
         await axios.put(`${baseUrl}/mosaics/updateTilesOrder`, {
           columnId: destinationColumnId,
           newTilesOrder: newDestinationTiles,
         });
-        console.log("Tiles order updated in the destination column");
       } catch (error) {
         console.error(
           "Error updating tiles order in different columns: ",
@@ -355,13 +331,12 @@ function Main() {
             {mosaicInfo.title}
           </h1>
           <div className="flex justify-evenly items-start">
-            {/* tailwind css ^^^^*/}
             {mosaicInfo.columns &&
               mosaicInfo.columns.map((column, index) => (
                 <Droppable droppableId={column._id} key={column._id}>
                   {(provided) => (
                     <div
-                      key={column}
+                      key={column._id}
                       className="w-80 bg-white p-4 rounded-lg shadow-md mr-4 flex flex-col"
                       style={{
                         height: `${(column.tiles.length + 1.5) * 75}px`,
@@ -389,17 +364,16 @@ function Main() {
                                 }}
                                 className="border border-gray-300 px-2 py-1 rounded"
                               />
-                              <button onClick={handleCancelRename}>
+                              <button onClick={() => setRenameColumnId("")}>
                                 Cancel
                               </button>
                             </div>
                           ) : (
                             <>
                               <EditOutlined
-                                onClick={() => handleRename(column._id)}
+                                onClick={() => setRenameColumnId(column._id)}
                                 className="cursor-pointer mr-2"
                               />
-
                               <DeleteOutline
                                 onClick={() => delColumn(column._id)}
                                 className="cursor-pointer"
@@ -421,7 +395,7 @@ function Main() {
                             }}
                           />
                           <button
-                            onClick={handleCancelNewTile}
+                            onClick={() => setNewTileColumnId("")}
                             className="border px-4 py-1 mb-4 rounded bg-gray-300"
                           >
                             Cancel
@@ -429,13 +403,13 @@ function Main() {
                         </div>
                       ) : (
                         <button
-                          onClick={() => handleNewTile(column._id)}
+                          onClick={() => setNewTileColumnId(column._id)}
                           className="border px-2 py-1 mb-4 rounded bg-blue-500 text-white hover:bg-blue-400"
                         >
                           Add new Tile
                         </button>
                       )}
-                      {/* for above -> change to icons */}
+
                       <div className="mb-4">
                         {column.tiles.map((tile, tileIndex) => (
                           <Draggable
@@ -462,6 +436,7 @@ function Main() {
                             )}
                           </Draggable>
                         ))}
+                        {provided.placeholder}
                       </div>
                     </div>
                   )}
@@ -479,7 +454,6 @@ function Main() {
           </div>
         </div>
 
-        {/* add new column modal box */}
         <StyledModal
           open={newColumnModal}
           onClose={() => setNewColumnModal(false)}
@@ -521,7 +495,6 @@ function Main() {
           </ModalBox>
         </StyledModal>
 
-        {/* tile view modal */}
         <StyledModal
           open={tileViewModal}
           onClose={() => setTileViewModal(false)}
@@ -556,42 +529,44 @@ function Main() {
               />
               <p className="mb-2">To do list:</p>
               <ol>
-              {tileInfo.toDoList &&
-                tileInfo.toDoList.map((toDo) => {
-                  <li key={toDo}>{toDo.title}</li>;
-                })}
-            </ol>
-            {newToDoToggle ? (
-              <div className="mb-4">
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="newToDoTitle"
-                  label="To Do Name"
-                  name="newToDoTitle"
-                  autoComplete="newToDoTitle"
-                  autoFocus
-                  value={newToDoTitle}
-                  onChange={(e) => setNewToDoTitle(e.target.value)}
-                  className="mb-2"
-                />
-                <Button
-                  onClick={() => {
-                    newToDo(selTileId, newToDoTitle);
-                    setNewToDoToggle(false);
-                  }}
-                  className="mr-2"
-                >
-                  Confirm
+                {tileInfo.toDoList &&
+                  tileInfo.toDoList.map((toDo) => {
+                    <li key={toDo}>{toDo.title}</li>;
+                  })}
+              </ol>
+              {newToDoToggle ? (
+                <div className="mb-4">
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="newToDoTitle"
+                    label="To Do Name"
+                    name="newToDoTitle"
+                    autoComplete="newToDoTitle"
+                    autoFocus
+                    value={newToDoTitle}
+                    onChange={(e) => setNewToDoTitle(e.target.value)}
+                    className="mb-2"
+                  />
+                  <Button
+                    onClick={() => {
+                      newToDo(selTileId, newToDoTitle);
+                      setNewToDoToggle(false);
+                    }}
+                    className="mr-2"
+                  >
+                    Confirm
+                  </Button>
+                  <Button onClick={() => setNewToDoToggle(false)}>
+                    Cancel
+                  </Button>
+                </div>
+              ) : (
+                <Button className="mb-4" onClick={() => setNewToDoToggle(true)}>
+                  Add To do item
                 </Button>
-                <Button onClick={() => setNewToDoToggle(false)}>Cancel</Button>
-              </div>
-            ) : (
-              <Button className="mb-4" onClick={() => setNewToDoToggle(true)}>
-                Add To do item
-              </Button>
-            )}
+              )}
 
               {renameTileToggle ? (
                 <div className="mb-4">
