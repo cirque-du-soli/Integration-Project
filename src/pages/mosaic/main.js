@@ -17,6 +17,7 @@ import Navbar from "../../components/navbars/mainNavbar";
 import Footer from "../../components/navbars/footer";
 import { AuthContext } from "../../contexts/authContext";
 import { EditOutlined, DeleteOutline } from "@mui/icons-material";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 const StyledModal = styled(Modal)({
   display: "flex",
@@ -238,189 +239,323 @@ function Main() {
     }
   }
 
+  // Function to handle drag and drop end
+  const onDragEnd = async (result) => {
+    const { source, destination, draggableId } = result;
+
+    // Check if the destination is valid
+    if (!destination) {
+      return;
+    }
+
+    // If the tile is dropped in the same column
+    if (
+      source.droppableId === destination.droppableId &&
+      source.index === destination.index
+    ) {
+      return;
+    }
+
+    // If the tile is dropped in a different column
+    const sourceColumnId = source.droppableId;
+    const destinationColumnId = destination.droppableId;
+
+    // If tile is dropped within the same column
+    if (sourceColumnId === destinationColumnId) {
+      // Reorder tiles within the same column
+      const column = mosaicInfo.columns.find(
+        (col) => col._id === sourceColumnId
+      );
+      const newTiles = Array.from(column.tiles);
+      newTiles.splice(source.index, 1);
+      newTiles.splice(destination.index, 0, draggableId);
+
+      // Update state with the reordered tiles
+      setMosaicInfo((prevMosaicInfo) => ({
+        ...prevMosaicInfo,
+        columns: prevMosaicInfo.columns.map((col) =>
+          col._id === sourceColumnId ? { ...col, tiles: newTiles } : col
+        ),
+      }));
+
+      // Make API call to update the order of tiles in the column
+      try {
+        await axios.put(`${baseUrl}/mosaics/updateTilesOrder`, {
+          columnId: sourceColumnId,
+          newTilesOrder: newTiles,
+        });
+        console.log("Tiles order updated within the same column");
+      } catch (error) {
+        console.error(
+          "Error updating tiles order within the same column: ",
+          error
+        );
+      }
+    } else {
+      // If the tile is dropped in a different column
+      // Remove the tile from the source column
+      const sourceColumn = mosaicInfo.columns.find(
+        (col) => col._id === sourceColumnId
+      );
+      const newSourceTiles = Array.from(sourceColumn.tiles);
+      newSourceTiles.splice(source.index, 1);
+
+      // Update state with the source column's new tiles
+      setMosaicInfo((prevMosaicInfo) => ({
+        ...prevMosaicInfo,
+        columns: prevMosaicInfo.columns.map((col) =>
+          col._id === sourceColumnId ? { ...col, tiles: newSourceTiles } : col
+        ),
+      }));
+
+      // Remove the tile from the destination column
+      const destinationColumn = mosaicInfo.columns.find(
+        (col) => col._id === destinationColumnId
+      );
+      const newDestinationTiles = Array.from(destinationColumn.tiles);
+      newDestinationTiles.splice(destination.index, 0, draggableId);
+
+      // Update state with the destination column's new tiles
+      setMosaicInfo((prevMosaicInfo) => ({
+        ...prevMosaicInfo,
+        columns: prevMosaicInfo.columns.map((col) =>
+          col._id === destinationColumnId
+            ? { ...col, tiles: newDestinationTiles }
+            : col
+        ),
+      }));
+
+      // Make API calls to update the order of tiles in both columns
+      try {
+        await axios.put(`${baseUrl}/mosaics/updateTilesOrder`, {
+          columnId: sourceColumnId,
+          newTilesOrder: newSourceTiles,
+        });
+        console.log("Tiles order updated in the source column");
+        await axios.put(`${baseUrl}/mosaics/updateTilesOrder`, {
+          columnId: destinationColumnId,
+          newTilesOrder: newDestinationTiles,
+        });
+        console.log("Tiles order updated in the destination column");
+      } catch (error) {
+        console.error(
+          "Error updating tiles order in different columns: ",
+          error
+        );
+      }
+    }
+  };
+
   return (
-    <>
-      <div className="bg-gray-200 min-h-screen">
-        <Navbar />
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          {mosaicInfo.title}
-        </h1>
-        <div className="flex justify-evenly items-start">
-          {/* tailwind css ^^^^*/}
-          {mosaicInfo.columns &&
-            mosaicInfo.columns.map((column, index) => (
-              <div
-                key={column}
-                className="w-80 bg-white p-4 rounded-lg shadow-md mr-4 flex flex-col"
-                style={{ height: `${(column.tiles.length + 1.5) * 75}px` }}
-              >
-                <div className="flex justify-between items-center mb-2">
-                  <h2 className="text-xl font-semibold mb-2">{column.title}</h2>
-                  <div className="flex items-center space-x-2">
-                    {renameColumnId === column._id ? (
-                      <div className="mb-2">
-                        <input
-                          type="text"
-                          defaultValue={column.title}
-                          onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                              handleRenameSubmit(column._id, e.target.value);
-                            }
-                          }}
-                          className="border border-gray-300 px-2 py-1 rounded"
-                        />
-                        <button onClick={handleCancelRename}>Cancel</button>
-                      </div>
-                    ) : (
-                      <>
-                        <EditOutlined
-                          onClick={() => handleRename(column._id)}
-                          className="cursor-pointer mr-2"
-                        />
-
-                        <DeleteOutline
-                          onClick={() => delColumn(column._id)}
-                          className="cursor-pointer"
-                        />
-                      </>
-                    )}
-                  </div>
-                </div>
-
-                {newTileColumnId === column._id ? (
-                  <div>
-                    <input
-                      type="text"
-                      defaultValue={"New tile"}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          handleNewTileSubmit(column._id, e.target.value);
-                        }
+    <DragDropContext onDragEnd={onDragEnd}>
+      <>
+        <div className="bg-gray-200 min-h-screen">
+          <Navbar />
+          <h1 className="text-3xl font-bold text-gray-800 mb-4">
+            {mosaicInfo.title}
+          </h1>
+          <div className="flex justify-evenly items-start">
+            {/* tailwind css ^^^^*/}
+            {mosaicInfo.columns &&
+              mosaicInfo.columns.map((column, index) => (
+                <Droppable droppableId={column._id} key={column._id}>
+                  {(provided) => (
+                    <div
+                      key={column}
+                      className="w-80 bg-white p-4 rounded-lg shadow-md mr-4 flex flex-col"
+                      style={{
+                        height: `${(column.tiles.length + 1.5) * 75}px`,
                       }}
-                    />
-                    <button
-                      onClick={handleCancelNewTile}
-                      className="border px-4 py-1 mb-4 rounded bg-gray-300"
+                      ref={provided.innerRef}
+                      {...provided.droppableProps}
                     >
-                      Cancel
-                    </button>
-                  </div>
-                ) : (
-                  <button
-                    onClick={() => handleNewTile(column._id)}
-                    className="border px-2 py-1 mb-4 rounded bg-blue-500 text-white hover:bg-blue-400"
-                  >
-                    Add new Tile
-                  </button>
-                )}
-                {/* for above -> change to icons */}
-                <div className="mb-4">
-                  {column.tiles.map((tile) => {
-                    let splitTile = tile.split(":");
-                    return (
-                      <p
-                        key={tile}
-                        onClick={() => {
-                          setSelTileId(splitTile[0]);
-                          setTileViewModal(true);
-                        }}
-                        className="bg-gray-200 rounded px-4 py-4 mb-4 cursor-pointer hover:bg-gray-400"
-                      >
-                        {splitTile[1]}
-                      </p>
-                    );
-                  })}
-                </div>
-              </div>
-            ))}
-          <div className="w-80 bg-white p-4 rounded-lg shadow-md flex flex-col justify-center items-center ">
-            {" "}
-            <button
-              onClick={() => setNewColumnModal(true)}
-              className="border px-2 py-1 rounded bg-green-500 text-white"
-            >
-              add new column
-            </button>
+                      <div className="flex justify-between items-center mb-2">
+                        <h2 className="text-xl font-semibold mb-2">
+                          {column.title}
+                        </h2>
+                        <div className="flex items-center space-x-2">
+                          {renameColumnId === column._id ? (
+                            <div className="mb-2">
+                              <input
+                                type="text"
+                                defaultValue={column.title}
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter") {
+                                    handleRenameSubmit(
+                                      column._id,
+                                      e.target.value
+                                    );
+                                  }
+                                }}
+                                className="border border-gray-300 px-2 py-1 rounded"
+                              />
+                              <button onClick={handleCancelRename}>
+                                Cancel
+                              </button>
+                            </div>
+                          ) : (
+                            <>
+                              <EditOutlined
+                                onClick={() => handleRename(column._id)}
+                                className="cursor-pointer mr-2"
+                              />
+
+                              <DeleteOutline
+                                onClick={() => delColumn(column._id)}
+                                className="cursor-pointer"
+                              />
+                            </>
+                          )}
+                        </div>
+                      </div>
+
+                      {newTileColumnId === column._id ? (
+                        <div>
+                          <input
+                            type="text"
+                            defaultValue={"New tile"}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") {
+                                handleNewTileSubmit(column._id, e.target.value);
+                              }
+                            }}
+                          />
+                          <button
+                            onClick={handleCancelNewTile}
+                            className="border px-4 py-1 mb-4 rounded bg-gray-300"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => handleNewTile(column._id)}
+                          className="border px-2 py-1 mb-4 rounded bg-blue-500 text-white hover:bg-blue-400"
+                        >
+                          Add new Tile
+                        </button>
+                      )}
+                      {/* for above -> change to icons */}
+                      <div className="mb-4">
+                        {column.tiles.map((tile, tileIndex) => (
+                          <Draggable
+                            key={tile}
+                            draggableId={tile}
+                            index={tileIndex}
+                          >
+                            {(provided) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                              >
+                                <p
+                                  className="bg-gray-200 rounded px-4 py-4 mb-4 cursor-pointer hover:bg-gray-400"
+                                  onClick={() => {
+                                    setSelTileId(tile.split(":")[0]);
+                                    setTileViewModal(true);
+                                  }}
+                                >
+                                  {tile.split(":")[1]}{" "}
+                                </p>
+                              </div>
+                            )}
+                          </Draggable>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </Droppable>
+              ))}
+            <div className="w-80 bg-white p-4 rounded-lg shadow-md flex flex-col justify-center items-center ">
+              {" "}
+              <button
+                onClick={() => setNewColumnModal(true)}
+                className="border px-2 py-1 rounded bg-green-500 text-white"
+              >
+                add new column
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-      {/* add new column modal box */}
-      <StyledModal
-        open={newColumnModal}
-        onClose={() => setNewColumnModal(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <ModalBox className="flex justify-center items-center">
-          <div className="bg-white border border-gray-200 p-6 rounded-lg shadow-lg w-96">
-            <Typography
-              id="modal-modal-title"
-              variant="h6"
-              component="h2"
-              className="text-lg font-semibold mb-4 text-center"
-            >
-              New Column
-            </Typography>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="newColumnName"
-              label="Column Name"
-              name="newColumnName"
-              autoComplete="newColumnName"
-              autoFocus
-              value={newColumnName}
-              onChange={(e) => setNewColumnName(e.target.value)}
-            />
-            <Button
-              onClick={(e) => {
-                createColumn(e);
-                setNewColumnModal(false);
-              }}
-              color="primary"
-            >
-              Continue
-            </Button>
-          </div>
-        </ModalBox>
-      </StyledModal>
 
-      {/* tile view modal */}
-      <StyledModal
-        open={tileViewModal}
-        onClose={() => setTileViewModal(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <ModalBox className="flex justify-center items-center">
-          <div className="bg-white border border-gray-200 p-6 rounded-lg shadow-lg w-96">
-            <Typography
-              id="modal-modal-title"
-              variant="h6"
-              component="h2"
-              className="text-lg font-semibold mb-4 text-center"
-            >
-              {tileInfo.title}
-            </Typography>
-            <p className="mb-2">
-              Created:{" "}
-              {tileInfo.creationDate
-                ? new Date(tileInfo.creationDate).toLocaleDateString()
-                : "Unknown Date"}
-            </p>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="description"
-              label="Description"
-              name="description"
-              value={tileInfo.description ? tileInfo.description : "N/A"}
-              className="mb-4"
-            />
-            <p className="mb-2">To do list:</p>
-            <ol>
+        {/* add new column modal box */}
+        <StyledModal
+          open={newColumnModal}
+          onClose={() => setNewColumnModal(false)}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <ModalBox className="flex justify-center items-center">
+            <div className="bg-white border border-gray-200 p-6 rounded-lg shadow-lg w-96">
+              <Typography
+                id="modal-modal-title"
+                variant="h6"
+                component="h2"
+                className="text-lg font-semibold mb-4 text-center"
+              >
+                New Column
+              </Typography>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="newColumnName"
+                label="Column Name"
+                name="newColumnName"
+                autoComplete="newColumnName"
+                autoFocus
+                value={newColumnName}
+                onChange={(e) => setNewColumnName(e.target.value)}
+              />
+              <Button
+                onClick={(e) => {
+                  createColumn(e);
+                  setNewColumnModal(false);
+                }}
+                color="primary"
+              >
+                Continue
+              </Button>
+            </div>
+          </ModalBox>
+        </StyledModal>
+
+        {/* tile view modal */}
+        <StyledModal
+          open={tileViewModal}
+          onClose={() => setTileViewModal(false)}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <ModalBox className="flex justify-center items-center">
+            <div className="bg-white border border-gray-200 p-6 rounded-lg shadow-lg w-96">
+              <Typography
+                id="modal-modal-title"
+                variant="h6"
+                component="h2"
+                className="text-lg font-semibold mb-4 text-center"
+              >
+                {tileInfo.title}
+              </Typography>
+              <p className="mb-2">
+                Created:{" "}
+                {tileInfo.creationDate
+                  ? new Date(tileInfo.creationDate).toLocaleDateString()
+                  : "Unknown Date"}
+              </p>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="description"
+                label="Description"
+                name="description"
+                value={tileInfo.description ? tileInfo.description : "N/A"}
+                className="mb-4"
+              />
+              <p className="mb-2">To do list:</p>
+              <ol>
               {tileInfo.toDoList &&
                 tileInfo.toDoList.map((toDo) => {
                   <li key={toDo}>{toDo.title}</li>;
@@ -458,56 +593,57 @@ function Main() {
               </Button>
             )}
 
-            {renameTileToggle ? (
-              <div className="mb-4">
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="newTileName"
-                  label="Tile Name"
-                  name="newTileName"
-                  autoComplete="newTileName"
-                  autoFocus
-                  value={newTileName}
-                  onChange={(e) => setNewTileName(e.target.value)}
-                  className="mb-2"
-                />
+              {renameTileToggle ? (
+                <div className="mb-4">
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="newTileName"
+                    label="Tile Name"
+                    name="newTileName"
+                    autoComplete="newTileName"
+                    autoFocus
+                    value={newTileName}
+                    onChange={(e) => setNewTileName(e.target.value)}
+                    className="mb-2"
+                  />
+                  <Button
+                    onClick={() => {
+                      renameTile(selTileId, newTileName);
+                      setRenameTileToggle(false);
+                    }}
+                    className="mr-2"
+                  >
+                    Confirm
+                  </Button>
+                  <Button onClick={() => setRenameTileToggle(false)}>
+                    Cancel
+                  </Button>
+                </div>
+              ) : (
                 <Button
-                  onClick={() => {
-                    renameTile(selTileId, newTileName);
-                    setRenameTileToggle(false);
-                  }}
-                  className="mr-2"
+                  onClick={() => setRenameTileToggle(true)}
+                  className="mb-2"
                 >
-                  Confirm
+                  Rename this tile
                 </Button>
-                <Button onClick={() => setRenameTileToggle(false)}>
-                  Cancel
-                </Button>
-              </div>
-            ) : (
-              <Button
-                onClick={() => setRenameTileToggle(true)}
-                className="mb-2"
-              >
-                Rename this tile
+              )}
+              <Button onClick={() => delTile(selTileId)} className="mb-4">
+                Delete this tile
               </Button>
-            )}
-            <Button onClick={() => delTile(selTileId)} className="mb-4">
-              Delete this tile
-            </Button>
-            <p>
-              Due:{" "}
-              {tileInfo.dueDate
-                ? new Date(tileInfo.dueDate).toLocaleDateString()
-                : "Unknown Date"}
-            </p>
-          </div>
-        </ModalBox>
-      </StyledModal>
-      <Footer />
-    </>
+              <p>
+                Due:{" "}
+                {tileInfo.dueDate
+                  ? new Date(tileInfo.dueDate).toLocaleDateString()
+                  : "Unknown Date"}
+              </p>
+            </div>
+          </ModalBox>
+        </StyledModal>
+        <Footer />
+      </>
+    </DragDropContext>
   );
 }
 
