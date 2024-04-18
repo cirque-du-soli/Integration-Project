@@ -220,6 +220,24 @@ function Main() {
     }
   }
 
+  //add to do
+  const [newToDoToggle, setNewToDoToggle] = useState(false);
+  const [newToDoTitle, setNewToDoTitle] = useState("");
+
+  async function newToDo(id, name) {
+    try {
+      const response = await axios.post(`${baseUrl}/mosaics/newToDo`, {
+        id,
+        name,
+      });
+      if (response.status === 200) {
+        console.log("To do added");
+      }
+    } catch (error) {
+      console.log("Errorcreating to do: ", error);
+    }
+  }
+
   return (
     <>
       <div className="bg-gray-200 min-h-screen">
@@ -235,7 +253,6 @@ function Main() {
                 key={column}
                 className="w-80 bg-white p-4 rounded-lg shadow-md mr-4 flex flex-col"
                 style={{ height: `${(column.tiles.length + 1.5) * 75}px` }}
-
               >
                 <div className="flex justify-between items-center mb-2">
                   <h2 className="text-xl font-semibold mb-2">{column.title}</h2>
@@ -292,7 +309,7 @@ function Main() {
                   <button
                     onClick={() => handleNewTile(column._id)}
                     className="border px-2 py-1 mb-4 rounded bg-blue-500 text-white hover:bg-blue-400"
-                    >
+                  >
                     Add new Tile
                   </button>
                 )}
@@ -403,7 +420,44 @@ function Main() {
               className="mb-4"
             />
             <p className="mb-2">To do list:</p>
-            <Button className="mb-4">Add To do item</Button>
+            <ol>
+              {tileInfo.toDoList &&
+                tileInfo.toDoList.map((toDo) => {
+                  <li key={toDo}>{toDo.title}</li>;
+                })}
+            </ol>
+            {newToDoToggle ? (
+              <div className="mb-4">
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="newToDoTitle"
+                  label="To Do Name"
+                  name="newToDoTitle"
+                  autoComplete="newToDoTitle"
+                  autoFocus
+                  value={newToDoTitle}
+                  onChange={(e) => setNewToDoTitle(e.target.value)}
+                  className="mb-2"
+                />
+                <Button
+                  onClick={() => {
+                    newToDo(selTileId, newToDoTitle);
+                    setNewToDoToggle(false);
+                  }}
+                  className="mr-2"
+                >
+                  Confirm
+                </Button>
+                <Button onClick={() => setNewToDoToggle(false)}>Cancel</Button>
+              </div>
+            ) : (
+              <Button className="mb-4" onClick={() => setNewToDoToggle(true)}>
+                Add To do item
+              </Button>
+            )}
+
             {renameTileToggle ? (
               <div className="mb-4">
                 <TextField
