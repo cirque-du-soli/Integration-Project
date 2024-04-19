@@ -8,6 +8,8 @@ import { AuthContext } from './contexts/authContext';
 import './index.css';
 import './styles/App.css';
 import './styles/tailwind.css';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 // IMPORT: Layouts
 import MainLayout from '../src/layouts/mainLayout';

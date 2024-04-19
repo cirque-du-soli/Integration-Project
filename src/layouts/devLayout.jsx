@@ -32,12 +32,8 @@ function DevLayout(props) {
     // initial login state
     const [isLoggedIn, setIsLoggedIn] = useState(!(localStorage.getItem('accessToken') === '' || localStorage.getItem('accessToken') === null));
     const [isAdmin, setIsAdmin] = useState('true');
-    const [uname, setUname] = useState(sessionStorage.getItem('username'));
-    const [signupUname, setSignupUname] = useState('');
 
-    function newToastMessage(toastType, msg) {
-
-        // render toast
+    function newToastMessage(toastType, msg) { // toastType: 'success', 'error', TBD...
         let options = {
             position: "top-center",
             autoClose: 3000,
@@ -60,7 +56,6 @@ function DevLayout(props) {
                 break;
         }
     }
-
     function toggleIsAdmin() {
         // update storage
         localStorage.setItem('isAdmin', (localStorage.getItem('isAdmin') === 'true') ? 'false' : 'true');
@@ -86,7 +81,7 @@ function DevLayout(props) {
 
                     </Routes>
                     
-                    <AdminToggleButton props={{ toggleIsAdmin: toggleIsAdmin }} />
+                    <AdminToggleButton props={{ toggleIsAdmin: toggleIsAdmin, toast: newToastMessage, isAdmin: isAdmin}} />
                     <p>isAdmin: {isAdmin}</p>
 
                     <ToastContainer

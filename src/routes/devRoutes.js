@@ -4,7 +4,6 @@ import DevDashboard from "../views/devDashboard";
 import PageNotFound from "../pages/misc/pageNotFound404";
 import Footer from "../components/navbars/footer"
 import LandingPage from "../pages/misc/landing"
-import { Lan } from "@mui/icons-material";
 
 // IMPORT: Pages
 import LoginPage from "../pages/user/login.js";
@@ -12,8 +11,6 @@ import RegistrationPage from "../pages/user/regi.js";
 import UserHomePage from "../pages/user/user-home-page.js";
 import UserSettingsPage from "../pages/user/user-settings-page.js";
 import MosaicMainPage from "../pages/mosaic/main.js";
-
-import AdminToggleButton from "../components/admin/adminToggleButton";
 
 // these all start from the /dev/ path
 var devRoutes = [
@@ -70,13 +67,7 @@ var devRoutes = [
         path: "/MosaicMainPage",
         name: "Dev: Main Mosaic Page",
         component: <MosaicMainPage />,
-    }/* ,
-
-    {
-        path: "/dashboard",
-        name: "Dev: ToggleAdmin",
-        component: <AdminToggleButton />,
-    }  */
+    }
 
 ];
 

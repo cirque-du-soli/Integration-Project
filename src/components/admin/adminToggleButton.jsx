@@ -1,29 +1,6 @@
 // IMPORT: React
-import { red } from '@mui/material/colors';
-import { React, useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
-
-// IMPORT: Popups
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
-// IMPORT: Reactstrap
-import {
-    Badge,
-    Container,
-    FormControl,
-    Collapse,
-    Navbar,
-    NavbarToggler,
-    NavbarBrand,
-    Nav,
-    NavItem,
-    NavLink,
-    Dropdown,
-    Button,
-} from 'reactstrap';
-
-
+import { React } from 'react';
+import { Button } from 'reactstrap';
 
 function AdminToggleButton({ props }) {
 
@@ -31,12 +8,15 @@ function AdminToggleButton({ props }) {
         e.preventDefault();
         console.log("adminToggleButton.jsx: handleClick() called");
         props.toggleIsAdmin();
+        console.log("props.toggleIsAdmin() called");
+        props.toast("success", "isAdmin toggled. (was: " + props.isAdmin + ")");
+        console.log("toast() called");
     }
 
     return (
         <>
-            <Button onClick={handleClick}>
-                <b>---Toggle isAdmin---</b>
+            <Button onClick={handleClick} className='btn'>
+                <b>---CLICK HERE to toggle "isAdmin"---</b>
             </Button>
         </>
     );
