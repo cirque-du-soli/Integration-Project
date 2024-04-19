@@ -228,12 +228,29 @@ function Main() {
       });
       if (response.status === 200) {
         console.log("To do added");
+        getTileInfo(response.data);
       }
     } catch (error) {
-      console.log("Errorcreating to do: ", error);
+      console.log("Error creating to do: ", error);
+    }
+  }
+  //update to do status
+  async function updateToDoStatus(stat, id) {
+    try {
+      const response = await axios.put(`${baseUrl}/mosaics/toDoStatus`, {
+        stat,
+        id,
+      });
+      if (response.status === 200) {
+        console.log("to do changed to: " + stat);
+        getTileInfo(response.data);
+      }
+    } catch (error) {
+      console.log("Error updating status: ", error);
     }
   }
 
+  //drag and drop
   const onDragEnd = async (result) => {
     const { source, destination, draggableId } = result;
     if (!destination) {
@@ -443,7 +460,6 @@ function Main() {
                 </Droppable>
               ))}
             <div className="w-80 bg-white p-4 rounded-lg shadow-md flex flex-col justify-center items-center ">
-              {" "}
               <button
                 onClick={() => setNewColumnModal(true)}
                 className="border px-2 py-1 rounded bg-green-500 text-white"
@@ -512,7 +528,7 @@ function Main() {
                 {tileInfo.title}
               </Typography>
               <p className="mb-2">
-                Created:{" "}
+                Created:
                 {tileInfo.creationDate
                   ? new Date(tileInfo.creationDate).toLocaleDateString()
                   : "Unknown Date"}
@@ -528,12 +544,20 @@ function Main() {
                 className="mb-4"
               />
               <p className="mb-2">To do list:</p>
-              <ol>
-                {tileInfo.toDoList &&
-                  tileInfo.toDoList.map((toDo) => {
-                    <li key={toDo}>{toDo.title}</li>;
-                  })}
-              </ol>
+
+              {tileInfo.toDoList &&
+                tileInfo.toDoList.map((toDo) => (
+                  <div key={toDo} className="flex">
+                    <input
+                      type="checkbox"
+                      checked={toDo.done}
+                      className="mr-2"
+                      onClick={() => updateToDoStatus(!toDo.done, toDo._id)}
+                    />
+                    <p>{toDo.title}</p>
+                  </div>
+                ))}
+
               {newToDoToggle ? (
                 <div className="mb-4">
                   <TextField
