@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Navbar from "../../components/navbars/mainNavbar";
-import Footer from "../../components/navbars/footer";
 import { AuthContext } from "../../contexts/authContext";
 import { EditOutlined, DeleteOutline } from "@mui/icons-material";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
@@ -640,7 +639,6 @@ function Main() {
             </div>
           </ModalBox>
         </StyledModal>
-        <Footer />
       </>
     </DragDropContext>
   );

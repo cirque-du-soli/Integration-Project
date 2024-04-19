@@ -14,7 +14,6 @@ import adminRoutes from "../routes/adminRoutes.js";
 
 // IMPORT: Components
 //import Header from "../components/navbars/Header.js";
-import Footer from "../components/navbars/footer.jsx";
 import PageNotFound from "../pages/misc/pageNotFound404.js";
 
 
@@ -33,8 +32,6 @@ function AdminLayout(props) {
     return (
         <>
             <div className="App">
-                <Footer />
-
                 {true ?
                     ( //(sessionStorage.getItem('isAdmin') === "true") ? ( FIXME: Uncomment this line to enable admin authorization   
                         <div className="main-panel" ref={mainPanelRef}>

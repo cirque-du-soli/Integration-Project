@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useSpring, animated } from "react-spring";
-import Footer from "../../components/navbars/footer";
 import backgroundImage from "../../assets/hero.jpg";
 import logo from "../../assets/ProjecTile-Logo-Icon-TransparentBG.png";
 
@@ -108,7 +107,6 @@ const Landing = () => {
           </Link>
         </section>
       </main>
-      <Footer />
     </div>
   );
 };

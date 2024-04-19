@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../../components/navbars/mainNavbar";
-import Footer from "../../components/navbars/footer";
 import { AuthContext } from "../../contexts/authContext";
 import backgroundImage from "../../assets/hero.jpg";
 function Home() {
@@ -22,7 +21,6 @@ function Home() {
             </h1>
           </div>
         </section>
-        <Footer />
       </div>
     </>
   );

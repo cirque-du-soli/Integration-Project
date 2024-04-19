@@ -9,7 +9,7 @@ function AdminToggleButton({ props }) {
         console.log("adminToggleButton.jsx: handleClick() called");
         props.toggleIsAdmin();
         console.log("props.toggleIsAdmin() called");
-        props.toast("success", "isAdmin toggled. (was: " + props.isAdmin + ")");
+        props.newToastMessage("success", "isAdmin toggled. (was: " + props.isAdmin + ")");
         console.log("toast() called");
     }
 

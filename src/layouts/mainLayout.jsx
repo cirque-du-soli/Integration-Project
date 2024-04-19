@@ -12,7 +12,6 @@ import '../styles/App.css';
 import mainRoutes from "../routes/mainRoutes.js";
 
 // IMPORT: Components
-import Footer from "../components/navbars/footer.jsx";
 import PageNotFound from "../pages/misc/pageNotFound404.js";
 
 //import EditProfile from "../components/Pages/EditProfile";
@@ -79,9 +78,6 @@ function MainLayout(props) {
                         </Routes>
                     </AuthContext.Provider>
                 </div>
-
-                < Footer />
-
             </div>
         </>
     );
