@@ -1,13 +1,13 @@
 // IMPORT: React
-import { Route, Routes, Navigate, useLocation } from "react-router-dom";
-import { useState, useEffect, useRef, React } from 'react';
+import { Route, Routes, Navigate } from "react-router-dom";
+import { useState, useRef, React } from 'react';
 
 // IMPORT: Routes
 import devRoutes from "../routes/devRoutes.js";
 
+// IMPORT: Components & Functions
 import AdminToggleButton from "../components/admin/adminToggleButton.jsx";
 import { newToastMessage } from '../components/customToast.js';
-
 
 const getRoutes = (routes) => {
     return routes.map((prop, key) => {
