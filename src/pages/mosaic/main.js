@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation, useParams } from "react-router-dom";
 import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import {
   AppBar,
   Toolbar,
@@ -282,11 +283,24 @@ function Main() {
       console.log("Error updating status: ", error);
     }
   }
-
   //date Change
-  const handleDateChange = (date) => {
-    setNewDueDate(date);
-  };
+  async function handleDateChange(date, id) {
+    if (date < Date.now()) {
+      console.log("date is in the past");
+    }
+    try {
+      const response = await axios.put(`${baseUrl}/mosaics/tileDate`, {
+        date,
+        id,
+      });
+      if (response.status === 200) {
+        console.log("tile due date changed to: ", date);
+        getTileInfo(response.data);
+      }
+    } catch (error) {
+      console.log("Error updating due date: ", error);
+    }
+  }
 
   //drag and drop
   const onDragEnd = async (result) => {
@@ -671,29 +685,17 @@ function Main() {
                 Add To do item
               </Button>
             )}
-            <p>
-              Due:
-              {tileInfo.dueDate
-                ? new Date(tileInfo.dueDate).toLocaleDateString()
-                : "Unknown Date"}
-            </p>
-            {showDatePicker && (
-              <>
-                <DatePicker
-                  getPopupContainer={() =>
-                    document.getElementById("date-popup")
-                  }
-                  popupStyle={{
-                    position: "relative",
-                  }}
-                  selected={tileInfo.dueDate}
-                  onChange={handleDateChange}
-                  onCalendarClose={() => setShowDatePicker(false)}
-                />
-                <div id="date-popup relative" />
-              </>
-            )}
-            <p onClick={() => setShowDatePicker(true)}>Change due date</p>
+            <div className="flex">
+              <p className="mr-2">Due: </p>
+              <DatePicker
+                popperProps={{
+                  strategy: "fixed",
+                }}
+                selected={tileInfo.dueDate}
+                onChange={(date) => handleDateChange(date, selTileId)}
+                onCalendarClose={() => setShowDatePicker(false)}
+              />
+            </div>
           </div>
         </ModalBox>
       </StyledModal>
