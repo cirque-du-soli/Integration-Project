@@ -283,6 +283,22 @@ function Main() {
       console.log("Error updating status: ", error);
     }
   }
+  //rename to do
+  const [renameToDoId, setRenameToDoId] = useState();
+  async function renameToDo(id, title) {
+    try {
+      const response = await axios.put(`${baseUrl}/mosaics/renameToDo`, {
+        title,
+        id,
+      });
+      if (response.status === 200) {
+        console.log("to do renamed");
+        getTileInfo(response.data);
+      }
+    } catch (error) {
+      console.log("Error renaming: ", error);
+    }
+  }
   //delete to do
   async function delToDo(id) {
     try {
@@ -681,11 +697,27 @@ function Main() {
                       className="mr-2"
                       onClick={() => updateToDoStatus(!toDo.done, toDo._id)}
                     />
-                    <p>{toDo.title}</p>
+                    {renameToDoId === toDo._id.toString() ? (
+                      <input
+                        type="text"
+                        defaultValue={toDo.title + "..."}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            renameToDo(toDo._id, e.target.value);
+                            setRenameToDoId("");
+                          }
+                        }}
+                      />
+                    ) : (
+                      <p>{toDo.title}</p>
+                    )}
                   </div>
                   <div>
                     <EditOutlined
-                      onClick={() => setRenameTileToggle(true)}
+                      onClick={() => {
+                        setRenameToDoId(toDo._id);
+                        console.log("setting renameToDoId to: ", toDo._id);
+                      }}
                       className="cursor-pointer mr-2"
                     />
                     <DeleteOutline
