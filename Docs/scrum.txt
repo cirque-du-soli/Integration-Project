@@ -840,6 +840,69 @@ Sophie:
 		- Continue dnd
 		- look into adding user to mosaic
 
+===============================================================================
+Day13: 2024-04-19 Friday 
+=============================
+
+Benjamin:
+	Done:
+		- sick day
+		
+	Not-Done:
+		- display / editing todos
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- display of to dos
+		- editing to dos
+
+Soliloquy:
+	Done:
+		- Toast messages working for a couple items
+		
+	Not-Done:
+		- Admin checks
+		- Add dummy data
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- Add admin check to navbar admin button & admin panel
+		- Link admin panel to actual data 
+			- Add dummy data as necessary
+		- websockets front-end
+
+Nicholas: 
+	Done:
+		- Unit Test progress
+		
+	Not-Done:
+		- Message persistence
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- Finish message persistence in database for chat
+		- Start unit tests
+
+Sophie: 
+	Done:
+		- Planned adding user to mosaic
+		- Worked on dnd
+		
+	Not-Done:
+		- Add-user implementation
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- continue dnd
+		- continue add-user-to-mosaic feature
 
 ===============================================================================
 ===============================================================================
