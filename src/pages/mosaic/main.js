@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
@@ -29,8 +29,16 @@ const ModalBox = styled(Box)({
 });
 
 function Main() {
-  //userState is username, selMosaic is Mosaic ID
-  const { userState, selMosaic } = useContext(AuthContext);
+  //get selected mosaic from URL
+  const { id } = useParams();
+  const [selMosaic, setSelMosaic] = useState(id);
+  useEffect(() => {
+    setSelMosaic(id);
+  }, [id]);
+  //userState is username
+  const { userState } = useContext(AuthContext);
+  const [mosaicAccess, setMosaicAccess] = useState("none");
+
   const [mosaicInfo, setMosaicInfo] = useState({});
   const [tileInfo, setTileInfo] = useState({});
   //Modal toggle and const for creating new Columns
@@ -45,8 +53,26 @@ function Main() {
   //Backend URL
   const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
+  // //check user authority
+  // const checkUserAuth = async () => {
+  //   if (mosaicInfo.owner != userState) {
+  //     if (!mosaicInfo.members.includes(userState)) {
+  //       setMosaicAccess("none");
+  //     } else {
+  //       setMosaicAccess("member");
+  //     }
+  //   } else {
+  //     setMosaicAccess("owner");
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   checkUserAuth();
+  // }, [mosaicInfo]);
+
   // Fetch mosaic info
   const fetchMosaicInfo = async () => {
+    console.log("fetching:" + id);
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_API_BASE_URL}/mosaics/byID?id=${selMosaic}`
@@ -106,13 +132,15 @@ function Main() {
     }
   }
 
-  //rename Cloumn
+  //DEAD CODE?
   const handleRename = (id) => {
     setRenameColumnId(id);
   };
   const handleCancelRename = () => {
     setRenameColumnId("");
   };
+
+  //renamce column
   const handleRenameSubmit = async (id, newTitle) => {
     console.log(`New title for column ${id}: ${newTitle}`); //console log for testing
     try {
@@ -132,13 +160,15 @@ function Main() {
     setRenameColumnId("");
   };
 
-  //add new tiles
+  //DEAD CODE?
   const handleNewTile = (id) => {
     setNewTileColumnId(id);
   };
   const handleCancelNewTile = () => {
     setNewTileColumnId("");
   };
+
+  //add new titles
   const handleNewTileSubmit = async (colId, newTile) => {
     console.log(
       `New tile ${newTile} on column ${colId} on mosaic ${selMosaic}`
@@ -340,306 +370,308 @@ function Main() {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <>
-        <div className="bg-gray-200 min-h-screen">
-          <Navbar />
-          <h1 className="text-3xl font-bold text-gray-800 mb-4">
-            {mosaicInfo.title}
-          </h1>
-          <div className="flex justify-evenly items-start">
-            {mosaicInfo.columns &&
-              mosaicInfo.columns.map((column, index) => (
-                <Droppable droppableId={column._id} key={column._id}>
-                  {(provided) => (
-                    <div
-                      key={column._id}
-                      className="w-80 bg-white p-4 rounded-lg shadow-md mr-4 flex flex-col"
-                      style={{
-                        height: `${(column.tiles.length + 1.5) * 75}px`,
-                      }}
-                      ref={provided.innerRef}
-                      {...provided.droppableProps}
-                    >
-                      <div className="flex justify-between items-center mb-2">
-                        <h2 className="text-xl font-semibold mb-2">
-                          {column.title}
-                        </h2>
-                        <div className="flex items-center space-x-2">
-                          {renameColumnId === column._id ? (
-                            <div className="mb-2">
-                              <input
-                                type="text"
-                                defaultValue={column.title}
-                                onKeyDown={(e) => {
-                                  if (e.key === "Enter") {
-                                    handleRenameSubmit(
-                                      column._id,
-                                      e.target.value
-                                    );
-                                  }
-                                }}
-                                className="border border-gray-300 px-2 py-1 rounded"
-                              />
-                              <button onClick={() => setRenameColumnId("")}>
-                                Cancel
-                              </button>
-                            </div>
-                          ) : (
-                            <>
-                              <EditOutlined
-                                onClick={() => setRenameColumnId(column._id)}
-                                className="cursor-pointer mr-2"
-                              />
-                              <DeleteOutline
-                                onClick={() => delColumn(column._id)}
-                                className="cursor-pointer"
-                              />
-                            </>
-                          )}
-                        </div>
-                      </div>
-
-                      {newTileColumnId === column._id ? (
-                        <div>
-                          <input
-                            type="text"
-                            defaultValue={"New tile"}
-                            onKeyDown={(e) => {
-                              if (e.key === "Enter") {
-                                handleNewTileSubmit(column._id, e.target.value);
-                              }
-                            }}
-                          />
-                          <button
-                            onClick={() => setNewTileColumnId("")}
-                            className="border px-4 py-1 mb-4 rounded bg-gray-300"
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      ) : (
-                        <button
-                          onClick={() => setNewTileColumnId(column._id)}
-                          className="border px-2 py-1 mb-4 rounded bg-blue-500 text-white hover:bg-blue-400"
-                        >
-                          Add new Tile
-                        </button>
-                      )}
-
-                      <div className="mb-4">
-                        {column.tiles.map((tile, tileIndex) => (
-                          <Draggable
-                            key={tile}
-                            draggableId={tile}
-                            index={tileIndex}
-                          >
-                            {(provided) => (
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                              >
-                                <p
-                                  className="bg-gray-200 rounded px-4 py-4 mb-4 cursor-pointer hover:bg-gray-400"
-                                  onClick={() => {
-                                    setSelTileId(tile.split(":")[0]);
-                                    setTileViewModal(true);
-                                  }}
-                                >
-                                  {tile.split(":")[1]}{" "}
-                                </p>
-                              </div>
-                            )}
-                          </Draggable>
-                        ))}
-                        {provided.placeholder}
+      <div className="bg-gray-200 min-h-screen">
+        <Navbar />
+        <h1 className="text-3xl font-bold text-gray-800 mb-4">
+          {mosaicInfo.title}
+        </h1>
+        <div className="flex justify-evenly items-start">
+          {mosaicInfo.columns &&
+            mosaicInfo.columns.map((column, index) => (
+              <Droppable droppableId={column._id} key={column._id}>
+                {(provided) => (
+                  <div
+                    key={column._id}
+                    className="w-80 bg-white p-4 rounded-lg shadow-md mr-4 flex flex-col"
+                    style={{
+                      height: `${(column.tiles.length + 1.5) * 75}px`,
+                    }}
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                  >
+                    <div className="flex justify-between items-center mb-2">
+                      <h2 className="text-xl font-semibold mb-2">
+                        {column.title}
+                      </h2>
+                      <div className="flex items-center space-x-2">
+                        {renameColumnId === column._id ? (
+                          <div className="mb-2">
+                            <input
+                              type="text"
+                              defaultValue={column.title}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                  handleRenameSubmit(
+                                    column._id,
+                                    e.target.value
+                                  );
+                                }
+                              }}
+                              className="border border-gray-300 px-2 py-1 rounded"
+                            />
+                            <button onClick={() => setRenameColumnId("")}>
+                              Cancel
+                            </button>
+                          </div>
+                        ) : (
+                          <>
+                            <EditOutlined
+                              onClick={() => setRenameColumnId(column._id)}
+                              className="cursor-pointer mr-2"
+                            />
+                            <DeleteOutline
+                              onClick={() => delColumn(column._id)}
+                              className="cursor-pointer"
+                            />
+                          </>
+                        )}
                       </div>
                     </div>
-                  )}
-                </Droppable>
-              ))}
-            <div className="w-80 bg-white p-4 rounded-lg shadow-md flex flex-col justify-center items-center ">
-              <button
-                onClick={() => setNewColumnModal(true)}
-                className="border px-2 py-1 rounded bg-green-500 text-white"
-              >
-                add new column
-              </button>
-            </div>
+
+                    {newTileColumnId === column._id ? (
+                      <div>
+                        <input
+                          type="text"
+                          defaultValue={"New tile"}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              handleNewTileSubmit(column._id, e.target.value);
+                            }
+                          }}
+                        />
+                        <button
+                          onClick={() => setNewTileColumnId("")}
+                          className="border px-4 py-1 mb-4 rounded bg-gray-300"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => setNewTileColumnId(column._id)}
+                        className="border px-2 py-1 mb-4 rounded bg-blue-500 text-white hover:bg-blue-400"
+                      >
+                        Add new Tile
+                      </button>
+                    )}
+
+                    <div className="mb-4">
+                      {column.tiles.map((tile, tileIndex) => (
+                        <Draggable
+                          key={tile}
+                          draggableId={tile}
+                          index={tileIndex}
+                        >
+                          {(provided) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                            >
+                              <p
+                                className="bg-gray-200 rounded px-4 py-4 mb-4 cursor-pointer hover:bg-gray-400"
+                                onClick={() => {
+                                  setSelTileId(tile.split(":")[0]);
+                                  setTileViewModal(true);
+                                }}
+                              >
+                                {tile.split(":")[1]}
+                              </p>
+                            </div>
+                          )}
+                        </Draggable>
+                      ))}
+                      {provided.placeholder}
+                    </div>
+                  </div>
+                )}
+              </Droppable>
+            ))}
+          <div className="w-80 bg-white p-4 rounded-lg shadow-md flex flex-col justify-center items-center ">
+            <button
+              onClick={() => setNewColumnModal(true)}
+              className="border px-2 py-1 rounded bg-green-500 text-white"
+            >
+              add new column
+            </button>
           </div>
         </div>
+      </div>
 
-        <StyledModal
-          open={newColumnModal}
-          onClose={() => setNewColumnModal(false)}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <ModalBox className="flex justify-center items-center">
-            <div className="bg-white border border-gray-200 p-6 rounded-lg shadow-lg w-96">
-              <Typography
-                id="modal-modal-title"
-                variant="h6"
-                component="h2"
-                className="text-lg font-semibold mb-4 text-center"
-              >
-                New Column
-              </Typography>
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="newColumnName"
-                label="Column Name"
-                name="newColumnName"
-                autoComplete="newColumnName"
-                autoFocus
-                value={newColumnName}
-                onChange={(e) => setNewColumnName(e.target.value)}
-              />
-              <Button
-                onClick={(e) => {
-                  createColumn(e);
-                  setNewColumnModal(false);
-                }}
-                color="primary"
-              >
-                Continue
-              </Button>
-            </div>
-          </ModalBox>
-        </StyledModal>
+      <StyledModal
+        open={newColumnModal}
+        onClose={() => setNewColumnModal(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <ModalBox className="flex justify-center items-center">
+          <div className="bg-white border border-gray-200 p-6 rounded-lg shadow-lg w-96">
+            <Typography
+              id="modal-modal-title"
+              variant="h6"
+              component="h2"
+              className="text-lg font-semibold mb-4 text-center"
+            >
+              New Column
+            </Typography>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="newColumnName"
+              label="Column Name"
+              name="newColumnName"
+              autoComplete="newColumnName"
+              autoFocus
+              value={newColumnName}
+              onChange={(e) => setNewColumnName(e.target.value)}
+            />
+            <Button
+              onClick={(e) => {
+                createColumn(e);
+                setNewColumnModal(false);
+              }}
+              color="primary"
+            >
+              Continue
+            </Button>
+          </div>
+        </ModalBox>
+      </StyledModal>
 
-        <StyledModal
-          open={tileViewModal}
-          onClose={() => setTileViewModal(false)}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <ModalBox className="flex justify-center items-center">
-            <div className="bg-white border border-gray-200 p-6 rounded-lg shadow-lg w-96">
-              <Typography
-                id="modal-modal-title"
-                variant="h6"
-                component="h2"
-                className="text-lg font-semibold mb-4 text-center"
-              >
-                {tileInfo.title}
-              </Typography>
-              <p className="mb-2">
-                Created:
-                {tileInfo.creationDate
-                  ? new Date(tileInfo.creationDate).toLocaleDateString()
-                  : "Unknown Date"}
-              </p>
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="description"
-                label="Description"
-                name="description"
-                value={tileInfo.description ? tileInfo.description : "N/A"}
-                className="mb-4"
-              />
-              <p className="mb-2">To do list:</p>
+      <StyledModal
+        open={tileViewModal}
+        onClose={() => setTileViewModal(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <ModalBox className="flex justify-center items-center">
+          <div className="bg-white border border-gray-200 p-6 rounded-lg shadow-lg w-96">
+            <Typography
+              id="modal-modal-title"
+              variant="h6"
+              component="h2"
+              className="text-lg font-semibold mb-4 text-center"
+            >
+              {tileInfo.title}
+            </Typography>
+            <p className="mb-2">
+              Created:
+              {tileInfo.creationDate
+                ? new Date(tileInfo.creationDate).toLocaleDateString()
+                : "Unknown Date"}
+            </p>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="description"
+              label="Description"
+              name="description"
+              value={tileInfo.description ? tileInfo.description : "N/A"}
+              className="mb-4"
+            />
+            <p className="mb-2">To do list:</p>
 
-              {tileInfo.toDoList &&
-                tileInfo.toDoList.map((toDo) => (
-                  <div key={toDo} className="flex">
-                    <input
-                      type="checkbox"
-                      checked={toDo.done}
-                      className="mr-2"
-                      onClick={() => updateToDoStatus(!toDo.done, toDo._id)}
-                    />
-                    <p>{toDo.title}</p>
-                  </div>
-                ))}
-
-              {newToDoToggle ? (
-                <div className="mb-4">
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="newToDoTitle"
-                    label="To Do Name"
-                    name="newToDoTitle"
-                    autoComplete="newToDoTitle"
-                    autoFocus
-                    value={newToDoTitle}
-                    onChange={(e) => setNewToDoTitle(e.target.value)}
-                    className="mb-2"
-                  />
-                  <Button
-                    onClick={() => {
-                      newToDo(selTileId, newToDoTitle);
-                      setNewToDoToggle(false);
-                    }}
+            {tileInfo.toDoList &&
+              tileInfo.toDoList.map((toDo) => (
+                <div key={toDo} className="flex">
+                  <input
+                    type="checkbox"
+                    checked={toDo.done}
                     className="mr-2"
-                  >
-                    Confirm
-                  </Button>
-                  <Button onClick={() => setNewToDoToggle(false)}>
-                    Cancel
-                  </Button>
-                </div>
-              ) : (
-                <Button className="mb-4" onClick={() => setNewToDoToggle(true)}>
-                  Add To do item
-                </Button>
-              )}
-
-              {renameTileToggle ? (
-                <div className="mb-4">
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="newTileName"
-                    label="Tile Name"
-                    name="newTileName"
-                    autoComplete="newTileName"
-                    autoFocus
-                    value={newTileName}
-                    onChange={(e) => setNewTileName(e.target.value)}
-                    className="mb-2"
+                    onClick={() => updateToDoStatus(!toDo.done, toDo._id)}
                   />
-                  <Button
-                    onClick={() => {
-                      renameTile(selTileId, newTileName);
-                      setRenameTileToggle(false);
-                    }}
-                    className="mr-2"
-                  >
-                    Confirm
-                  </Button>
-                  <Button onClick={() => setRenameTileToggle(false)}>
-                    Cancel
-                  </Button>
+                  <p>{toDo.title}</p>
                 </div>
-              ) : (
-                <Button
-                  onClick={() => setRenameTileToggle(true)}
+              ))}
+
+            {newToDoToggle ? (
+              <div className="mb-4">
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="newToDoTitle"
+                  label="To Do Name"
+                  name="newToDoTitle"
+                  autoComplete="newToDoTitle"
+                  autoFocus
+                  value={newToDoTitle}
+                  onChange={(e) => setNewToDoTitle(e.target.value)}
                   className="mb-2"
+                />
+                <Button
+                  onClick={() => {
+                    newToDo(selTileId, newToDoTitle);
+                    setNewToDoToggle(false);
+                  }}
+                  className="mr-2"
                 >
-                  Rename this tile
+                  Confirm
                 </Button>
-              )}
-              <Button onClick={() => delTile(selTileId)} className="mb-4">
-                Delete this tile
+                <Button onClick={() => setNewToDoToggle(false)}>Cancel</Button>
+              </div>
+            ) : (
+              <Button className="mb-4" onClick={() => setNewToDoToggle(true)}>
+                Add To do item
               </Button>
-              <p>
-                Due:{" "}
-                {tileInfo.dueDate
-                  ? new Date(tileInfo.dueDate).toLocaleDateString()
-                  : "Unknown Date"}
-              </p>
-            </div>
-          </ModalBox>
-        </StyledModal>
-      </>
+            )}
+
+            {renameTileToggle ? (
+              <div className="mb-4">
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="newTileName"
+                  label="Tile Name"
+                  name="newTileName"
+                  autoComplete="newTileName"
+                  autoFocus
+                  value={newTileName}
+                  onChange={(e) => setNewTileName(e.target.value)}
+                  className="mb-2"
+                />
+                <Button
+                  onClick={() => {
+                    renameTile(selTileId, newTileName);
+                    setRenameTileToggle(false);
+                  }}
+                  className="mr-2"
+                >
+                  Confirm
+                </Button>
+                <Button onClick={() => setRenameTileToggle(false)}>
+                  Cancel
+                </Button>
+              </div>
+            ) : (
+              <Button
+                onClick={() => setRenameTileToggle(true)}
+                className="mb-2"
+              >
+                Rename this tile
+              </Button>
+            )}
+            <Button
+              onClick={() => {
+                delTile(selTileId);
+                setTileViewModal(false);
+              }}
+              className="mb-4"
+            >
+              Delete this tile
+            </Button>
+            <p>
+              Due:{" "}
+              {tileInfo.dueDate
+                ? new Date(tileInfo.dueDate).toLocaleDateString()
+                : "Unknown Date"}
+            </p>
+          </div>
+        </ModalBox>
+      </StyledModal>
     </DragDropContext>
   );
 }

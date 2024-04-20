@@ -172,8 +172,8 @@ const Navbar = () => {
               <MenuItem
                 key={mosaic._id}
                 component={RouterLink}
-                to="/app/main"
-                onClick={() => handleMosaicClick(mosaic._id)}
+                to={`/app/main/${mosaic._id}`}
+                //onClick={() => handleMosaicClick(mosaic._id)}
               >
                 {mosaic.title}
               </MenuItem>
