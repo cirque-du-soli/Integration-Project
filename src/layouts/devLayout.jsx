@@ -10,10 +10,9 @@ import AdminToggleButton from "../components/admin/adminToggleButton.jsx";
 import { newToastMessage } from '../components/customToast.js';
 
 const getRoutes = (routes) => {
+
     return routes.map((prop, key) => {
-        return (
-            <Route path={prop.path} element={prop.component} key={key} exact />
-        );
+        return <Route path={prop.path} element={prop.component} key={key} exact />
     });
 };
 
@@ -37,14 +36,8 @@ function DevLayout(props) {
             <div className="App">
                 <div className="main-panel" ref={mainPanelRef}>
                     <Routes>
-                        {/* Add all routes & views */}
                         {getRoutes(devRoutes)}
-
-                        {/* Catch-all non-declared routes*/}
-                        <Route
-                            path="/*"
-                            element={<Navigate to="/dev/dashboard" replace />}
-                        />
+                        <Route path="/*" element={<Navigate to='/dev/dashboard' replace />} />
                     </Routes>
                     
                     <AdminToggleButton props={{ toggleIsAdmin: toggleIsAdmin, newToastMessage: newToastMessage, isAdmin: isAdmin}} />
@@ -57,3 +50,4 @@ function DevLayout(props) {
 }
 
 export default DevLayout;
+
