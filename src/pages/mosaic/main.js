@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation, useParams } from "react-router-dom";
+import DatePicker from "react-datepicker";
 import {
   AppBar,
   Toolbar,
@@ -52,6 +53,9 @@ function Main() {
   const [selTileId, setSelTileId] = useState("");
   //Backend URL
   const baseUrl = process.env.REACT_APP_API_BASE_URL;
+  //dueDate change stuff
+  const [newDueDate, setNewDueDate] = useState();
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   // //check user authority
   // const checkUserAuth = async () => {
@@ -278,6 +282,11 @@ function Main() {
       console.log("Error updating status: ", error);
     }
   }
+
+  //date Change
+  const handleDateChange = (date) => {
+    setNewDueDate(date);
+  };
 
   //drag and drop
   const onDragEnd = async (result) => {
@@ -547,14 +556,59 @@ function Main() {
       >
         <ModalBox className="flex justify-center items-center">
           <div className="bg-white border border-gray-200 p-6 rounded-lg shadow-lg w-96">
-            <Typography
-              id="modal-modal-title"
-              variant="h6"
-              component="h2"
-              className="text-lg font-semibold mb-4 text-center"
-            >
-              {tileInfo.title}
-            </Typography>
+            {renameTileToggle ? (
+              <div className="mb-4">
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="newTileName"
+                  label="Tile Name"
+                  name="newTileName"
+                  autoComplete="newTileName"
+                  autoFocus
+                  value={newTileName}
+                  onChange={(e) => setNewTileName(e.target.value)}
+                  className="mb-2"
+                />
+                <Button
+                  onClick={() => {
+                    renameTile(selTileId, newTileName);
+                    setRenameTileToggle(false);
+                  }}
+                  className="mr-2"
+                >
+                  Confirm
+                </Button>
+                <Button onClick={() => setRenameTileToggle(false)}>
+                  Cancel
+                </Button>
+              </div>
+            ) : (
+              <div className="flex justify-between">
+                <Typography
+                  id="modal-modal-title"
+                  variant="h6"
+                  component="h2"
+                  className="text-lg font-semibold mb-4"
+                >
+                  {tileInfo.title}
+                </Typography>
+                <div>
+                  <EditOutlined
+                    onClick={() => setRenameTileToggle(true)}
+                    className="cursor-pointer mr-2"
+                  />
+                  <DeleteOutline
+                    onClick={() => {
+                      delTile(selTileId);
+                      setTileViewModal(false);
+                    }}
+                    className="cursor-pointer"
+                  />
+                </div>
+              </div>
+            )}
             <p className="mb-2">
               Created:
               {tileInfo.creationDate
@@ -617,58 +671,29 @@ function Main() {
                 Add To do item
               </Button>
             )}
-
-            {renameTileToggle ? (
-              <div className="mb-4">
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="newTileName"
-                  label="Tile Name"
-                  name="newTileName"
-                  autoComplete="newTileName"
-                  autoFocus
-                  value={newTileName}
-                  onChange={(e) => setNewTileName(e.target.value)}
-                  className="mb-2"
-                />
-                <Button
-                  onClick={() => {
-                    renameTile(selTileId, newTileName);
-                    setRenameTileToggle(false);
-                  }}
-                  className="mr-2"
-                >
-                  Confirm
-                </Button>
-                <Button onClick={() => setRenameTileToggle(false)}>
-                  Cancel
-                </Button>
-              </div>
-            ) : (
-              <Button
-                onClick={() => setRenameTileToggle(true)}
-                className="mb-2"
-              >
-                Rename this tile
-              </Button>
-            )}
-            <Button
-              onClick={() => {
-                delTile(selTileId);
-                setTileViewModal(false);
-              }}
-              className="mb-4"
-            >
-              Delete this tile
-            </Button>
             <p>
-              Due:{" "}
+              Due:
               {tileInfo.dueDate
                 ? new Date(tileInfo.dueDate).toLocaleDateString()
                 : "Unknown Date"}
             </p>
+            {showDatePicker && (
+              <>
+                <DatePicker
+                  getPopupContainer={() =>
+                    document.getElementById("date-popup")
+                  }
+                  popupStyle={{
+                    position: "relative",
+                  }}
+                  selected={tileInfo.dueDate}
+                  onChange={handleDateChange}
+                  onCalendarClose={() => setShowDatePicker(false)}
+                />
+                <div id="date-popup relative" />
+              </>
+            )}
+            <p onClick={() => setShowDatePicker(true)}>Change due date</p>
           </div>
         </ModalBox>
       </StyledModal>
