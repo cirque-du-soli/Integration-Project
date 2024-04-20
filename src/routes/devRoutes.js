@@ -68,7 +68,6 @@ var devRoutes = [
         name: "Dev: Main Mosaic Page",
         component: <MosaicMainPage />,
     }
-
 ];
 
 export default devRoutes;
