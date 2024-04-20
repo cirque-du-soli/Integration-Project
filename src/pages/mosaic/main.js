@@ -283,6 +283,20 @@ function Main() {
       console.log("Error updating status: ", error);
     }
   }
+  //delete to do
+  async function delToDo(id) {
+    try {
+      const response = await axios.delete(`${baseUrl}/mosaics/toDo?id=${id}`);
+      if (response.status === 200) {
+        console.log("To Do deleted");
+        getTileInfo(response.data);
+      } else {
+        console.log("Failed to delete");
+      }
+    } catch (error) {
+      console.error("Error deleting To Do: ", error);
+    }
+  }
   //date Change
   async function handleDateChange(date, id) {
     if (date < Date.now()) {
@@ -299,6 +313,21 @@ function Main() {
       }
     } catch (error) {
       console.log("Error updating due date: ", error);
+    }
+  }
+  //update Description
+  async function handleDescriptionUpdate(id, description) {
+    try {
+      const response = await axios.put(`${baseUrl}/mosaics/tileDescription`, {
+        id,
+        description,
+      });
+      if (response.status === 200) {
+        console.log("tile description changed: ");
+        getTileInfo(response.data);
+      }
+    } catch (error) {
+      console.log("Error updating description: ", error);
     }
   }
 
@@ -629,28 +658,43 @@ function Main() {
                 ? new Date(tileInfo.creationDate).toLocaleDateString()
                 : "Unknown Date"}
             </p>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="description"
-              label="Description"
-              name="description"
-              value={tileInfo.description ? tileInfo.description : "N/A"}
+            <label className="mr-2">Description: </label>
+            <input
+              type="text"
+              defaultValue={tileInfo.description ? tileInfo.description : "N/A"}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleDescriptionUpdate(selTileId, e.target.value);
+                }
+              }}
               className="mb-4"
             />
             <p className="mb-2">To do list:</p>
 
             {tileInfo.toDoList &&
               tileInfo.toDoList.map((toDo) => (
-                <div key={toDo} className="flex">
-                  <input
-                    type="checkbox"
-                    checked={toDo.done}
-                    className="mr-2"
-                    onClick={() => updateToDoStatus(!toDo.done, toDo._id)}
-                  />
-                  <p>{toDo.title}</p>
+                <div key={toDo} className="flex justify-between">
+                  <div className="flex">
+                    <input
+                      type="checkbox"
+                      checked={toDo.done}
+                      className="mr-2"
+                      onClick={() => updateToDoStatus(!toDo.done, toDo._id)}
+                    />
+                    <p>{toDo.title}</p>
+                  </div>
+                  <div>
+                    <EditOutlined
+                      onClick={() => setRenameTileToggle(true)}
+                      className="cursor-pointer mr-2"
+                    />
+                    <DeleteOutline
+                      onClick={() => {
+                        delToDo(toDo._id);
+                      }}
+                      className="cursor-pointer"
+                    />
+                  </div>
                 </div>
               ))}
 
