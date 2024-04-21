@@ -1,22 +1,15 @@
 // IMPORT: React
-import { Route, Routes, Navigate, useLocation } from "react-router-dom";
-import { useRef } from 'react';
-
-// IMPORT: Styles
-import logo from '../assets/ProjecTile-Logo-Icon-TransparentBG.png';
-import '../styles/App.css';
-
-// creates scrollbars on windows devices
-import PerfectScrollbar from "perfect-scrollbar";
+import { Route, Routes, Navigate } from "react-router-dom";
+import { useRef, useEffect, useState } from 'react';
 
 // IMPORT: Routes
 import adminRoutes from "../routes/adminRoutes.js";
 
 // IMPORT: Components
-//import Header from "../components/navbars/Header.js";
-import Footer from "../components/navbars/footer.jsx";
 import PageNotFound from "../pages/misc/pageNotFound404.js";
-
+import UserNotAuthorized from "../pages/misc/notAuthorized.js";
+import AdminToggleButton from "../components/admin/adminToggleButton.jsx";
+import { newToastMessage } from '../components/customToast.js';
 
 const getRoutes = (routes) => {
     return routes.map((prop, key) => {
@@ -30,28 +23,33 @@ function AdminLayout(props) {
 
     const mainPanelRef = useRef(null);
 
+    // initial states
+    const [isAdmin, setIsAdmin] = useState('true');
+    localStorage.setItem('isAdmin', isAdmin);
+
+    function toggleIsAdmin() {
+        // update storage
+        localStorage.setItem('isAdmin', (localStorage.getItem('isAdmin') === 'true') ? 'false' : 'true');
+        // update state (re-renders div)
+        setIsAdmin(localStorage.getItem('isAdmin'));
+    }
+
     return (
         <>
             <div className="App">
-                <Footer />
-
-                {true ?
-                    ( //(sessionStorage.getItem('isAdmin') === "true") ? ( FIXME: Uncomment this line to enable admin authorization   
+                { (localStorage.getItem('isAdmin') === "true") ? ( 
                         <div className="main-panel" ref={mainPanelRef}>
 
                             <Routes>
-                                {/* Add all admin routes & views */}
+                                <Route path="/" element={<Navigate to="/admin/dashboard" replace />} />
                                 {getRoutes(adminRoutes)}
-
-                                {/* Catch-all non-declared routes*/}
-                                <Route
-                                    path="/*"
-                                    element={<Navigate to="/dashboard" replace />}
-                                />
+                                <Route path="/*" element={<PageNotFound />}/>
                             </Routes>
                         </div>
-                    ) : (<PageNotFound />)// FIXME: Change this to UserNotAuthorized component
+                ) : (<UserNotAuthorized />)
                 }
+                <AdminToggleButton props={{ toggleIsAdmin: toggleIsAdmin, newToastMessage: newToastMessage, isAdmin: isAdmin }} />
+                <p>isAdmin: {isAdmin}</p>
                 
             </div>
         </>

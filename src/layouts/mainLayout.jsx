@@ -8,15 +8,10 @@ import { AuthContext } from "../contexts/authContext.js";
 import logo from '../assets/ProjecTile-Logo-Icon-TransparentBG.png';
 import '../styles/App.css';
 
-// creates scrollbars on windows devices
-import PerfectScrollbar from "perfect-scrollbar";
-
 // IMPORT: Routes
 import mainRoutes from "../routes/mainRoutes.js";
 
 // IMPORT: Components
-//import Header from "../components/navbars/Header.js";
-import Footer from "../components/navbars/footer.jsx";
 import PageNotFound from "../pages/misc/pageNotFound404.js";
 
 //import EditProfile from "../components/Pages/EditProfile";
@@ -30,13 +25,6 @@ const getRoutes = (routes) => {
 };
 function MainLayout(props) {
 
-    /*  TODO: later -- implement popups / toast messages   
-    const newPopup = (msg) => {
-        console.log("StandardLayout.js: newPopup() called");
-        console.log("StandardLayout.js: msg: " + msg);
-        PopupAlert({ props: { msg: msg } });
-    } 
-    */
     //check if logged in
     const [authState, setAuthState] = useState(false);
     const [userState, setUserState] = useState("");
@@ -67,10 +55,6 @@ function MainLayout(props) {
     return (
         <>
             <div className="App">
-                {/* Standard Header */}
-                {/* FIXME: <Header props={{ uname: uname }} /> */}
-                < Footer />
-
                 <div className="main-panel" ref={mainPanelRef}>
                     <AuthContext.Provider
                         value={{
@@ -94,7 +78,6 @@ function MainLayout(props) {
                         </Routes>
                     </AuthContext.Provider>
                 </div>
-                
             </div>
         </>
     );

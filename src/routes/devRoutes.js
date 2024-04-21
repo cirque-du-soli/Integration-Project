@@ -4,7 +4,6 @@ import DevDashboard from "../views/devDashboard";
 import PageNotFound from "../pages/misc/pageNotFound404";
 import Footer from "../components/navbars/footer"
 import LandingPage from "../pages/misc/landing"
-import { Lan } from "@mui/icons-material";
 
 // IMPORT: Pages
 import LoginPage from "../pages/user/login.js";
@@ -69,7 +68,6 @@ var devRoutes = [
         name: "Dev: Main Mosaic Page",
         component: <MosaicMainPage />,
     }
-
 ];
 
 export default devRoutes;

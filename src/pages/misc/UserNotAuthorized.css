@@ -1,0 +1,44 @@
+/* This CSS now only affects elements within the user-not-authorized-container class */
+.user-not-authorized-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.user-not-authorized-container .content {
+    text-align: center;
+    border: 1px solid #ccc;
+    padding: 20px;
+    background: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.user-not-authorized-container .content h1 {
+    color: #d9534f;
+    font-size: 24px;
+}
+
+.user-not-authorized-container .content p {
+    margin: 20px 0;
+    color: #666;
+    font-size: 16px;
+}
+
+.user-not-authorized-container .content .buttons button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.user-not-authorized-container .content .buttons button:hover {
+    background-color: #0056b3;
+}

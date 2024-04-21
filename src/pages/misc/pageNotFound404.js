@@ -1,24 +1,21 @@
-import { useNavigate } from "react-router-dom"
-
+import { useNavigate } from 'react-router-dom';
+import './PageNotFound.css';  // Assuming styles are defined in this external CSS file
 
 const PageNotFound = () => {
-
     const navigate = useNavigate();
     const goBack = () => navigate(-1);
     const goHome = () => navigate('/');
-
+    
     return (
-        <div className='col-10 offset-1'>
-            <h1 className='mt-5'>Oops!</h1>
-            <h5 className='my-5'>Page Not found.</h5>
-            <div>
-                <button className='btn btn-light my-2' onClick={goBack}>Go Back</button>
-            </div>
-            <div>
-                <button className='btn btn-light my-2' onClick={goHome}>Go to Home</button>
+        <div className='page-not-found-container'>
+            <div className='content'>
+                <h1>Page Not Found</h1>
+                <p>We can't seem to find the page you're looking for.</p>
+                <button onClick={goBack} aria-label='Go back to previous page'>Go Back</button>
+                <button onClick={goHome} aria-label='Go to home page'>Go to Home</button>
             </div>
         </div>
-    )
+    );
 };
 
 export default PageNotFound;

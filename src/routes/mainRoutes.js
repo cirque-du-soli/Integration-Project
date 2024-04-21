@@ -1,8 +1,8 @@
 // IMPORT: Dashboard/View
-// TODO: 
+// TODO:
 import MainDashboard from "../views/mainDashboard.jsx";
 import PageNotFound from "../pages/misc/pageNotFound404";
-import LandingPage from "../pages/misc/landing"
+import LandingPage from "../pages/misc/landing";
 
 // IMPORT: Pages
 import LoginPage from "../pages/user/login.js";
@@ -12,19 +12,17 @@ import UserSettingsPage from "../pages/user/user-settings-page.js";
 import MosaicMainPage from "../pages/mosaic/main.js";
 import { Settings } from "@mui/icons-material";
 
-import MosaicMain from "../pages/mosaic/main.js"
+import MosaicMain from "../pages/mosaic/main.js";
 
 import AuthContext from "../contexts/authContext";
 
-
 var mainRoutes = [
-
-    {
-        path: "/dashboard",
-        name: "Main Dashboard",
-        component: <MainDashboard />,
-    },
-    /*
+  {
+    path: "/dashboard",
+    name: "Main Dashboard",
+    component: <MainDashboard />,
+  },
+  /*
        {
            path: "/:username",
            name: "Public profile",
@@ -38,54 +36,53 @@ var mainRoutes = [
        },
 
         */
-    {
-        path: "/PageNotFound",
-        name: "Main PageNotFound",
-        component: <PageNotFound />,
-    },
+  {
+    path: "/PageNotFound",
+    name: "Main PageNotFound",
+    component: <PageNotFound />,
+  },
 
-    {
-        path: "/welcome",
-        name: "Landing Page",
-        component: <LandingPage />,
-    },
+  {
+    path: "/welcome",
+    name: "Landing Page",
+    component: <LandingPage />,
+  },
 
-    {
-        path: "/register",
-        name: "Registration Page",
-        component: <RegistrationPage />,
-    },
+  {
+    path: "/register",
+    name: "Registration Page",
+    component: <RegistrationPage />,
+  },
 
-    {
-        path: "/login",
-        name: "Login Page",
-        component: <LoginPage />,
-    },
+  {
+    path: "/login",
+    name: "Login Page",
+    component: <LoginPage />,
+  },
 
-    {
-        path: "/mosaic",
-        name: "General Mosaic Page",
-        component: <MosaicMainPage />,
-    },
+  {
+    path: "/mosaic",
+    name: "General Mosaic Page",
+    component: <MosaicMainPage />,
+  },
 
-    {
-        path: "/settings",
-        name: "Login Page",
-        component: <UserSettingsPage />,
-    },
+  {
+    path: "/settings",
+    name: "Login Page",
+    component: <UserSettingsPage />,
+  },
 
-    {
-        path: "/home",
-        name: "User Home Page",
-        component: <UserHomePage />,
-    },
+  {
+    path: "/home",
+    name: "User Home Page",
+    component: <UserHomePage />,
+  },
 
-    {
-        path: "/main",
-        name: "Mosaic Main",
-        component: <MosaicMain />,
-    }
-
+  {
+    path: "/main/:id",
+    name: "Mosaic Main",
+    component: <MosaicMain />,
+  },
 ];
 
 export default mainRoutes;
