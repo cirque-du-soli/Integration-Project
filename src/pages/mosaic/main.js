@@ -16,6 +16,7 @@ import { styled } from "@mui/material/styles";
 import Navbar from "../../components/navbars/mainNavbar";
 import Footer from "../../components/navbars/footer";
 import { AuthContext } from "../../contexts/authContext";
+import Chat from '../../components/Chat'
 
 const StyledModal = styled(Modal)({
   display: "flex",
@@ -37,6 +38,7 @@ function Main() {
   const { userState, selMosaic } = useContext(AuthContext);
   const [mosaicInfo, setMosaicInfo] = useState({});
   const [tileInfo, setTileInfo] = useState({});
+  const [chatModalOpen, setChatModalOpen] = useState(false);
   //Modal toggle and const for creating new Columns
   const [newColumnModal, setNewColumnModal] = useState(false);
   const [newColumnName, setNewColumnName] = useState("");
@@ -206,6 +208,7 @@ function Main() {
         <h1>{selMosaic}</h1>
         {/* ^^ can be removed later or ?now? */}
         <h1>{mosaicInfo.title}</h1>
+        <Button onClick={() => setChatModalOpen(true)}>Open Chat</Button> {/* Button to open chat modal */}
         <div className="flex justify-evenly">
           {/* tailwind css ^^^^*/}
           {mosaicInfo.columns &&
@@ -324,6 +327,19 @@ function Main() {
             <Button>Rename this tile</Button>
             <Button onClick={() => delTile(selTileId)}>Delete this tile</Button>
           </Typography>
+        </ModalBox>
+      </StyledModal>
+      <StyledModal
+        open={chatModalOpen}
+        onClose={() => setChatModalOpen(false)}
+        aria-labelledby="chat-modal-title"
+        aria-describedby="chat-modal-description"
+      >
+        <ModalBox>
+          <Typography id="chat-modal-title" variant="h6" component="h2">
+            Chat
+          </Typography>
+          <Chat boardId={selMosaic} isOpen={chatModalOpen} />
         </ModalBox>
       </StyledModal>
       <Footer />
