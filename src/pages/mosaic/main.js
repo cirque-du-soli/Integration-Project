@@ -17,6 +17,7 @@ import {
 import { styled } from "@mui/material/styles";
 import Navbar from "../../components/navbars/mainNavbar";
 import { AuthContext } from "../../contexts/authContext";
+import Chat from '../../components/Chat';
 import { EditOutlined, DeleteOutline } from "@mui/icons-material";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
@@ -43,6 +44,7 @@ function Main() {
 
   const [mosaicInfo, setMosaicInfo] = useState({});
   const [tileInfo, setTileInfo] = useState({});
+  const [chatModalOpen, setChatModalOpen] = useState(false);
   //Modal toggle and const for creating new Columns
   const [newColumnModal, setNewColumnModal] = useState(false);
   const [newColumnName, setNewColumnName] = useState("");
@@ -440,9 +442,11 @@ function Main() {
     <DragDropContext onDragEnd={onDragEnd}>
       <div className="bg-gray-200 min-h-screen">
         <Navbar />
+
         <h1 className="text-3xl font-bold text-gray-800 mb-4">
           {mosaicInfo.title}
         </h1>
+  <Button onClick={() => setChatModalOpen(true)}>Open Chat</Button> 
         <div className="flex justify-evenly items-start">
           {mosaicInfo.columns &&
             mosaicInfo.columns.map((column, index) => (
@@ -775,7 +779,21 @@ function Main() {
           </div>
         </ModalBox>
       </StyledModal>
-    </DragDropContext>
+      <StyledModal
+        open={chatModalOpen}
+        onClose={() => setChatModalOpen(false)}
+        aria-labelledby="chat-modal-title"
+        aria-describedby="chat-modal-description"
+      >
+        <ModalBox>
+          <Typography id="chat-modal-title" variant="h6" component="h2">
+            Chat
+          </Typography>
+          <Chat boardId={selMosaic} isOpen={chatModalOpen} />
+        </ModalBox>
+      </StyledModal>
+      <Footer />
+     </DragDropContext>
   );
 }
 
