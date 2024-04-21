@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 import axios from 'axios';
 
-const baseUrl = process.env.REACT_APP_API_BASE_URL_NO_PORT;
+const baseUrl = process.env.REACT_APP_API_BASE_URL;
 //const socket = io(`${baseUrl}:3001`);
-const socket = io('http://localhost:3001');
+const socket = io(baseUrl);
 
 function Chat({ boardId, isOpen }) {
     const [message, setMessage] = useState('');
@@ -38,7 +38,7 @@ function Chat({ boardId, isOpen }) {
 
     const fetchMessages = async () => {
         try {
-            const response = await axios.get(`http://localhost:3001/mosaics/${boardId}/messages`);
+            const response = await axios.get(`${baseUrl}/mosaics/${boardId}/messages`);
             setMessages(response.data);
         } catch (error) {
             console.error("Failed to fetch messages:", error);
