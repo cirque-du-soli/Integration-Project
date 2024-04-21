@@ -20,6 +20,7 @@ import { AuthContext } from "../../contexts/authContext";
 import Chat from '../../components/Chat';
 import { EditOutlined, DeleteOutline } from "@mui/icons-material";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import Footer from "../../components/navbars/footer";
 
 const StyledModal = styled(Modal)({
   display: "flex",
@@ -446,7 +447,7 @@ function Main() {
         <h1 className="text-3xl font-bold text-gray-800 mb-4">
           {mosaicInfo.title}
         </h1>
-  <Button onClick={() => setChatModalOpen(true)}>Open Chat</Button> 
+        <Button onClick={() => setChatModalOpen(true)}>Open Chat</Button>
         <div className="flex justify-evenly items-start">
           {mosaicInfo.columns &&
             mosaicInfo.columns.map((column, index) => (
@@ -793,7 +794,7 @@ function Main() {
         </ModalBox>
       </StyledModal>
       <Footer />
-     </DragDropContext>
+    </DragDropContext>
   );
 }
 
