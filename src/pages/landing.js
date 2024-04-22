@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useSpring, animated } from "react-spring";
-import backgroundImage from "../../assets/hero.jpg";
-import logo from "../../assets/ProjecTile-Logo-Icon-TransparentBG.png";
+import backgroundImage from "../assets/hero.jpg";
+import logo from "../assets/ProjecTile-Logo-Icon-TransparentBG.png";
 
 const Landing = () => {
   const logoAnimation = useSpring({

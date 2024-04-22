@@ -6,8 +6,8 @@ import { useRef, useEffect, useState } from 'react';
 import adminRoutes from "../routes/adminRoutes.js";
 
 // IMPORT: Components
-import PageNotFound from "../pages/misc/pageNotFound404.js";
-import UserNotAuthorized from "../pages/misc/notAuthorized.js";
+import PageNotFound from "../pages/404/pageNotFound404.js";
+import UserNotAuthorized from "../pages/notAuth/notAuthorized.js";
 
 import { AuthContext } from "../contexts/authContext.js";
 import axios from "axios";
@@ -69,7 +69,7 @@ function AdminLayout(props) {
                             </Routes>
                         </div>
                         :
-                        !( userAdminState === null || userAdminState === undefined || userAdminState === "")
+                        !(userAdminState === null || userAdminState === undefined || userAdminState === "")
                             ?
                             <UserNotAuthorized />
                             :

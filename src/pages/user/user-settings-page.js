@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { TextField, Modal, Typography, Button, Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Navbar from "../../components/navbars/mainNavbar";
-import { validatePassword } from "../../fe-validations/validatePassword";
+import { validatePassword } from "../../util/fe-validations/validatePassword";
 import axios from "axios";
 
 const baseUrl = process.env.REACT_APP_API_BASE_URL;
