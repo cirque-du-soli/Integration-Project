@@ -3,12 +3,10 @@ import { Link } from 'react-router-dom';
 import { Button } from 'reactstrap';
 
 
-function NavItemAdmin({ props }) {
+function NavItemAdmin() {
     return (
         <>
             {
-                props.isAdmin
-                &&
                 < Link to="/admin/dashboard" >
                     <Button color="inherit">
                         Admin

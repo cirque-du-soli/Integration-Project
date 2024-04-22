@@ -6,6 +6,8 @@ import { AuthContext } from "../contexts/authContext.js";
 
 // IMPORT: Routes
 import mainRoutes from "../routes/mainRoutes.js";
+import Footer from "../components/navbars/footer.jsx";
+
 
 const getRoutes = (routes) => {
     return routes.map((prop, key) => {
@@ -19,6 +21,7 @@ function MainLayout(props) {
     //check if logged in
     const [authState, setAuthState] = useState(false);
     const [userState, setUserState] = useState("");
+    const [userAdminState, setUserAdminState] = useState(false);
 
     useEffect(() => {
         axios
@@ -28,12 +31,16 @@ function MainLayout(props) {
             .then((response) => {
                 if (response.data.error) {
                     setAuthState(false);
+                    setUserState("");
+                    setUserAdminState(false);
                 } else {
                     console.log("response.data >> user state:")
                     console.log(response.data);
                     setUserState(response.data); // SOLI TODO: this will be response.data.username
-                    // setAdminState(response.data.isAdmin); // SOLI TODO: check if user is admin
+                    
                     setAuthState(true);
+                    //setUserAdminState(response.data.isAdmin); // SOLI TODO: check if user is admin
+                    setUserAdminState(true); // SOLI TODO: TEMPORARY
                 }
             });
     }, [localStorage.getItem("accessToken")]);
@@ -57,6 +64,8 @@ function MainLayout(props) {
                             setUserState,
                             selMosaic,
                             setSelMosaic,
+                            userAdminState,
+                            setUserAdminState
                         }}
                     >
                     <Routes>
@@ -69,6 +78,7 @@ function MainLayout(props) {
                             element={<Navigate to="/" replace />}
                         />
                         </Routes>
+                        <Footer props={{setUserAdminState: setUserAdminState, userAdminState: userAdminState}} />
                     </AuthContext.Provider>
                 </div>
             </div>

@@ -1,25 +1,26 @@
-import { React, useState, useRef } from 'react';
+import { React, useState, useRef, useContext } from 'react';
 import { Button } from 'reactstrap';
 import AdminToggleButton from "../admin/AdminToggleButton.jsx";
 import { newToastMessage } from '../customToast.js';
-
+import { AuthContext } from "../../contexts/authContext.js";
 
 function Footer({ props }) {
 
     const mainPanelRef = useRef(null);
 
     // initial states
-    const [isAdmin, setIsAdmin] = useState((localStorage.getItem('isAdmin') === 'true')); // userAdminState
+    const [isAdmin, setIsAdmin] = useState(props.userAdminState);
     localStorage.setItem('isAdmin', isAdmin);
 
     function toggleIsAdmin() {
         // update storage
-        localStorage.setItem('isAdmin', (localStorage.getItem('isAdmin') === 'true') ? 'false' : 'true');
+        //localStorage.setItem('isAdmin', (localStorage.getItem('isAdmin') === 'true') ? 'false' : 'true');
         // update state (re-renders div)
-        setIsAdmin(localStorage.getItem('isAdmin'));
+        // setIsAdmin(localStorage.getItem('isAdmin'));
 
-        // setUserAdminState(!userAdminState);
+        props.setUserAdminState(!props.userAdminState);
         // setIsAdmin(userAdminState);
+        localStorage.setItem('isAdmin', props.userAdminState);
     }
 
     return (
@@ -32,7 +33,7 @@ function Footer({ props }) {
                     <span className="text-black">|</span>
                     <a href='#' className="text-black hover:text-gray-400 ml-4">Privacy Policy</a>
                     <span className="text-black"> | </span>
-                    <AdminToggleButton props={{ isAdmin: isAdmin, toggleIsAdmin: toggleIsAdmin, newToastMessage: newToastMessage}} />
+                    <AdminToggleButton props={{ isAdmin: props.userAdminState, toggleIsAdmin: toggleIsAdmin, newToastMessage: newToastMessage}} />
                 </div>
 
                 <div className="w-full md:w-auto text-center md:text-right">

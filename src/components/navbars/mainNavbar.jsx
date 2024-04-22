@@ -47,19 +47,19 @@ const Navbar = ({ props }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [mosaicName, setMosaicName] = useState("");
   const [userMosaics, setUserMosaics] = useState([]);
-  const { userState, setAuthState, selMosaic, setSelMosaic /* , userAdminState SOLI TODO: add here */} =
-    useContext(AuthContext);
+  const {
+    userState,
+    setAuthState,
+    selMosaic,
+    setSelMosaic,
+    userAdminState,
+    setUserAdminState
+  } = useContext(AuthContext);
 
   // initial states
-  const [isAdmin, setIsAdmin] = useState((localStorage.getItem('isAdmin') === 'true')); // SOLI TODO: delete this
-
-  function updateNavbar() {
-    setIsAdmin(localStorage.getItem('isAdmin') === 'true'); // change to auth context
-    // setIsAdmin( userAdminState ); // SOLI TODO: switch
-
-    //
-
-  }
+  //const [isAdmin, setIsAdmin] = useState((localStorage.getItem('isAdmin') === 'true')); // SOLI TODO: delete this
+  const [isAdmin, setIsAdmin] = useState(userAdminState);
+  
   ///////////////////////////////////////////////////////////
   const handleOpenDropdown = (event) => {
     setDropdownVisible(event.currentTarget);
@@ -152,7 +152,11 @@ const Navbar = ({ props }) => {
           <Button color="inherit" onClick={handleOpenDropdown}>
             {userState}
           </Button>
-          <NavItemAdmin props={{ isAdmin: isAdmin }} /> {/* SOLI TODO: isAdmin: userAdminState */}
+          {
+            userAdminState
+            &&
+            <NavItemAdmin /> /* SOLI TODO: isAdmin: userAdminState */
+          }
           
           <Menu
             id="simple-menu"
