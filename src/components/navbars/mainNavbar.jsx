@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
@@ -139,6 +140,11 @@ const Navbar = () => {
           <Button color="inherit" onClick={handleOpenDropdown}>
             {userState}
           </Button>
+          <Link to="/admin/dashboard" >
+            <Button color="inherit">
+              Admin
+            </Button>
+          </Link>
           <Menu
             id="simple-menu"
             anchorEl={isDropdownVisible}
