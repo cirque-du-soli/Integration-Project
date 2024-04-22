@@ -8,8 +8,10 @@ import adminRoutes from "../routes/adminRoutes.js";
 // IMPORT: Components
 import PageNotFound from "../pages/misc/pageNotFound404.js";
 import UserNotAuthorized from "../pages/misc/notAuthorized.js";
-import AdminToggleButton from "../components/admin/adminToggleButton.jsx";
-import { newToastMessage } from '../components/customToast.js';
+
+import { AuthContext } from "../contexts/authContext.js";
+import axios from "axios";
+
 
 const getRoutes = (routes) => {
     return routes.map((prop, key) => {
@@ -23,34 +25,56 @@ function AdminLayout(props) {
 
     const mainPanelRef = useRef(null);
 
-    // initial states
-    const [isAdmin, setIsAdmin] = useState('true');
-    localStorage.setItem('isAdmin', isAdmin);
+    //check if logged in
+    const [authState, setAuthState] = useState(false);
+    const [userState, setUserState] = useState("");
+    const [userAdminState, setUserAdminState] = useState(""); // SOLI TODO: change to props.userAdminState -- must move entire auth context up one level
 
-    function toggleIsAdmin() {
-        // update storage
-        localStorage.setItem('isAdmin', (localStorage.getItem('isAdmin') === 'true') ? 'false' : 'true');
-        // update state (re-renders div)
-        setIsAdmin(localStorage.getItem('isAdmin'));
-    }
+    useEffect(() => {
+        axios
+            .get(`${process.env.REACT_APP_API_BASE_URL}/auth`, {
+                headers: { accessToken: localStorage.getItem("accessToken") },
+            })
+            .then((response) => {
+                if (response.data.error) {
+                    setAuthState(false);
+                    setUserState("");
+                    setUserAdminState(false);
+                } else {
+                    console.log("response.data >> user state:")
+                    console.log(response.data);
+                    setUserState(response.data); // SOLI TODO: this will be response.data.username
+
+                    setAuthState(true);
+                    //setUserAdminState(response.data.isAdmin); // SOLI TODO: check if user is admin
+                    setUserAdminState(true); // SOLI TODO: TEMPORARY
+                }
+            });
+    }, [localStorage.getItem("accessToken")]);
 
     return (
         <>
             <div className="App">
-                { (localStorage.getItem('isAdmin') === "true") ? ( 
+                {
+                    userAdminState
+                        ?
                         <div className="main-panel" ref={mainPanelRef}>
 
                             <Routes>
                                 <Route path="/" element={<Navigate to="/admin/dashboard" replace />} />
                                 {getRoutes(adminRoutes)}
-                                <Route path="/*" element={<PageNotFound />}/>
+                                <Route path="/*" element={<PageNotFound />} />
                             </Routes>
                         </div>
-                ) : (<UserNotAuthorized />)
+                        :
+                        !( userAdminState === null || userAdminState === undefined || userAdminState === "")
+                            ?
+                            <UserNotAuthorized />
+                            :
+                            <p>loading...</p>
                 }
-                <AdminToggleButton props={{ toggleIsAdmin: toggleIsAdmin, newToastMessage: newToastMessage, isAdmin: isAdmin }} />
-                <p>isAdmin: {isAdmin}</p>
-                
+                <p>isAdmin: {userAdminState}</p>
+
             </div>
         </>
     );

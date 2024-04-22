@@ -15,6 +15,7 @@ function Login({ props }) {
   const { authState } = useContext(AuthContext);
   const { setAuthState } = useContext(AuthContext);
   const { userState } = useContext(AuthContext);
+  const { adminState } = useContext(AuthContext);
 
   // init login state and check
   const [isLoggedIn, setIsLoggedIn] = useState(false);

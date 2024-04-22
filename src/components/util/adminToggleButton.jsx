@@ -15,8 +15,8 @@ function AdminToggleButton({ props }) {
 
     return (
         <>
-            <Button onClick={handleClick} className='btn'>
-                <b>---CLICK HERE to toggle "isAdmin"---</b>
+            <Button onClick={handleClick}>
+                <b>Toggle Admin Access (DEV)</b>
             </Button>
         </>
     );

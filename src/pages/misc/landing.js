@@ -40,7 +40,7 @@ const Landing = () => {
           </p>
           <div className="flex justify-center">
             <Link
-              to="/app/login"
+              to="/app/login" 
               className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 md:py-3 md:px-8 lg:py-4 lg:px-10 rounded mr-4"
             >
               Login

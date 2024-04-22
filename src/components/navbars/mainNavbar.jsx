@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
@@ -20,6 +21,7 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { AuthContext } from "../../contexts/authContext";
 import logoIcon from "../../assets/ProjecTile-Logo-Icon-TransparentBG.png";
+import NavItemAdmin from "./NavItemAdmin";
 
 const StyledModal = styled(Modal)({
   display: "flex",
@@ -39,15 +41,26 @@ const ModalBox = styled(Box)({
   borderRadius: "8px",
 });
 
-const Navbar = () => {
+const Navbar = ({ props }) => {
   const [isMosaicDropdownVisible, setMosaicDropdownVisible] = useState(false);
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [mosaicName, setMosaicName] = useState("");
   const [userMosaics, setUserMosaics] = useState([]);
-  const { userState, setAuthState, selMosaic, setSelMosaic } =
-    useContext(AuthContext);
+  const {
+    userState,
+    setAuthState,
+    selMosaic,
+    setSelMosaic,
+    userAdminState,
+    setUserAdminState
+  } = useContext(AuthContext);
 
+  // initial states
+  //const [isAdmin, setIsAdmin] = useState((localStorage.getItem('isAdmin') === 'true')); // SOLI TODO: delete this
+  const [isAdmin, setIsAdmin] = useState(userAdminState);
+  
+  ///////////////////////////////////////////////////////////
   const handleOpenDropdown = (event) => {
     setDropdownVisible(event.currentTarget);
   };
@@ -139,6 +152,12 @@ const Navbar = () => {
           <Button color="inherit" onClick={handleOpenDropdown}>
             {userState}
           </Button>
+          {
+            userAdminState
+            &&
+            <NavItemAdmin /> /* SOLI TODO: isAdmin: userAdminState */
+          }
+          
           <Menu
             id="simple-menu"
             anchorEl={isDropdownVisible}
