@@ -383,6 +383,7 @@ function Main() {
 
       try {
         await axios.put(`${baseUrl}/mosaics/updateTilesOrder`, {
+          mosaicId: selMosaic,
           columnId: sourceColumnId,
           newTilesOrder: newTiles,
         });
@@ -423,10 +424,12 @@ function Main() {
 
       try {
         await axios.put(`${baseUrl}/mosaics/updateTilesOrder`, {
+          mosaicId: selMosaic,
           columnId: sourceColumnId,
           newTilesOrder: newSourceTiles,
         });
         await axios.put(`${baseUrl}/mosaics/updateTilesOrder`, {
+          mosaicId: selMosaic,
           columnId: destinationColumnId,
           newTilesOrder: newDestinationTiles,
         });
