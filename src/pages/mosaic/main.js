@@ -17,7 +17,7 @@ import {
 import { styled } from "@mui/material/styles";
 import Navbar from "../../components/navbars/mainNavbar";
 import { AuthContext } from "../../contexts/authContext";
-import Chat from '../../components/Chat';
+import Chat from "../../components/Chat";
 import { EditOutlined, DeleteOutline } from "@mui/icons-material";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import Footer from "../../components/navbars/footer";
@@ -210,6 +210,7 @@ function Main() {
       const response = await axios.get(`${baseUrl}/mosaics/tile?id=${id}`);
       if (response.status === 200) {
         setTileInfo(response.data);
+        console.log(response.data);
       } else {
         console.log("Failed to find tile");
       }
@@ -685,7 +686,7 @@ function Main() {
             <label className="mr-2">Description: </label>
             <input
               type="text"
-              defaultValue={tileInfo.description ? tileInfo.description : "N/A"}
+              defaultValue={tileInfo.description}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   handleDescriptionUpdate(selTileId, e.target.value);
