@@ -6,7 +6,7 @@ import { useState, useRef, React } from 'react';
 import devRoutes from "../routes/devRoutes.js";
 
 // IMPORT: Components & Functions
-import AdminToggleButton from "../components/admin/adminToggleButton.jsx";
+import AdminToggleButton from "../components/admin/AdminToggleButton.jsx";
 import { newToastMessage } from '../components/customToast.js';
 
 const getRoutes = (routes) => {
@@ -39,10 +39,10 @@ function DevLayout(props) {
                         {getRoutes(devRoutes)}
                         <Route path="/*" element={<Navigate to='/dev/dashboard' replace />} />
                     </Routes>
-                    
-                    <AdminToggleButton props={{ toggleIsAdmin: toggleIsAdmin, newToastMessage: newToastMessage, isAdmin: isAdmin}} />
+
+                    <AdminToggleButton props={{ toggleIsAdmin: toggleIsAdmin, newToastMessage: newToastMessage, isAdmin: isAdmin }} />
                     <p>isAdmin: {isAdmin}</p>
-                    
+
                 </div>
             </div>
         </>

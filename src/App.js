@@ -27,8 +27,8 @@ function App() {
       </Routes>
 
       <ToastContainer />
-      <Footer />
-    </>
+{/*       <Footer />
+ */}    </>
   );
 }
 
