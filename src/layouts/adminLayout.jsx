@@ -12,6 +12,8 @@ import UserNotAuthorized from "../pages/misc/notAuthorized.js";
 import { AuthContext } from "../contexts/authContext.js";
 import axios from "axios";
 
+import LoadingSpinner from "../pages/loadingSpinner/loadingSpinner.jsx";
+
 
 const getRoutes = (routes) => {
     return routes.map((prop, key) => {
@@ -71,7 +73,7 @@ function AdminLayout(props) {
                             ?
                             <UserNotAuthorized />
                             :
-                            <p>loading...</p>
+                            <LoadingSpinner />
                 }
                 <p>isAdmin: {userAdminState}</p>
 

@@ -1,0 +1,114 @@
+/* Namespaced styles to prevent clashing with other application styles */
+.loading-spinner__ {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.loading-spinner__body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(to right, #f0f9ff, #c2e9fb);
+    font-family: 'Arial', sans-serif;
+    /* Ensure the font is set globally if not already set */
+}
+
+.loading-spinner-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: top;
+    align-items: center;
+    flex-direction: column;
+    /* Stacking items vertically */
+    background: repeating-linear-gradient(105deg,
+            #f0f9ff,
+            #d6f2ff 540px,
+            #f0f9ff 1080px);
+    background-size: 200% 100%;
+    animation: slide 4s linear infinite;
+    z-index: 1000;
+}
+
+@keyframes slide {
+    from {
+        background-position: 58% 0;
+    }
+
+    to {
+        background-position: 0% 0;
+    }
+}
+
+.loading-spinner-logo {
+    --diameter: 150px;
+    /* Increased size */
+    flex: 0 0 auto;
+    position: relative;
+    width: var(--diameter);
+    height: var(--diameter);
+    border-radius: 50%;
+    background-color: transparent;
+    animation: spin 3500ms ease-in-out infinite;
+    margin-bottom: 0px;
+    /* Space between logo and text */
+}
+
+.loading-spinner__logo img {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+.loading-spinner-text {
+    color: #046582;
+    font-size: 30px;
+    /* Increased font size */
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.7);
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(720deg);
+    }
+}
+
+.loading-spinner-text span {
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+.loading-spinner-text span:nth-child(1) {
+    animation-delay: 0.3s;
+}
+
+.loading-spinner-text span:nth-child(2) {
+    animation-delay: 0.6s;
+}
+
+.loading-spinner-text span:nth-child(3) {
+    animation-delay: 0.9s;
+}

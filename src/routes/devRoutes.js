@@ -11,6 +11,7 @@ import RegistrationPage from "../pages/user/regi.js";
 import UserHomePage from "../pages/user/user-home-page.js";
 import UserSettingsPage from "../pages/user/user-settings-page.js";
 import MosaicMainPage from "../pages/mosaic/main.js";
+import LoadingSpinner from "../pages/loadingSpinner/loadingSpinner.jsx";
 
 // these all start from the /dev/ path
 var devRoutes = [
@@ -67,6 +68,12 @@ var devRoutes = [
         path: "/MosaicMainPage",
         name: "Dev: Main Mosaic Page",
         component: <MosaicMainPage />,
+    },
+
+    {
+        path: "/LoadingSpinner",
+        name: "Dev: LoadingSpinner",
+        component: <LoadingSpinner />,
     }
 ];
 
