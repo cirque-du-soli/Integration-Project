@@ -4,17 +4,8 @@ import { useRef, useState, React, useEffect } from 'react';
 import axios from "axios";
 import { AuthContext } from "../contexts/authContext.js";
 
-// IMPORT: Styles
-import logo from '../assets/ProjecTile-Logo-Icon-TransparentBG.png';
-import '../styles/App.css';
-
 // IMPORT: Routes
 import mainRoutes from "../routes/mainRoutes.js";
-
-// IMPORT: Components
-import PageNotFound from "../pages/misc/pageNotFound404.js";
-
-//import EditProfile from "../components/Pages/EditProfile";
 
 const getRoutes = (routes) => {
     return routes.map((prop, key) => {
@@ -38,8 +29,10 @@ function MainLayout(props) {
                 if (response.data.error) {
                     setAuthState(false);
                 } else {
+                    console.log("response.data >> user state:")
                     console.log(response.data);
-                    setUserState(response.data);
+                    setUserState(response.data); // SOLI TODO: this will be response.data.username
+                    // setAdminState(response.data.isAdmin); // SOLI TODO: check if user is admin
                     setAuthState(true);
                 }
             });
@@ -52,7 +45,7 @@ function MainLayout(props) {
 
     const [uname, setUname] = useState(sessionStorage.getItem('username'));
 
-    return (
+    return ( // SOLI TODO: move AuthContext.Provider to App.js and pass via props
         <>
             <div className="App">
                 <div className="main-panel" ref={mainPanelRef}>

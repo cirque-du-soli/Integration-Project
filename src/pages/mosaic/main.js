@@ -20,7 +20,6 @@ import { AuthContext } from "../../contexts/authContext";
 import Chat from '../../components/Chat';
 import { EditOutlined, DeleteOutline } from "@mui/icons-material";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import Footer from "../../components/navbars/footer";
 
 const StyledModal = styled(Modal)({
   display: "flex",
@@ -796,7 +795,6 @@ function Main() {
           <Chat boardId={selMosaic} isOpen={chatModalOpen} />
         </ModalBox>
       </StyledModal>
-      <Footer />
     </DragDropContext>
   );
 }
