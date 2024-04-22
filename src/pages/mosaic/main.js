@@ -335,6 +335,12 @@ function Main() {
     }
   }
   //update Description
+  const handleDescriptionChange = (newValue) => {
+    setTileInfo((prevState) => ({
+      ...prevState,
+      description: newValue,
+    }));
+  };
   async function handleDescriptionUpdate(id, description) {
     try {
       const response = await axios.put(`${baseUrl}/mosaics/tileDescription`, {
@@ -685,7 +691,10 @@ function Main() {
             <label className="mr-2">Description: </label>
             <input
               type="text"
-              defaultValue={tileInfo.description}
+              value={tileInfo.description}
+              onChange={(e) => {
+                handleDescriptionChange(e.target.value);
+              }}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   handleDescriptionUpdate(selTileId, e.target.value);
