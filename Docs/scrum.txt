@@ -905,6 +905,84 @@ Sophie:
 		- continue add-user-to-mosaic feature
 
 ===============================================================================
+Day14: 2024-04-22 Monday 
+=============================
+
+Benjamin:
+	Done:
+		- Display to dos
+		- change mosaic / main page link to be ID specific
+		- rename to dos
+		- delete to dos
+		- update to do status (done, not done)
+		- update tile due Dates
+		- update tile descriptions
+		
+	Not-Done:
+		- password validation doesnt match update password/Registration
+		- assigning members to mosaics
+		- rendering/load order issues
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- password validation
+		- work on re-rendering / load order
+
+Soliloquy:
+	Done:
+		- Few more toasts
+		- Admin nav item
+		- page not found -- implement + fix redirects
+		- not authorized page -- implement & check for isAdmin
+		
+	Not-Done:
+		- 
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- Make the navbar item render conditionally
+		- backend admin route for users
+		- test charts with real data
+		- Expand toast messages / error checking / try-catch
+		- redirect to not-authorized page if user accesses mosaic of other user
+
+Nicholas: 
+	Done:
+		- Finished message persistence with db
+		- Finished chat function
+		- Fixed merge issues
+		- Researched unit tests
+		
+	Not-Done:
+		- 
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- Write some unit tests for backend
+
+Sophie: 
+	Done:
+		-save drag and drop to database
+		-started adding users to mosaic functionality
+		
+	Not-Done:
+		- 
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- user can delete mosaic
+		- user can add user to mosaic
+		
+
+===============================================================================
 ===============================================================================
 ===============================================================================
       ____  ____  __  __  ____  __      __   ____  ____   
