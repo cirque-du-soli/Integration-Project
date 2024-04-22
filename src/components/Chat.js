@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const baseUrl = process.env.REACT_APP_API_BASE_URL;
 //const socket = io(`${baseUrl}:3001`);
-const socket = io(baseUrl);
+const socket = io(baseUrl, { secure: true });
 
 function Chat({ boardId, isOpen }) {
     const [message, setMessage] = useState('');
