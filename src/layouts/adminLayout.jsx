@@ -75,7 +75,6 @@ function AdminLayout(props) {
                             :
                             <LoadingSpinner />
                 }
-                <p>isAdmin: {userAdminState}</p>
 
             </div>
         </>

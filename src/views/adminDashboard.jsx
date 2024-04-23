@@ -1,6 +1,11 @@
 import { useNavigate } from "react-router-dom"
 import { Container, Row, Col } from "reactstrap";
 import AdminNavTabs from "../components/admin/adminNavTabs";
+import { newToastMessage } from '../components/customToast.js';
+
+import styles from '../styles/adminDashboard.module.css';
+import '../components/admin/admin.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const AdminDashboard = ({ props }) => {
 
@@ -11,7 +16,7 @@ const AdminDashboard = ({ props }) => {
 
     return (
         <>
-            <Container className='adminDashboardHolder p-0 text-center'>
+            <Container className='adminDashboardHolder text-3xl md:text-4xl lg:text-5xl font-bold mb-2 md:mb-4 lg:mb-6'>
                 <Row>
                     <Col className="py-3">
                         <h1>Admin Dashboard</h1>
@@ -20,23 +25,10 @@ const AdminDashboard = ({ props }) => {
 
                 <Row className="px-3">
                     <Col xs="12" lg="12">
-                        <AdminNavTabs />
+                        <AdminNavTabs props={{ newToastMessage: newToastMessage }} />
                     </Col>
                 </Row>
             </Container>
-
-
-            <div className='col-10 offset-1'>
-                <h1 className='mt-5'>Admin Dashboard!</h1>
-                <h5 className='my-5'>This dashboard has only been implemented on the branch: soliWorkingBranch.</h5>
-                <h5 className='my-5'>Before implementing here, certain backend routes must first be implemented.</h5>
-                <div>
-                    <button className='btn btn-light my-2' onClick={goBack}>Go Back</button>
-                </div>
-                <div>
-                    <button className='btn btn-light my-2' onClick={goHome}>Go to Home</button>
-                </div>
-            </div>
         </>
     )
 };

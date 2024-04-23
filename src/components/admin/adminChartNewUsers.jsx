@@ -13,6 +13,8 @@ import {
     Legend,
 } from 'chart.js';
 
+import LoadingSpinnerMini from "../loadingSpinnerMini/loadingSpinnerMini.jsx";
+
 // custom functions
 import calcRegiData from "./calcRegiData";
 
@@ -119,7 +121,7 @@ function AdminChartNewUsers({ props }) {
 
     return (
         <>
-            <Card className="card-chart my-5 custom-card" >
+            <Card className="card-chart my-5 custom-card text-sm md:text-md lg:text-lg mb-4 md:mb-6 lg:mb-8" >
                 <CardHeader>
                     <CardTitle tag="h3">
                         <i className="custom-icons bell-icon text-info" /> New Users Per Day
@@ -129,7 +131,7 @@ function AdminChartNewUsers({ props }) {
                 <CardBody className="">
                     {!cardReady
                         ?
-                        <p>Loading...</p>
+                        <LoadingSpinnerMini />
                         : 
                         <div className="chart-area">
                             <h4>Total Users Created: {totalUsers}</h4>
