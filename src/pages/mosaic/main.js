@@ -195,10 +195,11 @@ function Main() {
     setNewTileColumnId("");
   };
 
+  //DEAD CODE? TBD by ben
   //get tile info for tile modal
-  useEffect(() => {
-    getTileInfo(selTileId);
-  }, [selTileId]);
+  // useEffect(() => {
+  //   getTileInfo(selTileId);
+  // }, [selTileId]);
 
   const getTileInfo = async (id) => {
     console.log(`fetching tile ${id}`); //console log for testing
@@ -566,6 +567,7 @@ function Main() {
                                 className="bg-gray-200 rounded px-4 py-4 mb-4 cursor-pointer hover:bg-gray-400"
                                 onClick={() => {
                                   setSelTileId(tile.split(":")[0]);
+                                  getTileInfo(tile.split(":")[0]);
                                   setTileViewModal(true);
                                 }}
                               >
