@@ -6,7 +6,7 @@ import axios from 'axios';
 import generatePassword from '../../util/generatePassword';
 
 
-function AdminTables( { props }) {
+function AdminTableUsers( { props }) {
 
   const [usersList, setUsersList] = useState([]);
 
@@ -132,33 +132,72 @@ function AdminTables( { props }) {
 
   return (
     <>
-      <Table striped>
-        <thead>
+      <Table className="tablesorter" responsive={true} striped>
+        <thead className="text-primary">
           <tr>
-            <th>ID</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Admin</th>
-            <th>Created</th>
-            <th>Deleted</th>
+            <th className="text-center">ID</th>
+            <th className="text-center">Username</th>
+            <th className="text-center">Email</th>
+            {/* <th className="text-center">Password</th> */}
+            <th className="text-center">Role</th>
+            <th className="text-center">Status</th>
+            {/* <th className="text-center">Img</th> */}
+            <th className="text-center">Created</th>
+            <th className="text-center">Updated</th>
           </tr>
         </thead>
         <tbody>
-          {users.map(user => (
-            <tr key={user.id}>
-              <td>{user.id}</td>
-              <td>{user.username}</td>
-              <td>{user.email}</td>
-              <td>{user.isAdmin}</td>
-              <td>{user.createdAt}</td>
-              <td>{user.isDeleted}</td>
-            </tr>
-          ))}
+          {
+            users.map(user => (
+              <tr key={val.id}>
+                <td>{val.id}</td>
+                <td>{val.username}</td>
+                <td>{val.email}</td>
+                {/* <td>{val.password ? "********" : "invalid"}</td> */}
+                <td>{val.isAdmin ? "Admin" : "User"}</td>
+                <td>{val.isDeleted ? "Deleted" : "Active"}</td>
+                {/* <td>{val.avatar}</td> */}
+                <td>{val.createdAt}</td>
+                {/* <td>{val.updatedAt}</td> */}
+                <td className="text-center">
+                  <button
+                    className="btn btn-secondary"
+                    onClick={() => { editUser(val.id) }}
+                  >
+                    Edit
+                  </button>
+                </td>
+                {
+                  val.isDeleted
+                  &&
+                  <td td className="text-center">
+                    <button
+                      className="btn btn-warning"
+                      onClick={() => { undeleteUser(val.id) }}
+                    >
+                      Un-Delete
+                    </button>
+                  </td>
+                }
+                {
+                  !val.isDeleted
+                  &&
+                  <td className="text-center">
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => { deleteUser(val.id) }}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                }
+              </tr>
+            ))
+          }
         </tbody>
       </Table>
     </>
   );
-  
 }
 
-export default AdminTables;
+export default AdminTableUsers;

@@ -13,7 +13,7 @@ import {
 
 // IMPORT: Components
 import AdminChartNewUsers from './adminChartNewUsers';
-import AdminUsersCard from './adminUsersCard';
+import AdminTableUsers from './adminTableUsers';
 import AdminNewUserForm from './adminNewUserForm';
 
 
@@ -76,7 +76,7 @@ const AdminNavTabs = ({ props }) => {
                 <TabPane tabId="2">
                     <Row className="p-3">
                         <Col xs="12" lg="10" className="mx-auto my-2">
-                            <AdminUsersCard />
+                            <AdminTableUsers />
                         </Col>
                     </Row>
                 </TabPane>
