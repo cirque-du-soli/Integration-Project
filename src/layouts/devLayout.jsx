@@ -6,7 +6,7 @@ import { useState, useRef, React } from "react";
 import devRoutes from "../routes/devRoutes.js";
 
 // IMPORT: Components & Functions
-import AdminToggleButton from "../components/util/adminToggleButton.jsx";
+import AdminToggleButton from "../components/admin/adminToggleButton.jsx";
 import { newToastMessage } from "../components/customToast.js";
 
 const getRoutes = (routes) => {

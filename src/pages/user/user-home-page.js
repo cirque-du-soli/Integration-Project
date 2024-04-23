@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
-import { useLocation, Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import Navbar from "../../components/navbars/mainNavbar";
 import { AuthContext } from "../../contexts/authContext";
 import backgroundImage from "../../assets/hero.jpg";
+import LoadingSpinner from "../loadingSpinner/loadingSpinner.jsx";
 
 function Home() {
-  const location = useLocation();
   const { userState, authState } = useContext(AuthContext);
 
   return (
@@ -31,7 +31,7 @@ function Home() {
             ?
             < Navigate to="/app/login" replace />
             :
-            <p>Loading...</p> /* SOLI TODO: add a spinner here*/
+            <LoadingSpinner />
       }
     </>
   );

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import BackgroundImg from "../../assets/bg.jpg";
-import { validatePassword } from "../../fe-validations/validatePassword";
+import { validatePassword } from "../../util/fe-validations/validatePassword";
 
 function Registration() {
   const history = useNavigate();

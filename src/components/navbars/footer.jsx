@@ -1,14 +1,11 @@
-import { React, useState, useRef, useContext } from 'react';
-import { Button } from 'reactstrap';
-import AdminToggleButton from "../util/adminToggleButton.jsx";
+import { React, useState } from 'react';
+import AdminToggleButton from "../admin/adminToggleButton.jsx";
 import { newToastMessage } from '../customToast.js';
-import { AuthContext } from "../../contexts/authContext.js";
 
 function Footer({ props }) {
-  const mainPanelRef = useRef(null);
-
+  
   // initial states
-  const [isAdmin, setIsAdmin] = useState(props.userAdminState);
+  const [isAdmin] = useState(props.userAdminState);
   localStorage.setItem("isAdmin", isAdmin);
 
   function toggleIsAdmin() {
@@ -30,11 +27,11 @@ function Footer({ props }) {
             Home
           </a>
           <span className="text-black">|</span>
-          <a href="#" className="text-black hover:text-gray-400 ml-4 mr-4">
+          <a href="/" className="text-black hover:text-gray-400 ml-4 mr-4">
             Terms of Service
           </a>
           <span className="text-black">|</span>
-          <a href="#" className="text-black hover:text-gray-400 ml-4">
+          <a href="/" className="text-black hover:text-gray-400 ml-4">
             Privacy Policy
           </a>
           <span className="text-black"> | </span>

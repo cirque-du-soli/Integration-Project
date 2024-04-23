@@ -56,9 +56,6 @@ function Main() {
   const [selTileId, setSelTileId] = useState("");
   //Backend URL
   const baseUrl = process.env.REACT_APP_API_BASE_URL;
-  //dueDate change stuff
-  const [newDueDate, setNewDueDate] = useState();
-  const [showDatePicker, setShowDatePicker] = useState(false);
 
   // //check user authority
   // const checkUserAuth = async () => {
@@ -175,7 +172,7 @@ function Main() {
     setNewTileColumnId("");
   };
 
-  //add new titles
+  //add new tiles
   const handleNewTileSubmit = async (colId, newTile) => {
     console.log(
       `New tile ${newTile} on column ${colId} on mosaic ${selMosaic}`
@@ -198,10 +195,11 @@ function Main() {
     setNewTileColumnId("");
   };
 
+  //DEAD CODE? TBD by ben
   //get tile info for tile modal
-  useEffect(() => {
-    getTileInfo(selTileId);
-  }, [selTileId]);
+  // useEffect(() => {
+  //   getTileInfo(selTileId);
+  // }, [selTileId]);
 
   const getTileInfo = async (id) => {
     console.log(`fetching tile ${id}`); //console log for testing
@@ -355,8 +353,23 @@ function Main() {
       console.log("Error updating description: ", error);
     }
   }
+  //assign tile to member
+  async function assignTile(member, id) {
+    try {
+      const response = await axios.put(`${baseUrl}/mosaics/assignTile`, {
+        member,
+        id,
+      });
+      if (response.status === 200) {
+        console.log("tile assigned to: ", member);
+        getTileInfo(response.data);
+      }
+    } catch (error) {
+      console.log("Error assigning tile: ", error);
+    }
+  }
 
-  //drag and drop
+  //DRAG AND DROP
   const onDragEnd = async (result) => {
     const { source, destination, draggableId } = result;
     if (!destination) {
@@ -554,6 +567,7 @@ function Main() {
                                 className="bg-gray-200 rounded px-4 py-4 mb-4 cursor-pointer hover:bg-gray-400"
                                 onClick={() => {
                                   setSelTileId(tile.split(":")[0]);
+                                  getTileInfo(tile.split(":")[0]);
                                   setTileViewModal(true);
                                 }}
                               >
@@ -778,6 +792,21 @@ function Main() {
                 Add To do item
               </Button>
             )}
+            <div className="mb-4 mt-2">
+              <label className="mr-2">Assigned to:</label>
+              <select
+                id="assigned"
+                onChange={(e) => assignTile(e.target.value, selTileId)}
+                value={tileInfo.assigned || ""}
+              >
+                <option value={""}>No one</option>
+                <option value={userState}>{userState}</option>
+                {mosaicInfo.members &&
+                  mosaicInfo.members.map((member) => (
+                    <option value={member}>{member}</option>
+                  ))}
+              </select>
+            </div>
             <div className="flex">
               <p className="mr-2">Due: </p>
               <DatePicker
@@ -786,7 +815,6 @@ function Main() {
                 }}
                 selected={tileInfo.dueDate}
                 onChange={(date) => handleDateChange(date, selTileId)}
-                onCalendarClose={() => setShowDatePicker(false)}
               />
             </div>
           </div>
