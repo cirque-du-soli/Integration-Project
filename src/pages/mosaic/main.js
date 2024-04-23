@@ -583,12 +583,12 @@ function Main() {
                 )}
               </Droppable>
             ))}
-          <div className="w-80 bg-white p-4 rounded-lg shadow-md flex flex-col justify-center items-center ">
+          <div className="bg-white p-2 rounded-lg shadow-md flex flex-col justify-center items-center ">
             <button
               onClick={() => setNewColumnModal(true)}
-              className="border px-2 py-1 rounded bg-green-500 text-white"
+              className="border px-3 py-1 rounded bg-green-500 text-white text-3xl font-black"
             >
-              add new column
+              +
             </button>
           </div>
         </div>
