@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 import axios from 'axios';
 
@@ -23,6 +23,14 @@ function Chat({ boardId, isOpen }) {
         };
     }, [boardId]);
 
+    const messagesContainerRef = useRef(null);
+    useEffect(() => {
+        if (isOpen && messagesContainerRef.current) {
+            const element = messagesContainerRef.current;
+            element.scrollTop = element.scrollHeight;
+        }
+    }, [messages, isOpen]);
+
     useEffect(() => {
         if (isOpen) {
             fetchMessages();
@@ -46,10 +54,10 @@ function Chat({ boardId, isOpen }) {
     };
 
     return (
-        <div style={{ position: 'relative', width: '300px', height: '400px', border: '1px solid black', padding: '10px', margin: '10px', boxSizing: 'border-box' }}>
-            <div style={{ height: '340px', overflowY: 'auto', marginBottom: '10px', padding: '5px', boxSizing: 'border-box' }}>
+        <div style={{ position: 'relative', width: '300px', height: '400px', border: '1px solid black', padding: '10px', margin: '10px', boxSizing: 'border-box', background: 'rgba(255, 255, 255, 0.5)' }}> {/* Adjusted background style */}
+            <div ref={messagesContainerRef} style={{ height: '340px', overflow: 'auto', marginBottom: '10px', padding: '5px', boxSizing: 'border-box' }}>
                 {messages.map((msg, index) => (
-                    <div key={index} style={{ marginBottom: '5px' }}>
+                    <div key={index} style={{ margin: '5px' }}>
                         <strong>{msg.username}</strong>: {msg.messageText}
                     </div>
                 ))}
