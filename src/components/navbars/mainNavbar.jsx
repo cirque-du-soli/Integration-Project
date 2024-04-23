@@ -57,7 +57,6 @@ const Navbar = ({ props }) => {
   } = useContext(AuthContext);
 
   // initial states
-  //const [isAdmin, setIsAdmin] = useState((localStorage.getItem('isAdmin') === 'true')); // SOLI TODO: delete this
   const [isAdmin, setIsAdmin] = useState(userAdminState);
   
   ///////////////////////////////////////////////////////////

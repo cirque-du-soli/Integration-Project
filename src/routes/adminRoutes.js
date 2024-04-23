@@ -1,11 +1,8 @@
-// IMPORT: Dashboard/View
 import AdminDashboard from "../views/adminDashboard";
+import PageNotFound from "../pages/404/pageNotFound404.js";
+import NotAuthorized from "../pages/notAuth/notAuthorized.js";
 
-// IMPORT: components
-/* TODO: add more components
-import AdminTables from "../components/Tables/AdminTables";
-*/
-
+// SOLI TODO: import AdminTables from "../components/Tables/AdminTables";
 
 // these all start from the /admin/ path
 var adminRoutes = [
@@ -15,14 +12,20 @@ var adminRoutes = [
         name: "Admin Dashboard",
         component: <AdminDashboard />,
     },
-    
-    /*
+
     {
-        path: "/dashboard",
-        name: "other thing",
-        component: <AdminToggleButton />,
+        path: "/PageNotFound",
+        name: "Admin PageNotFound",
+        component: <PageNotFound />,
     },
 
+    {
+        path: "/NotAuthorized",
+        name: "Admin NotAuthorized",
+        component: <NotAuthorized />,
+    },
+    
+    /*
     {
         path: "/admintables/",
         name: "Admin Tables",
