@@ -981,6 +981,75 @@ Sophie:
 		- user can delete mosaic
 		- user can add user to mosaic
 		
+===============================================================================
+Day15: 2024-04-23 Tuesday
+=============================
+
+Benjamin:
+	Done:
+		- Password validation matches password changing
+		- i think i found all the re-render issues
+		
+	Not-Done:
+		- i guess tiles aren't re-rendering properly it will never end
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- Users  get assigned to tiles
+		- re-redenering for tile info
+		- websockets for dnd
+
+Soliloquy:
+	Done:
+		- switch to using AuthContext to check if user is admin
+			- conditional renders (admin nav item)
+			- protected routes (admin urls, admin axios)
+		- middle-end logic for Cards (calcRegiData.js, ubd-charts)
+		- render dummy data in Cards and Charts
+		- turing op Component renders on many pages -- LoaderSpinner.jsx while content loads & auth is checked
+		- created & styled LoaderSpinner.jsx & LoaderSpinnerMini.jsx (for inside small components)
+		
+	Not-Done:
+		- 4 backend routes
+		- websockets for mosaic dnd
+	
+	Needs Assistance:
+		- websockets for mosaic dnd (time)
+
+	Todo Before Next Scrum:
+		- FIX reactstrap + bootstrap styling conflicts w/ tailwind (DaisyUI)
+		- 4 backend routes
+		- backend delivery of isAdmin role
+
+Nicholas: 
+	Done:
+		- Fixed CORS issues with site
+		- Modified chat function
+		- Started writing unit tests 
+		
+	Not-Done:
+		- 
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- Continue writing unit tests
+
+Sophie: 
+	Done:
+		- Sick Day 
+		
+	Not-Done:
+		- 
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- 
 
 ===============================================================================
 ===============================================================================
