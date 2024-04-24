@@ -753,6 +753,7 @@ function Main() {
         </ModalBox>
       </StyledModal>
 
+      {/* Modal for adding new columns */}
       <StyledModal
         open={newColumnModal}
         onClose={() => setNewColumnModal(false)}
@@ -794,6 +795,7 @@ function Main() {
         </ModalBox>
       </StyledModal>
 
+      {/* Modal for tile view */}
       <StyledModal
         open={tileViewModal}
         onClose={() => setTileViewModal(false)}
@@ -979,6 +981,7 @@ function Main() {
           </div>
         </ModalBox>
       </StyledModal>
+      {/* Chat modal */}
       <StyledModal
         open={chatModalOpen}
         onClose={() => setChatModalOpen(false)}
