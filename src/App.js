@@ -1,5 +1,5 @@
 // IMPORT: Router
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes, Navigate, BrowserRouter } from "react-router-dom";
 
 // IMPORT: Layouts
 import MainLayout from '../src/layouts/mainLayout';
@@ -8,7 +8,9 @@ import DevLayout from '../src/layouts/devLayout';
 
 // IMPORT: Global Components
 import { ToastContainer } from 'react-toastify';
-import Footer from './components/navbars/footer';
+
+// IMPORT: Contexts
+import { ThemeProvider } from './contexts/themeContext';
 
 // IMPORT: LATER FEATURES
 //import { AuthContext } from './contexts/authContext';
@@ -16,19 +18,27 @@ import Footer from './components/navbars/footer';
 //import googleAnalytics from './components/googleAnalytics';
 
 function App() {
+
   return (
     <>
-      <Routes>
-        <Route path="/" element={<Navigate to="/app/welcome" replace />} />
-        <Route path="/app/*" element={<MainLayout />} />
-        <Route path="/admin/*" element={<AdminLayout />} />
-        <Route path="/dev/*" element={<DevLayout />} />
-        <Route path="/*" element={<Navigate to="/app/welcome" replace />} />
-      </Routes>
+        <ThemeProvider>
+          <BrowserRouter>
 
-      <ToastContainer />
-{/*       <Footer />
- */}    </>
+            <Routes>
+              <Route path="/" element={<Navigate to="/app/welcome" replace />} />
+              <Route path="/app/*" element={<MainLayout />} />
+              <Route path="/admin/*" element={<AdminLayout />} />
+              <Route path="/dev/*" element={<DevLayout />} />
+              <Route path="/*" element={<Navigate to="/app/welcome" replace />} />
+            </Routes>
+
+            <ToastContainer />
+            {/* <Footer /> */}
+          </BrowserRouter>
+        </ThemeProvider>
+
+      
+    </>
   );
 }
 

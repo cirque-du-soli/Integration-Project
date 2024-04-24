@@ -1,6 +1,5 @@
 // IMPORT: React
 import { React } from 'react';
-import { Button } from 'reactstrap';
 
 function AdminToggleButton({ props }) {
 
@@ -15,9 +14,9 @@ function AdminToggleButton({ props }) {
 
     return (
         <>
-            <Button onClick={handleClick}>
+            <div className='btn' onClick={handleClick}>
                 <b>Toggle Admin Access (DEV)</b>
-            </Button>
+            </div>
         </>
     );
 }

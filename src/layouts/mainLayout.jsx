@@ -55,7 +55,7 @@ function MainLayout(props) {
     return ( // SOLI TODO: move AuthContext.Provider to App.js and pass via props
         <>
             <div className="App">
-                <div className="main-panel" ref={mainPanelRef}>
+                <div className="main-panel text-black form-control-color- " ref={mainPanelRef}>
                     <AuthContext.Provider
                         value={{
                             authState,
