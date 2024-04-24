@@ -8,6 +8,8 @@ import DevLayout from '../src/layouts/devLayout';
 
 // IMPORT: Global Components
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 // IMPORT: Contexts
 import { ThemeProvider } from './contexts/themeContext';
