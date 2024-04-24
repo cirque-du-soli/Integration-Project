@@ -20,6 +20,9 @@ export function newToastMessage(toastType, msg) { // toastType: 'success', 'erro
         case 'error':
             toast.error(msg, options);
             break;
+        case 'info':
+            toast.info(msg, options);
+            break;
         default:
             toast.warning(msg, options);
             break;

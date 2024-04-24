@@ -15,6 +15,7 @@
     "axios": "^1.6.8",
     "canvas": "^2.11.2",
     "chart.js": "^4.4.2",
+    "classnames": "^2.5.1",
     "dotenv": "^16.4.5",
     "perfect-scrollbar": "^1.5.5",
     "react": "^18.2.0",
@@ -28,7 +29,6 @@
     "react-scripts": "5.0.1",
     "react-spring": "^9.7.3",
     "react-toastify": "^10.0.5",
-    "reactstrap": "^9.2.2",
     "socket.io-client": "^4.7.5",
     "tailwindcss": "^3.4.3",
     "toastify": "^2.0.1",
@@ -57,5 +57,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "daisyui": "^4.10.2"
   }
 }

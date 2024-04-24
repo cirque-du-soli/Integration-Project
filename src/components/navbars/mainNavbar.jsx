@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
@@ -57,7 +56,6 @@ const Navbar = ({ props }) => {
   } = useContext(AuthContext);
 
   // initial states
-  //const [isAdmin, setIsAdmin] = useState((localStorage.getItem('isAdmin') === 'true')); // SOLI TODO: delete this
   const [isAdmin, setIsAdmin] = useState(userAdminState);
   
   ///////////////////////////////////////////////////////////

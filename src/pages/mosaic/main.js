@@ -13,6 +13,7 @@ import {
   TextField,
   Menu,
   MenuItem,
+  Checkbox,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Navbar from "../../components/navbars/mainNavbar";
@@ -44,6 +45,12 @@ function Main() {
 
   const [mosaicInfo, setMosaicInfo] = useState({});
   const [tileInfo, setTileInfo] = useState({});
+
+  const [addCollaboratorModalOpen, setAddCollaboratorModalOpen] =
+    useState(false);
+  const [userSearchInput, setUserSearchInput] = useState("");
+  const [selectedUsers, setSelectedUsers] = useState([]);
+
   const [chatModalOpen, setChatModalOpen] = useState(false);
   //Modal toggle and const for creating new Columns
   const [newColumnModal, setNewColumnModal] = useState(false);
@@ -81,7 +88,6 @@ function Main() {
       const response = await axios.get(
         `${process.env.REACT_APP_API_BASE_URL}/mosaics/byID?id=${selMosaic}`
       );
-      console.log(response.data);
       setMosaicInfo((prevMosaicInfo) => ({
         ...prevMosaicInfo,
         ...response.data,
@@ -93,6 +99,82 @@ function Main() {
   useEffect(() => {
     fetchMosaicInfo();
   }, [selMosaic]);
+
+  // Effect to fetch current collaborators when the modal opens
+  useEffect(() => {
+    if (addCollaboratorModalOpen) {
+      fetchCurrentCollaborators();
+    }
+  }, [addCollaboratorModalOpen]);
+
+  // Function to fetch current collaborators and set selectedUsers state
+  const fetchCurrentCollaborators = async () => {
+    try {
+      const response = await axios.get(
+        `${baseUrl}/mosaics/${selMosaic}/collaborators`
+      );
+
+      setSelectedUsers(response.data); // Set selectedUsers state with the fetched collaborators
+    } catch (error) {
+      console.error("Error fetching current collaborators:", error);
+      // Handle error
+    }
+  };
+
+  // Function to add a user as a collaborator
+  async function addUserAsCollaborator(selectedUsers) {
+    try {
+      console.log(selectedUsers.map((user) => user.id));
+      const response = await axios.post(`${baseUrl}/mosaics/addMember`, {
+        mosaicId: selMosaic,
+        selectedUsers: selectedUsers,
+      });
+      if (response.status === 200) {
+        console.log("Users added as collaborators");
+        fetchMosaicInfo();
+        setAddCollaboratorModalOpen(false);
+      } else {
+        console.log("Failed to add users as collaborators");
+      }
+    } catch (error) {
+      console.error("Error adding users as collaborators: ", error);
+    }
+  }
+
+  // Function to handle user search
+  const handleUserSearch = async () => {
+    try {
+      const response = await axios.get(
+        `${baseUrl}/users/search?q=${userSearchInput}`
+      );
+
+      // Assuming response.data contains the user data
+      const user = response.data[0];
+
+      // Check if the user already exists in selectedUsers
+      const isUserAlreadySelected = selectedUsers.some(
+        (selectedUser) => selectedUser.id === user.id
+      );
+
+      // If the user is not already selected, add them to selectedUsers state
+      if (!isUserAlreadySelected) {
+        setSelectedUsers((prevSelectedUsers) => [...prevSelectedUsers, user]);
+      }
+
+      // Clear the user search input
+      setUserSearchInput("");
+    } catch (error) {
+      console.error("Error searching users:", error);
+      // Handle error
+    }
+  };
+
+  // Function to remove a selected user
+  const handleRemoveSelectedUser = (userId) => {
+    setSelectedUsers((prevSelectedUsers) =>
+      prevSelectedUsers.filter((user) => user.id !== userId)
+    );
+  };
 
   //create new column
   async function createColumn(e) {
@@ -463,136 +545,213 @@ function Main() {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div className="bg-gray-200 min-h-screen">
+      <div className="bg-gray-200 min-h-screen flex flex-col">
         <Navbar />
 
         <h1 className="text-3xl font-bold text-gray-800 mb-4">
           {mosaicInfo.title}
         </h1>
+        <Button onClick={() => setAddCollaboratorModalOpen(true)}>
+          Add Collaborator
+        </Button>
         <Button onClick={() => setChatModalOpen(true)}>Open Chat</Button>
-        <div className="flex justify-evenly items-start">
-          {mosaicInfo.columns &&
-            mosaicInfo.columns.map((column, index) => (
-              <Droppable droppableId={column._id} key={column._id}>
-                {(provided) => (
-                  <div
-                    key={column._id}
-                    className="w-80 bg-white p-4 rounded-lg shadow-md mr-4 flex flex-col"
-                    style={{
-                      height: `${(column.tiles.length + 1.5) * 75}px`,
-                    }}
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
-                  >
-                    <div className="flex justify-between items-center mb-2">
-                      <h2 className="text-xl font-semibold mb-2">
-                        {column.title}
-                      </h2>
-                      <div className="flex items-center space-x-2">
-                        {renameColumnId === column._id ? (
-                          <div className="mb-2">
-                            <input
-                              type="text"
-                              defaultValue={column.title}
-                              onKeyDown={(e) => {
-                                if (e.key === "Enter") {
-                                  handleRenameSubmit(
-                                    column._id,
-                                    e.target.value
-                                  );
-                                }
-                              }}
-                              className="border border-gray-300 px-2 py-1 rounded"
-                            />
-                            <button onClick={() => setRenameColumnId("")}>
-                              Cancel
-                            </button>
-                          </div>
-                        ) : (
-                          <>
-                            <EditOutlined
-                              onClick={() => setRenameColumnId(column._id)}
-                              className="cursor-pointer mr-2"
-                            />
-                            <DeleteOutline
-                              onClick={() => delColumn(column._id)}
-                              className="cursor-pointer"
-                            />
-                          </>
-                        )}
-                      </div>
-                    </div>
-
-                    {newTileColumnId === column._id ? (
-                      <div>
-                        <input
-                          type="text"
-                          defaultValue={"New tile"}
-                          onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                              handleNewTileSubmit(column._id, e.target.value);
-                            }
-                          }}
-                        />
-                        <button
-                          onClick={() => setNewTileColumnId("")}
-                          className="border px-4 py-1 mb-4 rounded bg-gray-300"
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    ) : (
-                      <button
-                        onClick={() => setNewTileColumnId(column._id)}
-                        className="border px-2 py-1 mb-4 rounded bg-blue-500 text-white hover:bg-blue-400"
-                      >
-                        Add new Tile
-                      </button>
-                    )}
-
-                    <div className="mb-4">
-                      {column.tiles.map((tile, tileIndex) => (
-                        <Draggable
-                          key={tile}
-                          draggableId={tile}
-                          index={tileIndex}
-                        >
-                          {(provided) => (
-                            <div
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                            >
-                              <p
-                                className="bg-gray-200 rounded px-4 py-4 mb-4 cursor-pointer hover:bg-gray-400"
-                                onClick={() => {
-                                  setSelTileId(tile.split(":")[0]);
-                                  getTileInfo(tile.split(":")[0]);
-                                  setTileViewModal(true);
+        <main className="container mx-auto px-4 pt-12 flex-grow overflow-x-auto whitespace-nowrap mb-4 sm:mb-0">
+          <div className="flex justify-evenly items-start mb-10">
+            {mosaicInfo.columns &&
+              mosaicInfo.columns.map((column, index) => (
+                <Droppable droppableId={column._id} key={column._id}>
+                  {(provided) => (
+                    <div
+                      key={column._id}
+                      className="w-80 bg-white p-4 rounded-lg shadow-md mr-4 flex flex-col"
+                      style={{
+                        height: `${(column.tiles.length + 1.5) * 75}px`,
+                        minWidth: "280px", // Ensure each column has a minimum width
+                      }}
+                      ref={provided.innerRef}
+                      {...provided.droppableProps}
+                    >
+                      <div className="flex justify-between items-center mb-2">
+                        <h2 className="text-xl font-semibold mb-2">
+                          {column.title}
+                        </h2>
+                        <div className="flex items-center space-x-2">
+                          {renameColumnId === column._id ? (
+                            <div className="mb-2">
+                              <input
+                                type="text"
+                                defaultValue={column.title}
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter") {
+                                    handleRenameSubmit(
+                                      column._id,
+                                      e.target.value
+                                    );
+                                  }
                                 }}
-                              >
-                                {tile.split(":")[1]}
-                              </p>
+                                className="border border-gray-300 px-2 py-1 rounded"
+                              />
+                              <button onClick={() => setRenameColumnId("")}>
+                                Cancel
+                              </button>
                             </div>
+                          ) : (
+                            <>
+                              <EditOutlined
+                                onClick={() => setRenameColumnId(column._id)}
+                                className="cursor-pointer mr-2"
+                              />
+                              <DeleteOutline
+                                onClick={() => delColumn(column._id)}
+                                className="cursor-pointer"
+                              />
+                            </>
                           )}
-                        </Draggable>
-                      ))}
-                      {provided.placeholder}
+                        </div>
+                      </div>
+
+                      {newTileColumnId === column._id ? (
+                        <div>
+                          <input
+                            type="text"
+                            defaultValue={"New tile"}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") {
+                                handleNewTileSubmit(column._id, e.target.value);
+                              }
+                            }}
+                          />
+                          <button
+                            onClick={() => setNewTileColumnId("")}
+                            className="border px-4 py-1 mb-4 rounded bg-gray-300"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => setNewTileColumnId(column._id)}
+                          className="border px-2 py-1 mb-4 rounded bg-blue-500 text-white hover:bg-blue-400"
+                        >
+                          Add new Tile
+                        </button>
+                      )}
+
+                      <div className="mb-4">
+                        {column.tiles.map((tile, tileIndex) => (
+                          <Draggable
+                            key={tile}
+                            draggableId={tile}
+                            index={tileIndex}
+                          >
+                            {(provided) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                              >
+                                <p
+                                  className="bg-gray-200 rounded px-4 py-4 mb-4 cursor-pointer hover:bg-gray-400"
+                                  onClick={() => {
+                                    setSelTileId(tile.split(":")[0]);
+                                    getTileInfo(tile.split(":")[0]);
+                                    setTileViewModal(true);
+                                  }}
+                                >
+                                  {tile.split(":")[1]}
+                                </p>
+                              </div>
+                            )}
+                          </Draggable>
+                        ))}
+                        {provided.placeholder}
+                      </div>
                     </div>
-                  </div>
-                )}
-              </Droppable>
-            ))}
-          <div className="w-80 bg-white p-4 rounded-lg shadow-md flex flex-col justify-center items-center ">
-            <button
-              onClick={() => setNewColumnModal(true)}
-              className="border px-2 py-1 rounded bg-green-500 text-white"
-            >
-              add new column
-            </button>
+                  )}
+                </Droppable>
+              ))}
+            <div className="bg-white p-2 rounded-lg shadow-md flex flex-col justify-center items-center ">
+              <button
+                onClick={() => setNewColumnModal(true)}
+                className="border px-3 py-1 rounded bg-green-500 text-white text-3xl font-black"
+              >
+                +
+              </button>
+            </div>
           </div>
-        </div>
+        </main>
       </div>
+
+      {/* Modal for adding collaborators */}
+      <StyledModal
+        open={addCollaboratorModalOpen}
+        onClose={() => setAddCollaboratorModalOpen(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <ModalBox className="flex justify-center items-center">
+          <div className="bg-white border border-gray-200 p-6 rounded-lg shadow-lg w-96">
+            <Typography
+              id="modal-modal-title"
+              variant="h6"
+              component="h2"
+              className="text-lg font-semibold mb-4 text-center"
+            >
+              Add Collaborator
+            </Typography>
+            <TextField
+              margin="normal"
+              fullWidth
+              id="userSearchInput"
+              label="Search Users"
+              name="userSearchInput"
+              autoComplete="off"
+              autoFocus
+              value={userSearchInput}
+              onChange={(e) => setUserSearchInput(e.target.value)}
+              onKeyUp={(e) => {
+                if (e.key === "Enter") {
+                  handleUserSearch();
+                }
+              }}
+              className="mb-4"
+            />
+
+            {/* Selected users */}
+            <div className="mb-4">
+              <Typography
+                variant="subtitle1"
+                gutterBottom
+                className="font-semibold"
+              >
+                Selected Users:
+              </Typography>
+              {selectedUsers.map((user) => (
+                <div
+                  key={user.id}
+                  className="flex items-center justify-between border-b border-gray-300 py-2"
+                >
+                  <Typography variant="body2" className="mr-2">
+                    {user.username}
+                  </Typography>
+                  <DeleteOutline
+                    onClick={() => handleRemoveSelectedUser(user.id)}
+                    className="cursor-pointer text-red-600 hover:text-red-800"
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Confirm button */}
+            <Button
+              onClick={() => addUserAsCollaborator(selectedUsers)}
+              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Confirm
+            </Button>
+          </div>
+        </ModalBox>
+      </StyledModal>
 
       <StyledModal
         open={newColumnModal}
