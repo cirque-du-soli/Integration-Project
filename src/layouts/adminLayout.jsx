@@ -10,6 +10,8 @@ import PageNotFound from "../pages/404/pageNotFound404.js";
 import UserNotAuthorized from "../pages/notAuth/notAuthorized.js";
 
 import { AuthContext } from "../contexts/authContext.js";
+import { useTheme } from '../contexts/themeContext.js';
+
 import axios from "axios";
 
 import LoadingSpinner from "../pages/loadingSpinner/loadingSpinner.jsx";
@@ -26,6 +28,20 @@ const getRoutes = (routes) => {
 function AdminLayout(props) {
 
     const mainPanelRef = useRef(null);
+
+    // Apply synthwave theme on /admin routes only
+    const { toggleTheme } = useTheme();
+
+    useEffect(() => {
+    
+        // apply synthwave theme when the AdminDashboard mounts
+        toggleTheme('synthwave'); 
+
+        // Reset to default theme when unmounting
+        return () => {
+            toggleTheme('light');
+        };
+    }, [toggleTheme]);
 
     //check if logged in
     const [authState, setAuthState] = useState(false);
@@ -75,7 +91,6 @@ function AdminLayout(props) {
                             :
                             <LoadingSpinner />
                 }
-                <p>isAdmin: {userAdminState}</p>
 
             </div>
         </>

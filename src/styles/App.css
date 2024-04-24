@@ -55,3 +55,7 @@
   height: 40px;
   margin-right: 10px;
 }
+
+input {
+  background-color: rgb(245, 245, 245);
+}

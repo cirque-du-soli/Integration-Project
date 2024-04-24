@@ -17,7 +17,7 @@ const Landing = () => {
   });
 
   return (
-    <div className="Landing">
+    <div className="Landing bg-white">
       <section
         className="hero bg-cover bg-center py-16 md:py-24 lg:py-32 relative"
         style={{ backgroundImage: `url(${backgroundImage})` }}
