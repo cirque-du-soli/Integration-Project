@@ -52,12 +52,12 @@ const Navbar = ({ props }) => {
     selMosaic,
     setSelMosaic,
     userAdminState,
-    setUserAdminState
+    setUserAdminState,
   } = useContext(AuthContext);
 
   // initial states
   const [isAdmin, setIsAdmin] = useState(userAdminState);
-  
+
   ///////////////////////////////////////////////////////////
   const handleOpenDropdown = (event) => {
     setDropdownVisible(event.currentTarget);
@@ -151,11 +151,11 @@ const Navbar = ({ props }) => {
             {userState}
           </Button>
           {
-            userAdminState
-            &&
-            <NavItemAdmin /> /* SOLI TODO: isAdmin: userAdminState */
+            userAdminState && (
+              <NavItemAdmin />
+            ) /* SOLI TODO: isAdmin: userAdminState */
           }
-          
+
           <Menu
             id="simple-menu"
             anchorEl={isDropdownVisible}
@@ -182,7 +182,7 @@ const Navbar = ({ props }) => {
           open={Boolean(isMosaicDropdownVisible)}
           onClose={handleCloseMosaicDropdown}
         >
-          {userMosaics === "empty" ? (
+          {userMosaics === "No mosaics found for the user." ? (
             <MenuItem>Nothing here</MenuItem>
           ) : (
             userMosaics.map((mosaic) => (
