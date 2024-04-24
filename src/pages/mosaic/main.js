@@ -25,7 +25,6 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
-
 const StyledModal = styled(Modal)({
   display: "flex",
   alignItems: "center",
@@ -106,13 +105,12 @@ function Main() {
     fetchMosaicInfo();
   }, [selMosaic]);
 
-
-  const confirmDelete = async () => {  
+  const confirmDelete = async () => {
     try {
       // Send a request to the backend to delete the mosaic
       await axios.delete(`${baseUrl}/mosaics/${selMosaic}`);
       toast.success("Mosaic deleted successfully");
-      setIsDeleteModalOpen(false); 
+      setIsDeleteModalOpen(false);
       // Redirect the user to a different page
       window.location.href = "/app/home";
     } catch (error) {
@@ -120,7 +118,6 @@ function Main() {
       toast.error("Failed to delete mosaic");
     }
   };
-
 
   // Effect to fetch current collaborators when the modal opens
   useEffect(() => {
@@ -622,41 +619,33 @@ function Main() {
                       {...provided.droppableProps}
                     >
                       <div className="flex justify-between items-center mb-2">
-                        <h2 className="text-xl font-semibold mb-2">
-                          {column.title}
+                        <h2
+                          className="text-xl font-semibold mb-2"
+                          onClick={() => setRenameColumnId(column._id)}
+                        >
+                          {renameColumnId === column._id ? (
+                            <input
+                              type="text"
+                              defaultValue={column.title}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                  handleRenameSubmit(
+                                    column._id,
+                                    e.target.value
+                                  );
+                                }
+                              }}
+                              onBlur={() => setRenameColumnId("")}
+                            />
+                          ) : (
+                            <span>{column.title}</span>
+                          )}
                         </h2>
                         <div className="flex items-center space-x-2">
-                          {renameColumnId === column._id ? (
-                            <div className="mb-2">
-                              <input
-                                type="text"
-                                defaultValue={column.title}
-                                onKeyDown={(e) => {
-                                  if (e.key === "Enter") {
-                                    handleRenameSubmit(
-                                      column._id,
-                                      e.target.value
-                                    );
-                                  }
-                                }}
-                                className="border border-gray-300 px-2 py-1 rounded"
-                              />
-                              <button onClick={() => setRenameColumnId("")}>
-                                Cancel
-                              </button>
-                            </div>
-                          ) : (
-                            <>
-                              <EditOutlined
-                                onClick={() => setRenameColumnId(column._id)}
-                                className="cursor-pointer mr-2"
-                              />
-                              <DeleteOutline
-                                onClick={() => delColumn(column._id)}
-                                className="cursor-pointer"
-                              />
-                            </>
-                          )}
+                          <DeleteOutline
+                            onClick={() => delColumn(column._id)}
+                            className="cursor-pointer"
+                          />
                         </div>
                       </div>
 
