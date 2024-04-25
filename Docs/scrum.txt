@@ -1145,16 +1145,18 @@ Benjamin:
 
 Soliloquy:
 	Done:
-		- 
+		- fix chat & other styling got overwrites (un-toggle theme)
+		- test all but 2 new backend routes
 		
 	Not-Done:
-		- 
+		- backend isAdmin -> protected routes (remove hardcoded isAdmin)
 	
 	Needs Assistance:
-		- 
+		- test admin portal after push
 
 	Todo Before Next Scrum:
-		- 
+		- fix last 2 admin bugs & push
+		- remove dev routes & backdoor/toggle "isAdmin" from site
 
 Nicholas: 
 	Done:
