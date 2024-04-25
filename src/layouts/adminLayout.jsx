@@ -44,7 +44,7 @@ function AdminLayout(props) {
     //check if logged in
     const [authState, setAuthState] = useState(false);
     const [userState, setUserState] = useState("");
-    const [userAdminState, setUserAdminState] = useState(""); // SOLI TODO: change to props.userAdminState -- must move entire auth context up one level
+    const [userAdminState, setUserAdminState] = useState(""); // SOLI TODO: consider change to props.userAdminState -- must move entire auth context up one level
 
     useEffect(() => {
         axios

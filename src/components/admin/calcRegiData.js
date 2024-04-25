@@ -1,4 +1,4 @@
-function calcRegiData(usersList) {
+function calcRegiData(usersList, usersTimestamps) {
 
     // get today's date
     const today = new Date();
@@ -45,12 +45,12 @@ function calcRegiData(usersList) {
         startMonth = 1;
     }
 
-    usersList.map((user) => {
-
-        let userYear = user.createdAt.slice(2, 4);
-        let userMonth = user.createdAt.slice(5, 7);
-        let userDate = user.createdAt.slice(8, 10);
-        let userIsAdmin = user.isAdmin;
+    for (let i = 0; i < usersTimestamps.length; i++) {
+        
+        let userYear = usersTimestamps[i].slice(2, 4);
+        let userMonth = usersTimestamps[i].slice(5, 7);
+        let userDate = usersTimestamps[i].slice(8, 10);
+        let userIsAdmin = usersList[i].isAdmin;
 
         // FORMAT: MM & DD (always contain leading zeros)
         let dateString =
@@ -74,8 +74,10 @@ function calcRegiData(usersList) {
             totalNonAdmins++;
             usersPerDayArray[mapDateToIndex.get(dateString)].nonAdminCount++;
         }
-    })
 
+    }
+
+    console.log("finished calcRegiData-------------")
     return { usersPerDayArray, totalUserCount, totalAdmins, totalNonAdmins };
 }
 
