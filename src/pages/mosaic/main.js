@@ -135,7 +135,7 @@ function Main() {
   const confirmDelete = async () => {
     try {
       // Send a request to the backend to delete the mosaic
-      await axios.delete(`${baseUrl}/mosaics/${selMosaic}`);
+      await axios.delete(`${baseUrl}/mosaics/mosaic/${selMosaic}`);
       toast.success("Mosaic deleted successfully");
       setIsDeleteModalOpen(false);
       // Redirect the user to a different page
@@ -271,6 +271,7 @@ function Main() {
 
   //delete column
   async function delColumn(id) {
+    console.log("delete request: " + id);
     try {
       const response = await axios.delete(
         `${baseUrl}/mosaics/deleteColumn?id=${id}`
