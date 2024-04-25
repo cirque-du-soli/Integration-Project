@@ -1122,6 +1122,73 @@ Sophie:
 		- polish add user modal
 		- polish from styling
 
+		===============================================================================
+Day17: 2024-04-25 
+=============================
+
+Benjamin:
+	Done:
+		- delete routes not working Fixed
+		- user with no mosaics breaking site Fixed
+		- assign members to tiles displaying IDs Fixed
+		
+	Not-Done:
+		- websockets for DND
+	
+	Needs Assistance:
+		- websockets for DND
+
+	Todo Before Next Scrum:
+		- websockets for DND?
+		- deleting column is borken again???
+		- clean dead code
+
+Soliloquy:
+	Done:
+		- 
+		
+	Not-Done:
+		- 
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- 
+
+Nicholas: 
+	Done:
+		- 
+		
+	Not-Done:
+		- 
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- 
+
+Sophie: 
+	Done:
+		- Search user query update
+		- Validation on search user
+		- toast msg added for search
+		- Delete mosaic
+		- New way of reanaming column
+		- Redirect to new mosaic after creation
+		
+	Not-Done:
+		- 
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- Password error as toast message
+		- continue powerpoint
+		- style chat
+
 
 ===============================================================================
 ===============================================================================
