@@ -1142,6 +1142,7 @@ Benjamin:
 		- websockets for DND?
 		- deleting column is borken again???
 		- clean dead code
+		- mosaic authorization
 
 Soliloquy:
 	Done:
