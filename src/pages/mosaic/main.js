@@ -1065,9 +1065,6 @@ function Main() {
         aria-describedby="chat-modal-description"
       >
         <ModalBox>
-          <Typography id="chat-modal-title" variant="h6" component="h2">
-            Chat
-          </Typography>
           <Chat boardId={selMosaic} isOpen={chatModalOpen} />
         </ModalBox>
       </StyledModal>
