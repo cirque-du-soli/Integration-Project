@@ -96,28 +96,31 @@ const Navbar = ({ props }) => {
     fetchMosaics();
   }, [userState]);
 
+  // Function creating new mosaic
   async function createMosaic(e) {
     e.preventDefault();
 
     const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
     try {
-      await axios
-        .post(`${baseUrl}/mosaics/create`, {
-          title: mosaicName,
-          owner: userState,
-        })
-        .then((res) => {
-          if (res.status === 200) {
-            console.log("Mosaic created");
-            fetchMosaics();
-          } else if (res.status === 400) {
-            console.log("Bad request");
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      const response = await axios.post(`${baseUrl}/mosaics/create`, {
+        title: mosaicName,
+        owner: userState,
+      });
+
+      if (response.status === 200) {
+        console.log("Mosaic created");
+        fetchMosaics();
+
+        // Extract the ID of the newly created mosaic from the response
+        const mosaicId = response.data.mosaicId;
+        console.log(response);
+
+        // Redirect the user to the newly created mosaic
+        window.location.href = `/app/main/${mosaicId}`;
+      } else if (response.status === 400) {
+        console.log("Bad request");
+      }
     } catch (error) {
       console.log(error);
     }
