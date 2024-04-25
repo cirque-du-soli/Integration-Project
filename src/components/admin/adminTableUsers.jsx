@@ -22,7 +22,7 @@ function AdminTableUsers({ props }) {
       const response = await axios.patch(`${baseUrl}/admin/toggleUserIsSoftDeleted`, { user: user });
       
       if (response.status == 200) {
-        user.isSoftDeleted ? props.newToastMessage("info", "User undeleted.") : props.newToastMessage("warning", "User deleted.");
+        user.isSoftDeleted ? props.newToastMessage("info", "User un-deleted.") : props.newToastMessage("warning", "User deleted.");
         updateUser(user._id, { isSoftDeleted: !user.isSoftDeleted });
       } else {
         props.newToastMessage("error", "Error: failed to toggle soft-delete.");
@@ -44,7 +44,7 @@ function AdminTableUsers({ props }) {
       
       if (response.status == 200) {
 
-        user.isBanned ? props.newToastMessage("info", "User unbanned.") : props.newToastMessage("warning", "User banned.");
+        user.isBanned ? props.newToastMessage("info", "User un-banned.") : props.newToastMessage("warning", "User banned.");
         
         updateUser( user._id, { isBanned: !user.isBanned });
 
@@ -107,7 +107,7 @@ async function toggleUserIsAdmin(user) {
     try {
       const response = await axios.get(`${baseUrl}/admin/getAllUsers`);
       console.log(response.data.users);
-      props.newToastMessage("success", "Users fetched!");
+      props.newToastMessage("success", "User data fetched successfully.");
       setUsersList(response.data.users);
       setUsersTimestamps(response.data.userTimestamps);
       console.log(response.data.userTimestamps)
@@ -130,7 +130,7 @@ async function toggleUserIsAdmin(user) {
   }
 
   return (
-    <div className="overflow-x-auto rounded-lg">
+    <div className="overflow-y-auto max-h-[380px] w-full overflow-x-auto rounded-lg ">
       <table className="table w-full table-pin-cols table-pin-rows">
         {/* <caption class="p-5 text-lg font-semibold text-left text-white bg-base-200">
           ProjecTile User Management
@@ -146,7 +146,7 @@ async function toggleUserIsAdmin(user) {
             <th className='bg-cyan-950 text-white'>Role</th>
             <th className='bg-cyan-950 text-white'>Status</th>
             <th className='bg-cyan-950 text-white'>Created</th>
-            <th className='bg-cyan-950 text-white'>Actions</th>
+            {/* <th className='bg-cyan-950 text-white'>Actions</th> */}
             <th className='bg-cyan-950 text-white'>Delete</th>
             <th className='bg-cyan-950 text-white'>Ban</th>
             <th className='bg-cyan-950 text-white'>Admin Status</th>
@@ -201,35 +201,60 @@ async function toggleUserIsAdmin(user) {
                   }
                 </td>
                 <td className= "px-1">{formattedTimestamp}</td>
+                {/*              
                 <td className= "p-0 text-center">
-                  {/* ACTION BUTTONS TODO: soli fix button colors */}
-                  
                   <button
                     className="btn w-11/12 mx-0 my-1 btn-secondary"
                     onClick={() => { resetUserPassword(user) }}>
                     Reset
                   </button>
-                </td>
+                </td> 
+                */}
                 <td className= "p-0 text-center">
-                  <button
-                    className="btn w-11/12 mx-0 my-1 btn-warning"
+                  {user.isSoftDeleted ?
+                    <button
+                    className="btn btn-sm w-11/12 mx-0 my-1 btn-info"
                     onClick={() => { toggleUserIsSoftDeleted(user) }}>
-                    {user.isSoftDeleted ? "UnDelete" : "Delete"}
-                  </button>
+                    Un-Delete
+                    </button>
+                    :
+                    <button
+                      className="btn btn-sm w-11/12 mx-0 my-1 btn-primary"
+                      onClick={() => { toggleUserIsSoftDeleted(user) }}>
+                        Delete
+                    </button> 
+                  }
                 </td>
-                <td className= "p-0 text-center">
-                  <button
-                    className="btn w-11/12 mx-0 my-1 btn-primary"
-                    onClick={() => { toggleUserIsBanned(user) }}>
-                    {user.isBanned ? "UnBan" : "Ban"}
-                  </button>
+                <td className="p-0 text-center">
+                  {user.isBanned ?
+                    <button
+                    className="btn btn-sm w-11/12 mx-0 my-1 btn-success"
+                      onClick={() => { toggleUserIsBanned(user) }}>
+                      Un-ban
+                    </button>
+                    :
+                    <button
+                      className="btn btn-sm w-11/12 mx-0 my-1 btn-primary"
+                      onClick={() => { toggleUserIsBanned(user) }}>
+                      Ban
+                    </button>
+                  }
+                  
                 </td>
-                <td className= "p-0 text-center">
-                  <button
-                    className="btn w-11/12 mx-0 my-1"
-                    onClick={() => { toggleUserIsAdmin(user) }}>
-                    {user.isAdmin ? 'Revoke' : `Promote`}
-                  </button>
+                <td className="p-0 text-center">
+                  {user.isAdmin ?
+                    <button
+                      className="btn btn-sm w-11/12 mx-0 my-1 btn-primary"
+                      onClick={() => { toggleUserIsAdmin(user) }}>
+                      Revoke
+                    </button>
+                    : <button
+                      className="btn btn-sm w-11/12 mx-0 my-1 btn-info"
+                      onClick={() => { toggleUserIsAdmin(user) }}>
+                      Promote
+                    </button>
+                  }
+                  
                   
                 </td>
               </tr>
