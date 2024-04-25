@@ -634,7 +634,7 @@ function Main() {
                       </div>
 
                       {newTileColumnId === column._id ? (
-                        <div>
+                        <div className="mb-4">
                           <input
                             type="text"
                             defaultValue={"New tile"}
@@ -643,10 +643,11 @@ function Main() {
                                 handleNewTileSubmit(column._id, e.target.value);
                               }
                             }}
+                            className="border px-2 py-1 mb-2 rounded"
                           />
                           <button
                             onClick={() => setNewTileColumnId("")}
-                            className="border px-4 py-1 mb-4 rounded bg-gray-300"
+                            className="border px-4 py-1 rounded bg-gray-300 text-gray-700 hover:bg-gray-400"
                           >
                             Cancel
                           </button>
@@ -654,7 +655,7 @@ function Main() {
                       ) : (
                         <button
                           onClick={() => setNewTileColumnId(column._id)}
-                          className="border px-2 py-1 mb-4 rounded bg-blue-500 text-white hover:bg-blue-400"
+                          className="border px-4 py-1 mb-4 rounded bg-blue-500 text-white hover:bg-blue-400"
                         >
                           Add new Tile
                         </button>
@@ -1049,9 +1050,6 @@ function Main() {
         aria-describedby="chat-modal-description"
       >
         <ModalBox>
-          <Typography id="chat-modal-title" variant="h6" component="h2">
-            Chat
-          </Typography>
           <Chat boardId={selMosaic} isOpen={chatModalOpen} />
         </ModalBox>
       </StyledModal>

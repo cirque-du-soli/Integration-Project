@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/authContext";
 import BackgroundImg from "../../assets/bg.jpg";
+import { toast } from "react-toastify";
 
 function Login({ props }) {
 
@@ -44,11 +45,11 @@ function Login({ props }) {
         setAuthState(true);
         history("/app/home", { state: { id: username } });
       } else if (response.data === "notexist") {
-        alert("User has not signed up");
+        toast.error("User has not signed up");
       }
     } catch (error) {
       console.error(error);
-      alert("Wrong details");
+      toast.error("Wrong details");
     }
   }
 
