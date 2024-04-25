@@ -8,9 +8,11 @@ import DevLayout from '../src/layouts/devLayout';
 
 // IMPORT: Global Components
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 // IMPORT: Contexts
-import { ThemeProvider } from './contexts/themeContext';
+import { ThemeProvider, useTheme } from './contexts/themeContext';
 
 // IMPORT: LATER FEATURES
 //import { AuthContext } from './contexts/authContext';
@@ -19,9 +21,12 @@ import { ThemeProvider } from './contexts/themeContext';
 
 function App() {
 
+  const { theme } = useTheme();
+
   return (
     <>
-        <ThemeProvider>
+      <ThemeProvider>
+        <div data-theme={theme} className="App">
           <BrowserRouter>
 
             <Routes>
@@ -35,8 +40,10 @@ function App() {
             <ToastContainer />
             {/* <Footer /> */}
           </BrowserRouter>
+        </div>
+        
         </ThemeProvider>
-
+    
       
     </>
   );

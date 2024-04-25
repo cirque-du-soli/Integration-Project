@@ -37,10 +37,8 @@ function AdminLayout(props) {
         // apply synthwave theme when the AdminDashboard mounts
         toggleTheme('synthwave'); 
 
-        // Reset to default theme when unmounting
-        return () => {
-            toggleTheme('light');
-        };
+        console.log("Toggled to Synthwave theme")
+
     }, [toggleTheme]);
 
     //check if logged in
@@ -72,7 +70,7 @@ function AdminLayout(props) {
 
     return (
         <>
-            <div className="App">
+            <div className="App bg-base-100">
                 {
                     userAdminState
                         ?

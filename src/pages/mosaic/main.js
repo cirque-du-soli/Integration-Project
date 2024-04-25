@@ -22,6 +22,9 @@ import { AuthContext } from "../../contexts/authContext";
 import Chat from "../../components/Chat";
 import { EditOutlined, DeleteOutline } from "@mui/icons-material";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 const StyledModal = styled(Modal)({
   display: "flex",
@@ -48,6 +51,7 @@ function Main() {
   const [tileInfo, setTileInfo] = useState({});
 
   //const [mosaicSocket, setMosaicSocket] = useState(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const [addCollaboratorModalOpen, setAddCollaboratorModalOpen] =
     useState(false);
@@ -128,6 +132,20 @@ function Main() {
     fetchMosaicInfo();
   }, [selMosaic]);
 
+  const confirmDelete = async () => {
+    try {
+      // Send a request to the backend to delete the mosaic
+      await axios.delete(`${baseUrl}/mosaics/${selMosaic}`);
+      toast.success("Mosaic deleted successfully");
+      setIsDeleteModalOpen(false);
+      // Redirect the user to a different page
+      window.location.href = "/app/home";
+    } catch (error) {
+      console.error("Error deleting mosaic:", error);
+      toast.error("Failed to delete mosaic");
+    }
+  };
+
   // Effect to fetch current collaborators when the modal opens
   useEffect(() => {
     if (addCollaboratorModalOpen) {
@@ -142,7 +160,7 @@ function Main() {
         `${baseUrl}/mosaics/${selMosaic}/collaborators`
       );
 
-      setSelectedUsers(response.data); // Set selectedUsers state with the fetched collaborators
+      setSelectedUsers(response.data);
     } catch (error) {
       console.error("Error fetching current collaborators:", error);
       // Handle error
@@ -176,24 +194,45 @@ function Main() {
         `${baseUrl}/users/search?q=${userSearchInput}`
       );
 
+      // If response.data is empty, no user was found
+      if (response.data.length === 0) {
+        toast.error("No user found");
+        return;
+      }
+
       // Assuming response.data contains the user data
       const user = response.data[0];
 
       // Check if the user already exists in selectedUsers
       const isUserAlreadySelected = selectedUsers.some(
-        (selectedUser) => selectedUser.id === user.id
+        (selectedUser) => selectedUser._id === user._id
       );
 
-      // If the user is not already selected, add them to selectedUsers state
-      if (!isUserAlreadySelected) {
-        setSelectedUsers((prevSelectedUsers) => [...prevSelectedUsers, user]);
+      // Check if the user already exists in the members array of the mosaic
+      const isUserAlreadyAdded = mosaicInfo.members.some(
+        (memberId) => memberId === user._id
+      );
+
+      // If the user is already added to either selectedUsers or members array, show error message
+      if (isUserAlreadySelected || isUserAlreadyAdded) {
+        toast.error("User already added as collaborator");
+        return;
       }
+
+      // If the user is not already added, add them to selectedUsers state
+      setSelectedUsers((prevSelectedUsers) => [...prevSelectedUsers, user]);
 
       // Clear the user search input
       setUserSearchInput("");
+
+      // Show success message
+      toast.success("User added as collaborator");
     } catch (error) {
-      console.error("Error searching users:", error);
-      // Handle error
+      if (error.response && error.response.status === 404) {
+        toast.error("User not found");
+      } else {
+        console.error("Error searching users:", error);
+      }
     }
   };
 
@@ -574,16 +613,23 @@ function Main() {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div className="bg-gray-200 min-h-screen flex flex-col">
+      <div className="bg-gray-200 min-h-screen flex flex-col items-center justify-center">
         <Navbar />
+        <div className="flex items-center justify-center w-full mb-4">
+          <h1 className="text-3xl font-bold text-gray-800 mb-0 text-center">
+            {mosaicInfo.title}
+          </h1>
+          <button onClick={() => setIsDeleteModalOpen(true)}>
+            <DeleteOutlineIcon />
+          </button>
+        </div>
 
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          {mosaicInfo.title}
-        </h1>
-        <Button onClick={() => setAddCollaboratorModalOpen(true)}>
-          Add Collaborator
-        </Button>
-        <Button onClick={() => setChatModalOpen(true)}>Open Chat</Button>
+        <div className="flex justify-center mb-4 space-x-4">
+          <Button onClick={() => setAddCollaboratorModalOpen(true)}>
+            Add Collaborator
+          </Button>
+          <Button onClick={() => setChatModalOpen(true)}>Open Chat</Button>
+        </div>
         <main className="container mx-auto px-4 pt-12 flex-grow overflow-x-auto whitespace-nowrap mb-4 sm:mb-0">
           <div className="flex justify-evenly items-start mb-10">
             {mosaicInfo.columns &&
@@ -595,47 +641,39 @@ function Main() {
                       className="w-80 bg-white p-4 rounded-lg shadow-md mr-4 flex flex-col"
                       style={{
                         height: `${(column.tiles.length + 1.5) * 75}px`,
-                        minWidth: "280px", // Ensure each column has a minimum width
+                        minWidth: "280px",
                       }}
                       ref={provided.innerRef}
                       {...provided.droppableProps}
                     >
                       <div className="flex justify-between items-center mb-2">
-                        <h2 className="text-xl font-semibold mb-2">
-                          {column.title}
+                        <h2
+                          className="text-xl font-semibold mb-2"
+                          onClick={() => setRenameColumnId(column._id)}
+                        >
+                          {renameColumnId === column._id ? (
+                            <input
+                              type="text"
+                              defaultValue={column.title}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                  handleRenameSubmit(
+                                    column._id,
+                                    e.target.value
+                                  );
+                                }
+                              }}
+                              onBlur={() => setRenameColumnId("")}
+                            />
+                          ) : (
+                            <span>{column.title}</span>
+                          )}
                         </h2>
                         <div className="flex items-center space-x-2">
-                          {renameColumnId === column._id ? (
-                            <div className="mb-2">
-                              <input
-                                type="text"
-                                defaultValue={column.title}
-                                onKeyDown={(e) => {
-                                  if (e.key === "Enter") {
-                                    handleRenameSubmit(
-                                      column._id,
-                                      e.target.value
-                                    );
-                                  }
-                                }}
-                                className="border border-gray-300 px-2 py-1 rounded"
-                              />
-                              <button onClick={() => setRenameColumnId("")}>
-                                Cancel
-                              </button>
-                            </div>
-                          ) : (
-                            <>
-                              <EditOutlined
-                                onClick={() => setRenameColumnId(column._id)}
-                                className="cursor-pointer mr-2"
-                              />
-                              <DeleteOutline
-                                onClick={() => delColumn(column._id)}
-                                className="cursor-pointer"
-                              />
-                            </>
-                          )}
+                          <DeleteOutline
+                            onClick={() => delColumn(column._id)}
+                            className="cursor-pointer"
+                          />
                         </div>
                       </div>
 
@@ -710,6 +748,43 @@ function Main() {
           </div>
         </main>
       </div>
+
+      {/* Modal for deleting mosaic */}
+      <StyledModal
+        open={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        aria-labelledby="delete-mosaic-modal-title"
+        aria-describedby="delete-mosaic-modal-description"
+      >
+        <ModalBox className="flex justify-center items-center">
+          <div className="bg-white border border-gray-200 p-6 rounded-lg shadow-lg w-96">
+            <Typography
+              id="delete-mosaic-modal-title"
+              variant="h6"
+              component="h2"
+              className="text-lg font-semibold mb-4 text-center"
+            >
+              Confirm Deletion
+            </Typography>
+            <Typography
+              id="delete-mosaic-modal-description"
+              variant="body1"
+              className="mb-4 text-center"
+            >
+              Are you sure you want to delete this mosaic?
+            </Typography>
+            <div className="flex justify-center">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={confirmDelete} // Bind confirmDelete function to onClick event
+              >
+                Confirm
+              </Button>
+            </div>
+          </div>
+        </ModalBox>
+      </StyledModal>
 
       {/* Modal for adding collaborators */}
       <StyledModal
