@@ -8,8 +8,8 @@ function calcRegiData(usersList, usersTimestamps) {
 
     // first day of data collection
     const firstYear = 24; // 2024
-    const firstMonth = 1; // January
-    const firstDate = 1; // 1st
+    const firstMonth = 3;
+    const firstDate = 29;
 
     let usersPerDayArray = []; // contains objects e.g: { label: "2023-10-09", ubd: 0 }
     let totalUserCount = 0;

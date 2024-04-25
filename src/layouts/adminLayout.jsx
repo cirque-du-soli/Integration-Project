@@ -70,7 +70,7 @@ function AdminLayout(props) {
 
     return (
         <>
-            <div className="App bg-base-300 min-h-screen">
+            <div className="App bg-slate-800 min-h-screen">
                 {
                     userAdminState
                         ?
