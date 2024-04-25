@@ -95,7 +95,7 @@ function AdminChartNewUsers({ props }) {
 
         } catch (error) {
             console.error(error);
-            props.newToastMessage("error", "Error fetching users.");
+            props.newToastMessage("error", "Error fetching chart data.");
         }
     }  
 
