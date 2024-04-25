@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 //import io from "socket.io-client";
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Typography, Button, Modal, Box, TextField } from "@mui/material";
@@ -14,6 +14,8 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import LoadingSpinner from "../loadingSpinner/loadingSpinner.jsx";
+import UserNotAuthorized from "../notAuth/notAuthorized.js";
 
 const StyledModal = styled(Modal)({
   display: "flex",
@@ -34,7 +36,7 @@ function Main() {
   }, [id]);
   //userState is username
   const { userState } = useContext(AuthContext);
-  //const [mosaicAccess, setMosaicAccess] = useState("none");
+  const [mosaicAccess, setMosaicAccess] = useState("");
 
   const [mosaicInfo, setMosaicInfo] = useState({});
   const [tileInfo, setTileInfo] = useState({});
@@ -60,22 +62,22 @@ function Main() {
   //Backend URL
   const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
-  // //check user authority
-  // const checkUserAuth = async () => {
-  //   if (mosaicInfo.owner != userState) {
-  //     if (!mosaicInfo.members.includes(userState)) {
-  //       setMosaicAccess("none");
-  //     } else {
-  //       setMosaicAccess("member");
-  //     }
-  //   } else {
-  //     setMosaicAccess("owner");
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   checkUserAuth();
-  // }, [mosaicInfo]);
+  //check user authority
+  const checkUserAuth = async () => {
+    console.log("Mosaic owner: " + mosaicInfo.owner);
+    console.log("Mosaic Members: " + mosaicInfo.members);
+    if (mosaicInfo.owner !== userState) {
+      if (mosaicInfo.members) {
+        if (!mosaicInfo.members.includes(userState)) {
+          setMosaicAccess("none");
+        } else {
+          setMosaicAccess("member");
+        }
+      }
+    } else {
+      setMosaicAccess("owner");
+    }
+  };
 
   // //Socket use effect
   // useEffect(() => {
@@ -120,6 +122,12 @@ function Main() {
   useEffect(() => {
     fetchMosaicInfo();
   }, [selMosaic]);
+
+  useEffect(() => {
+    if (mosaicInfo) {
+      checkUserAuth();
+    }
+  }, [mosaicInfo]);
 
   const confirmDelete = async () => {
     try {
@@ -566,6 +574,10 @@ function Main() {
       }
     }
   };
+
+  if (mosaicAccess === "") return <LoadingSpinner />;
+
+  if (mosaicAccess === "none") return <UserNotAuthorized />;
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
