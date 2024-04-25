@@ -40,7 +40,7 @@ const AdminNavTabs = ({ props }) => {
                     <>
                         <div className="bg-base-100 px-2 rounded-lg mx-0" >
                     <div className="bg-base-100 tabs tabs-lifted text-sm md:text-md lg:text-lg mb-2 md:mb-3 lg:mb-4 p-5 m-5">
-                    <a className={`tab ${manageUsersTab === 'userList' ? 'tab-active [--tab-bg:#3eb2e5] [--tab-border-color:#00a3eb] text-black' : '[--tab-border-color:#00a3eb]'}`} onClick={() => toggleManageUsersTab('userList')}>User List</a>
+                    <a className={`tab ${manageUsersTab === 'userList' ? 'tab-active [--tab-bg:#3eb2e5] [--tab-border-color:#00a3eb] text-black' : '[--tab-border-color:#00a3eb]'}`} onClick={() => toggleManageUsersTab('userList')}>User Data</a>
                     <a className={`tab ${manageUsersTab === 'createNewUser' ? 'tab-active [--tab-bg:#3eb2e5] [--tab-border-color:#00a3eb] text-black' : '[--tab-border-color:#00a3eb]'}`} onClick={() => toggleManageUsersTab('createNewUser')}>Create New User</a>
                 </div>
                     <div className={`content ${manageUsersTab === 'userList' ? 'block' : 'hidden'}`}>

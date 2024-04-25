@@ -22,14 +22,14 @@ function AdminTableUsers({ props }) {
       const response = await axios.patch(`${baseUrl}/admin/toggleUserIsSoftDeleted`, { user: user });
       
       if (response.status == 200) {
-        props.newToastMessage("success", "User softDelete toggled. isSoftDeleted = " + response.data.message);
+        user.isSoftDeleted ? props.newToastMessage("info", "User undeleted.") : props.newToastMessage("warning", "User deleted.");
         updateUser(user._id, { isSoftDeleted: !user.isSoftDeleted });
       } else {
-        props.newToastMessage("error", "failed to toggle isSoftDeleted : " + response.data);
+        props.newToastMessage("error", "Error: failed to toggle soft-delete.");
       }
 
     } catch (error) {
-      props.newToastMessage("error", "Error toggling user isSoftDeleted: " + error);
+      props.newToastMessage("error", "Error toggling user isSoftDeleted. ");
       console.error(error);
     }
   }
@@ -44,15 +44,15 @@ function AdminTableUsers({ props }) {
       
       if (response.status == 200) {
 
-        props.newToastMessage("success", "User ban toggled. isBanned = " + response.data.message);
+        user.isBanned ? props.newToastMessage("info", "User unbanned.") : props.newToastMessage("warning", "User banned.");
         
         updateUser( user._id, { isBanned: !user.isBanned });
 
       } else {
-        props.newToastMessage("error", "failed to toggle ban : " + response.data);
+        props.newToastMessage("error", "failed to toggle ban.");
       }
     } catch (error) {
-      props.newToastMessage("error", "Error toggling user ban: " + error);
+      props.newToastMessage("error", "Error toggling user ban. ");
       console.error(error);
     }
 }
@@ -66,7 +66,7 @@ async function toggleUserIsAdmin(user) {
 
       if (response.status == 200) {
 
-        props.newToastMessage("success", "User isAdmin toggled. isAdmin = " + response.data.message);
+        user.isAdmin ? props.newToastMessage("warning", "User's Admin status revoked.") : props.newToastMessage("info", "User promoted to Admin.");
 
         updateUser(user._id, { isAdmin: !user.isAdmin });
 
@@ -132,6 +132,12 @@ async function toggleUserIsAdmin(user) {
   return (
     <div className="overflow-x-auto rounded-lg">
       <table className="table w-full table-pin-cols table-pin-rows">
+        {/* <caption class="p-5 text-lg font-semibold text-left text-white bg-base-200">
+          ProjecTile User Management
+          <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">
+            Made easy by Team1 FSD
+          </p>
+        </caption> */}
         <thead>
           <tr>
             <th className='bg-cyan-950 text-white'>ID</th>
@@ -141,6 +147,9 @@ async function toggleUserIsAdmin(user) {
             <th className='bg-cyan-950 text-white'>Status</th>
             <th className='bg-cyan-950 text-white'>Created</th>
             <th className='bg-cyan-950 text-white'>Actions</th>
+            <th className='bg-cyan-950 text-white'>Delete</th>
+            <th className='bg-cyan-950 text-white'>Ban</th>
+            <th className='bg-cyan-950 text-white'>Admin Status</th>
           </tr>
         </thead>
         <tbody>
@@ -151,12 +160,11 @@ async function toggleUserIsAdmin(user) {
             
             return (
               <tr key={index} className={`bg-${index % 2 === 0 ? 'cyan-800' : 'cyan-900'}`}>
-                <td>{user._id}</td>
-                <td>{user.username}</td>
-                <td>{user.email}</td>
-                <td>{user.isAdmin ? "Admin" : "User"}</td>
-                <td
-                  className={
+                <td className= "px-1">{user._id}</td>
+                <td className= "px-1">{user.username}</td>
+                <td className= "px-1">{user.email}</td>
+                <td className= "px-1 text-center">{user.isAdmin ? "Admin" : "User"}</td>
+                <td className={
                     `${user.isBanned
                       ?
                       'bg-red-500'
@@ -167,7 +175,7 @@ async function toggleUserIsAdmin(user) {
                       :
                         ''
                       )
-                    }`
+                    } px-1 text-center`
                   }>
                   {
                     user.isSoftDeleted
@@ -184,33 +192,43 @@ async function toggleUserIsAdmin(user) {
                     &&
                     "Banned"
                   }
+                  {
+                    !user.isBanned
+                    &&
+                    !user.isSoftDeleted
+                    &&
+                    "Active"
+                  }
                 </td>
-                <td>{formattedTimestamp}</td>
-                <td>
+                <td className= "px-1">{formattedTimestamp}</td>
+                <td className= "p-0 text-center">
                   {/* ACTION BUTTONS TODO: soli fix button colors */}
                   
                   <button
-                    className="btn btn-secondary mx-1"
+                    className="btn w-11/12 mx-0 my-1 btn-secondary"
                     onClick={() => { resetUserPassword(user) }}>
                     Reset
                   </button>
-                  
+                </td>
+                <td className= "p-0 text-center">
                   <button
-                    className="btn btn-warning mx-1"
+                    className="btn w-11/12 mx-0 my-1 btn-warning"
                     onClick={() => { toggleUserIsSoftDeleted(user) }}>
                     {user.isSoftDeleted ? "UnDelete" : "Delete"}
                   </button>
-                  
+                </td>
+                <td className= "p-0 text-center">
                   <button
-                    className="btn btn-primary mx-1"
+                    className="btn w-11/12 mx-0 my-1 btn-primary"
                     onClick={() => { toggleUserIsBanned(user) }}>
                     {user.isBanned ? "UnBan" : "Ban"}
                   </button>
-
+                </td>
+                <td className= "p-0 text-center">
                   <button
-                    className={`btn ml-2`}
+                    className="btn w-11/12 mx-0 my-1"
                     onClick={() => { toggleUserIsAdmin(user) }}>
-                    {user.isAdmin ? ` ->User ` : `-> Admin`}
+                    {user.isAdmin ? 'Revoke' : `Promote`}
                   </button>
                   
                 </td>

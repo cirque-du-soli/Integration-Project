@@ -23,8 +23,11 @@ export function newToastMessage(toastType, msg) { // toastType: 'success', 'erro
         case 'info':
             toast.info(msg, options);
             break;
-        default:
+        case 'warning':
             toast.warning(msg, options);
+            break;
+        default:
+            toast.info(msg, options);
             break;
     }
 }
