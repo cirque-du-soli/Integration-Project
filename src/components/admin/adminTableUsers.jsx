@@ -12,7 +12,7 @@ function AdminTableUsers({ props }) {
 
   async function getAllUsers() {
     try {
-      const response = await axios.get(`${baseUrl}/admin/users}`);
+      const response = await axios.get(`${baseUrl}/admin/getAllUsers`);
       console.log(response.data);
       props.newToastMessage("success", "Users fetched!");
       setUsersList(response.data);
