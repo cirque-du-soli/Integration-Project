@@ -67,11 +67,15 @@ function Main() {
     console.log("Mosaic owner: " + mosaicInfo.owner);
     console.log("Mosaic Members: " + mosaicInfo.members);
     if (mosaicInfo.owner !== userState) {
-      if (mosaicInfo.members) {
-        if (!mosaicInfo.members.includes(userState)) {
-          setMosaicAccess("none");
-        } else {
-          setMosaicAccess("member");
+      if (localStorage.getItem("isAdmin") === "true") {
+        setMosaicAccess("owner");
+      } else {
+        if (mosaicInfo.members) {
+          if (!mosaicInfo.members.includes(userState)) {
+            setMosaicAccess("none");
+          } else {
+            setMosaicAccess("member");
+          }
         }
       }
     } else {
@@ -587,9 +591,11 @@ function Main() {
           <h1 className="text-3xl font-bold text-gray-800 mb-0 text-center">
             {mosaicInfo.title}
           </h1>
-          <button onClick={() => setIsDeleteModalOpen(true)}>
-            <DeleteOutlineIcon />
-          </button>
+          {mosaicAccess === "owner" && (
+            <button onClick={() => setIsDeleteModalOpen(true)}>
+              <DeleteOutlineIcon />
+            </button>
+          )}
         </div>
 
         <div className="flex justify-center mb-4 space-x-4">
