@@ -130,7 +130,7 @@ async function toggleUserIsAdmin(user) {
   }
 
   return (
-    <div className="overflow-y-auto max-h-[380px] w-full overflow-x-auto rounded-lg ">
+    <div className="overflow-y-auto max-h-[600px] w-full overflow-x-auto rounded-lg ">
       <table className="table w-full table-pin-cols table-pin-rows">
         {/* <caption class="p-5 text-lg font-semibold text-left text-white bg-base-200">
           ProjecTile User Management
