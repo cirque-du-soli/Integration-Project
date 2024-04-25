@@ -39,15 +39,11 @@ function AdminChartNewUsers({ props }) {
         getAllUsersData();
     }, []);
 
-    function formatData(ubdArray) {
-
-    }
-
     async function getAllUsersData() {
         try {
             const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/admin/getAllUsers`);
             console.log(response.data);
-            props.newToastMessage("success", "Users fetched!");
+            props.newToastMessage("success", "Chart Data Fetched");
             setUsersList(response.data.users);
             setUsersTimestamps(response.data.userTimestamps);
             let ubdData = calcRegiData(response.data.users, response.data.userTimestamps);
@@ -63,7 +59,7 @@ function AdminChartNewUsers({ props }) {
     
             usersPerDayArray.forEach((ubd) => {
                 calcLabels.push(ubd.label);
-                calcUserData.push(ubd.userCount);
+                calcUserData.push(ubd.dailyUserCount);
                 calcAdminData.push(ubd.adminCount);
                 calcNonAdminData.push(ubd.nonAdminCount);
             });
@@ -97,7 +93,6 @@ function AdminChartNewUsers({ props }) {
             setTotalNonAdmins(ubdData.totalNonAdmins);
             setCardReady(true);
 
-
         } catch (error) {
             console.error(error);
             props.newToastMessage("error", "Error fetching users.");
@@ -120,9 +115,9 @@ function AdminChartNewUsers({ props }) {
                     ? <LoadingSpinnerMini />
                     : (
                         <div className="chart-area">
-                            <h4>Total Users Created: {allChartData.totalUsers}</h4>
-                            <h6>Admins: {allChartData.totalAdmins}</h6>
-                            <h6>Non-admins: {allChartData.totalNonAdmins}</h6>
+                            <h4>Total Users: {totalUsers}</h4>
+                            <h6>Admins: {totalAdmins}</h6>
+                            <h6>Non-admins: {totalNonAdmins}</h6>
                             <Line data={allChartData} options={chartOptions} />
                         </div>
                     )

@@ -4,6 +4,98 @@ import axios from 'axios';
 const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
 function AdminTableUsers({ props }) {
+
+  ///////////////////////// BUTTON FUNCTIONS /////////////////////////////////////
+  
+  // TODO: SOLI: Fix this function
+  function resetUserPassword(user) {
+    console.log("Reset Password button clicked. id: " + user._id);
+  }
+
+  // TOGGLE DELETE
+  async function toggleUserIsSoftDeleted(user) {
+
+    console.log("Delete button clicked. id: " + user._id);
+
+    try {
+
+      const response = await axios.patch(`${baseUrl}/admin/toggleUserIsSoftDeleted`, { user: user });
+      
+      if (response.status == 200) {
+        props.newToastMessage("success", "User softDelete toggled. isSoftDeleted = " + response.data.message);
+        updateUser(user._id, { isSoftDeleted: !user.isSoftDeleted });
+      } else {
+        props.newToastMessage("error", "failed to toggle isSoftDeleted : " + response.data);
+      }
+
+    } catch (error) {
+      props.newToastMessage("error", "Error toggling user isSoftDeleted: " + error);
+      console.error(error);
+    }
+  }
+
+
+  // TOGGLE BAN
+  async function toggleUserIsBanned(user) {
+    console.log("Toggle ban button clicked. id: " + user._id);
+
+    try {
+      const response = await axios.patch(`${baseUrl}/admin/toggleUserIsBanned`, { user: user });
+      
+      if (response.status == 200) {
+
+        props.newToastMessage("success", "User ban toggled. isBanned = " + response.data.message);
+        
+        updateUser( user._id, { isBanned: !user.isBanned });
+
+      } else {
+        props.newToastMessage("error", "failed to toggle ban : " + response.data);
+      }
+    } catch (error) {
+      props.newToastMessage("error", "Error toggling user ban: " + error);
+      console.error(error);
+    }
+}
+
+  // TOGGLE ADMIN
+async function toggleUserIsAdmin(user) {
+  console.log("Toggle Admin button clicked. id: " + user._id);
+  
+    try {
+      const response = await axios.patch(`${baseUrl}/admin/toggleUserIsAdmin`, { user: user });
+
+      if (response.status == 200) {
+
+        props.newToastMessage("success", "User isAdmin toggled. isAdmin = " + response.data.message);
+
+        updateUser(user._id, { isAdmin: !user.isAdmin });
+
+      } else {
+        props.newToastMessage("error", "failed to toggle ban : " + response.data);
+      }
+
+    } catch (error) {
+      props.newToastMessage("error", "Error toggling user ban: " + error);
+      console.error(error);
+    }
+  }
+
+  /////////////////////////////////////////////////////////////////////////////////////
+  
+  // Function to update user data
+  const updateUser = (userId, newUserData) => {
+    // Update state with the new user data
+    setUsersList(usersList => usersList.map(user => {
+      if (user._id === userId) {
+
+        // Only update the user that matches the ID
+        return { ...user, ...newUserData };
+      }
+      return user;
+    }));
+  };
+  
+
   const [usersList, setUsersList] = useState([]);
   const [usersTimestamps, setUsersTimestamps] = useState([]);
 
@@ -63,12 +155,64 @@ function AdminTableUsers({ props }) {
                 <td>{user.username}</td>
                 <td>{user.email}</td>
                 <td>{user.isAdmin ? "Admin" : "User"}</td>
-                <td className={`${user.isBanned ? 'bg-red-500' : (user.isDeleted ? 'bg-yellow-500' : '')}`} >{user.isDeleted ? "Deleted" : (user.isBanned ? "Banned" : "Active")}</td>
+                <td
+                  className={
+                    `${user.isBanned
+                      ?
+                      'bg-red-500'
+                      :
+                      (user.isSoftDeleted
+                        ?
+                      'bg-yellow-500'
+                      :
+                        ''
+                      )
+                    }`
+                  }>
+                  {
+                    user.isSoftDeleted
+                    &&
+                    "Deleted"
+                  }
+                  {
+                    user.isSoftDeleted &&
+                    user.isBanned &&
+                    <br />
+                  }
+                  {
+                    user.isBanned
+                    &&
+                    "Banned"
+                  }
+                </td>
                 <td>{formattedTimestamp}</td>
                 <td>
-                  <button className="btn btn-secondary mx-1">Reset</button>
-                  <button className="btn btn-warning mx-1">Delete</button>
-                  <button className="btn btn-primary mx-1">Ban</button>
+                  {/* ACTION BUTTONS TODO: soli fix button colors */}
+                  
+                  <button
+                    className="btn btn-secondary mx-1"
+                    onClick={() => { resetUserPassword(user) }}>
+                    Reset
+                  </button>
+                  
+                  <button
+                    className="btn btn-warning mx-1"
+                    onClick={() => { toggleUserIsSoftDeleted(user) }}>
+                    {user.isSoftDeleted ? "UnDelete" : "Delete"}
+                  </button>
+                  
+                  <button
+                    className="btn btn-primary mx-1"
+                    onClick={() => { toggleUserIsBanned(user) }}>
+                    {user.isBanned ? "UnBan" : "Ban"}
+                  </button>
+
+                  <button
+                    className={`btn ml-2`}
+                    onClick={() => { toggleUserIsAdmin(user) }}>
+                    {user.isAdmin ? ` ->User ` : `-> Admin`}
+                  </button>
+                  
                 </td>
               </tr>
             )
