@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
-import { Link, Navigate } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
@@ -49,7 +48,6 @@ const Navbar = ({ props }) => {
   const {
     userState,
     setAuthState,
-    selMosaic,
     setSelMosaic,
     userAdminState,
     setUserAdminState,

@@ -1,21 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 //import io from "socket.io-client";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  Button,
-  Modal,
-  Box,
-  TextField,
-  Menu,
-  MenuItem,
-  Checkbox,
-} from "@mui/material";
+import { Typography, Button, Modal, Box, TextField } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Navbar from "../../components/navbars/mainNavbar";
 import { AuthContext } from "../../contexts/authContext";
@@ -163,7 +152,6 @@ function Main() {
       setSelectedUsers(response.data);
     } catch (error) {
       console.error("Error fetching current collaborators:", error);
-      // Handle error
     }
   };
 
@@ -268,7 +256,6 @@ function Main() {
       console.log(error);
     }
   }
-
   //delete column
   async function delColumn(id) {
     console.log("delete request: " + id);
@@ -286,18 +273,8 @@ function Main() {
       console.error("Error deleting column: ", error);
     }
   }
-
-  //DEAD CODE?
-  const handleRename = (id) => {
-    setRenameColumnId(id);
-  };
-  const handleCancelRename = () => {
-    setRenameColumnId("");
-  };
-
   //renamce column
   const handleRenameSubmit = async (id, newTitle) => {
-    console.log(`New title for column ${id}: ${newTitle}`); //console log for testing
     try {
       const response = await axios.put(`${baseUrl}/mosaics/renameColumn`, {
         id,
@@ -314,20 +291,8 @@ function Main() {
     }
     setRenameColumnId("");
   };
-
-  //DEAD CODE?
-  const handleNewTile = (id) => {
-    setNewTileColumnId(id);
-  };
-  const handleCancelNewTile = () => {
-    setNewTileColumnId("");
-  };
-
   //add new tiles
   const handleNewTileSubmit = async (colId, newTile) => {
-    console.log(
-      `New tile ${newTile} on column ${colId} on mosaic ${selMosaic}`
-    ); //console log for testing
     try {
       const response = await axios.post(`${baseUrl}/mosaics/tile`, {
         colId,
@@ -345,15 +310,8 @@ function Main() {
     }
     setNewTileColumnId("");
   };
-
-  //DEAD CODE? TBD by ben
-  //get tile info for tile modal
-  // useEffect(() => {
-  //   getTileInfo(selTileId);
-  // }, [selTileId]);
-
+  //get tile info
   const getTileInfo = async (id) => {
-    console.log(`fetching tile ${id}`); //console log for testing
     try {
       const response = await axios.get(`${baseUrl}/mosaics/tile?id=${id}`);
       if (response.status === 200) {
@@ -366,7 +324,6 @@ function Main() {
       console.error("Error finding tile: ", error);
     }
   };
-
   //delete tile
   async function delTile(id) {
     try {
@@ -381,7 +338,6 @@ function Main() {
       console.error("Error deleting Tile: ", error);
     }
   }
-
   //rename tile
   const [renameTileToggle, setRenameTileToggle] = useState(false);
   const [newTileName, setNewTileName] = useState(tileInfo.title);
@@ -401,7 +357,6 @@ function Main() {
       console.log("Error renaming tile: ", error);
     }
   }
-
   //add to do
   const [newToDoToggle, setNewToDoToggle] = useState(false);
   const [newToDoTitle, setNewToDoTitle] = useState("");
