@@ -204,7 +204,7 @@ const UserSettings = () => {
     }
   };
   return (
-    <div>
+    <div className="">
       <Navbar />
       <CenteredBox>
         <Box

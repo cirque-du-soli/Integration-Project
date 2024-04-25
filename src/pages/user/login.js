@@ -59,7 +59,7 @@ function Login({ props }) {
         style={{
           backgroundImage: `url(${BackgroundImg})`,
           backgroundSize: "cover",
-          backgroundPosition: "center",
+          Position: "center",
         }}
       >
         <div className="max-w-md w-full bg-white bg-opacity-50 rounded-lg shadow-lg p-8">

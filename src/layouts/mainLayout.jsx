@@ -3,6 +3,7 @@ import { Route, Routes, Navigate, useLocation } from "react-router-dom";
 import { useRef, useState, React, useEffect } from 'react';
 import axios from "axios";
 import { AuthContext } from "../contexts/authContext.js";
+import { useTheme } from '../contexts/themeContext.js';
 
 // IMPORT: Routes
 import mainRoutes from "../routes/mainRoutes.js";
@@ -17,6 +18,19 @@ const getRoutes = (routes) => {
     });
 };
 function MainLayout(props) {
+
+    // Apply light theme on /app routes only
+    const { toggleTheme } = useTheme();
+
+    useEffect(() => {
+
+        // apply light theme when the MainDashboard mounts
+        toggleTheme('light');
+
+        console.log("Toggled to Light theme")
+
+    }, [toggleTheme]);
+
 
     //check if logged in
     const [authState, setAuthState] = useState(false);
@@ -54,8 +68,8 @@ function MainLayout(props) {
 
     return ( // SOLI TODO: move AuthContext.Provider to App.js and pass via props
         <>
-            <div className="App">
-                <div className="main-panel text-black form-control-color- " ref={mainPanelRef}>
+            <div className="App bg-gray-200">
+                <div className="main-panel text-black" ref={mainPanelRef}>
                     <AuthContext.Provider
                         value={{
                             authState,
