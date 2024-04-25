@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
+//import io from "socket.io-client";
 import { useLocation, useParams } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -44,11 +45,12 @@ function Main() {
   }, [id]);
   //userState is username
   const { userState } = useContext(AuthContext);
-  const [mosaicAccess, setMosaicAccess] = useState("none");
+  //const [mosaicAccess, setMosaicAccess] = useState("none");
 
   const [mosaicInfo, setMosaicInfo] = useState({});
   const [tileInfo, setTileInfo] = useState({});
 
+  //const [mosaicSocket, setMosaicSocket] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const [addCollaboratorModalOpen, setAddCollaboratorModalOpen] =
@@ -86,6 +88,31 @@ function Main() {
   //   checkUserAuth();
   // }, [mosaicInfo]);
 
+  // //Socket use effect
+  // useEffect(() => {
+  //   const newSocket = io(baseUrl, { secure: true });
+  //   setMosaicSocket(newSocket);
+  //   return () => newSocket.close();
+  // }, []);
+  // useEffect(() => {
+  //   if (!mosaicSocket) return;
+
+  //   mosaicSocket.emit("joinMosaic", selMosaic);
+
+  //   mosaicSocket.on("mosaic_info", () => {
+  //     console.log("fetching mosaicInfo");
+  //     fetchMosaicInfo();
+  //   });
+  //   return () => {
+  //     mosaicSocket.off("mosaic_info");
+  //   };
+  // }, [mosaicSocket]);
+
+  // const updateMosaicSocket = (id) => {
+  //   console.log("emiting: " + id);
+  //   mosaicSocket.emit("mosaic_info", id);
+  // };
+
   // Fetch mosaic info
   const fetchMosaicInfo = async () => {
     console.log("fetching:" + id);
@@ -108,7 +135,7 @@ function Main() {
   const confirmDelete = async () => {
     try {
       // Send a request to the backend to delete the mosaic
-      await axios.delete(`${baseUrl}/mosaics/${selMosaic}`);
+      await axios.delete(`${baseUrl}/mosaics/mosaic/${selMosaic}`);
       toast.success("Mosaic deleted successfully");
       setIsDeleteModalOpen(false);
       // Redirect the user to a different page
@@ -228,6 +255,7 @@ function Main() {
         .then((res) => {
           if (res.status === 200) {
             console.log("Column created");
+            //updateMosaicSocket(selMosaic);
             fetchMosaicInfo();
           } else if (res.status === 400) {
             console.log("Bad request");
@@ -243,6 +271,7 @@ function Main() {
 
   //delete column
   async function delColumn(id) {
+    console.log("delete request: " + id);
     try {
       const response = await axios.delete(
         `${baseUrl}/mosaics/deleteColumn?id=${id}`
@@ -1037,7 +1066,7 @@ function Main() {
                 value={tileInfo.assigned || ""}
               >
                 <option value={""}>No one</option>
-                <option value={userState}>{userState}</option>
+                <option value={mosaicInfo.owner}>{mosaicInfo.owner}</option>
                 {mosaicInfo.members &&
                   mosaicInfo.members.map((member) => (
                     <option value={member}>{member}</option>
