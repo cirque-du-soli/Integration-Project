@@ -115,7 +115,7 @@ const Navbar = ({ props }) => {
         console.log(response);
 
         // Redirect the user to the newly created mosaic
-        window.location.href = `/app/main/${mosaicId}`;
+        // window.location.href = `/app/main/${mosaicId}`;
       } else if (response.status === 400) {
         console.log("Bad request");
       }
