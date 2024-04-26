@@ -1,0 +1,28 @@
+
+Title:
+    - ProjecTile
+
+Team #1
+
+Team Members:
+    - Soliloquy Yarrow
+    - Sophie Hsu
+    - Benjamin Pye
+    - Nicholas Comeau
+
+GitHub Repos:
+    Frontend:
+        https://github.com/cirque-du-soli/projectile-fe
+    Backend: 
+        https://github.com/cirque-du-soli/projectile-be
+
+Jira:
+    https://jac-projectile.atlassian.net/jira/software/projects/KAN/boards/1/backlog?epics=visible
+
+Hosted Site
+    Frontend:
+        https://projectile-frontend-9b2d04e139e9.herokuapp.com/
+    Backend:
+        https://projectile-backend-136ff3f4d8c1.herokuapp.com/
+
+
