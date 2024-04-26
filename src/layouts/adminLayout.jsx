@@ -58,12 +58,12 @@ function AdminLayout(props) {
                     setUserAdminState(false);
                 } else {
                     console.log("response.data >> user state:")
-                    console.log(response.data);
-                    setUserState(response.data); // SOLI TODO: this will be response.data.username
-
+                    console.log(response.data.username);
+                    
+                    setUserState(response.data.username); // SOLI RISKY CHANGE: this was (response.data)
                     setAuthState(true);
-                    //setUserAdminState(response.data.isAdmin); // SOLI TODO: check if user is admin
-                    setUserAdminState(true); // SOLI TODO: TEMPORARY
+                    setUserAdminState(response.data.isAdmin);
+
                 }
             });
     }, [localStorage.getItem("accessToken")]);

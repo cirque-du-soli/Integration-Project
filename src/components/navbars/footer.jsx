@@ -35,13 +35,13 @@ function Footer({ props }) {
             Privacy Policy
           </a>
           <span className="text-black"> | </span>
-          <AdminToggleButton
+          {/* <AdminToggleButton
             props={{
               isAdmin: props.userAdminState,
               toggleIsAdmin: toggleIsAdmin,
               newToastMessage: newToastMessage,
             }}
-          />
+          /> */}
               </div>
               
           </div>

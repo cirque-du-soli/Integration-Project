@@ -195,7 +195,7 @@ function AdminTableUsers({ props }) {
             <th onClick={() => requestSort('email')} className="cursor-pointer bg-cyan-950 text-white">Email</th>
             <th onClick={() => requestSort('isAdmin')} className="cursor-pointer bg-cyan-950 text-white">Role</th>
             <th onClick={() => requestSort('isBannedOrDeleted')} className="cursor-pointer bg-cyan-950 text-white">Status</th>
-            <th onClick={() => requestSort('formattedTimestamp')} className="cursor-pointer bg-cyan-950 text-white">Created</th>
+            {/* <th onClick={() => requestSort('formattedTimestamp')} className="cursor-pointer bg-cyan-950 text-white">Created</th> */}
             <th className="cursor-pointer bg-cyan-950 text-white">Delete</th>
             <th className="cursor-pointer bg-cyan-950 text-white">Ban</th>
             <th className="cursor-pointer bg-cyan-950 text-white">Admin Status</th>
@@ -214,7 +214,20 @@ function AdminTableUsers({ props }) {
                 <td className="px-1">{user._id}</td>
                 <td className="px-1">{user.username}</td>
                 <td className="px-1">{user.email}</td>
-                <td className="px-1 text-center">{user.isAdmin ? "Admin" : "User"}</td>
+                
+                {user.isAdmin
+                  ?
+                  <td className="px-1 text-center bg-sky-500">
+                    Admin
+                  </td>
+                  :
+                  <td className="px-1 text-center">
+                    User
+                  </td>
+                }
+                
+                
+                
                 <td className={
                   `${user.isBanned
                     ? 'bg-red-500'
@@ -228,7 +241,7 @@ function AdminTableUsers({ props }) {
                   {user.isBanned && "Banned"}
                   {!user.isBanned && !user.isSoftDeleted && "Active"}
                 </td>
-                <td className="px-1">{formattedTimestamp}</td>
+                {/* <td className="px-1">{formattedTimestamp}</td> */}
                 {/*              
                 <td className= "p-0 text-center">
                   <button
