@@ -109,16 +109,16 @@ function AdminChartNewUsers({ props }) {
     };
 
     return (
-        <div className="card bg-base-100 shadow-xl my-5 text-sm md:text-md lg:text-lg mb-4 md:mb-6 lg:mb-8">
-            <div className="card-body">
+        <div className="card bg-base-100 shadow-xl mb-5 text-sm md:text-md lg:text-lg mb-4 md:mb-6 lg:mb-8">
+            <div className="card-body bg-base-300 rounded-xl mb-2">
                 {!cardReady
                     ? <LoadingSpinnerMini />
                     : (
                         <div className="chart-area">
-                            <h4>Total Users: {totalUsers}</h4>
+                            <h4>Total: {totalUsers}</h4>
                             <h6>Admins: {totalAdmins}</h6>
                             <h6>Non-admins: {totalNonAdmins}</h6>
-                            <Line data={allChartData} options={chartOptions} />
+                            <Line data={allChartData} options={chartOptions} className=" max-h-[380px]" />
                         </div>
                     )
                 }

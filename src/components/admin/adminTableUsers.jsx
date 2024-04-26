@@ -15,7 +15,7 @@ function AdminTableUsers({ props }) {
   }, []);
 
   // Sort Config
-  const requestSort = (key) => {
+  const requestSort = (key, trId) => {
 
     //console.log("k : " + key + " sc.k: " + sortConfig.key + " sc.d:" + sortConfig.direction)
 
@@ -44,10 +44,9 @@ function AdminTableUsers({ props }) {
     if (sortConfig.key === key && sortConfig.direction === 'ascending') {
       direction = 'descending';
     }
-
-
     setSortConfig({ key , direction});
-
+    document.querySelectorAll('th').forEach((th) => { th.classList.remove('bg-cyan-700') });
+    document.getElementById('tr'+trId).classList.add('bg-cyan-700');
   };
 
   // Sort the data based on sortConfig
@@ -58,6 +57,7 @@ function AdminTableUsers({ props }) {
     if (a[sortConfig.key] > b[sortConfig.key]) {
       return sortConfig.direction === 'ascending' ? 1 : -1;
     }
+
     return 0;
   });
 
@@ -66,13 +66,13 @@ function AdminTableUsers({ props }) {
 
   // TODO: SOLI: add feature to reset user password
   function resetUserPassword(user) {
-    console.log("Reset Password button clicked. id: " + user._id);
+    //console.log("Reset Password button clicked. id: " + user._id);
   }
 
   // TOGGLE DELETE
   async function toggleUserIsSoftDeleted(user) {
 
-    console.log("Delete button clicked. id: " + user._id);
+    //console.log("Delete button clicked. id: " + user._id);
 
     try {
 
@@ -94,7 +94,7 @@ function AdminTableUsers({ props }) {
 
   // TOGGLE BAN
   async function toggleUserIsBanned(user) {
-    console.log("Toggle ban button clicked. id: " + user._id);
+    //console.log("Toggle ban button clicked. id: " + user._id);
 
     try {
       const response = await axios.patch(`${baseUrl}/admin/toggleUserIsBanned`, { user: user });
@@ -116,7 +116,7 @@ function AdminTableUsers({ props }) {
 
   // TOGGLE ADMIN
   async function toggleUserIsAdmin(user) {
-    console.log("Toggle Admin button clicked. id: " + user._id);
+    //console.log("Toggle Admin button clicked. id: " + user._id);
 
     try {
       const response = await axios.patch(`${baseUrl}/admin/toggleUserIsAdmin`, { user: user });
@@ -156,11 +156,11 @@ function AdminTableUsers({ props }) {
   async function getAllUsers() {
     try {
       const response = await axios.get(`${baseUrl}/admin/getAllUsers`);
-      console.log(response.data.users);
+      //console.log(response.data.users);
       props.newToastMessage("success", "User data fetched successfully.");
       setUsersList(response.data.users);
       setUsersTimestamps(response.data.userTimestamps);
-      console.log(response.data.userTimestamps)
+      //console.log(response.data.userTimestamps)
     } catch (error) {
       console.error(error);
       props.newToastMessage("error", "Error fetching users.");
@@ -190,11 +190,11 @@ function AdminTableUsers({ props }) {
         </caption> */}
         <thead>
           <tr>
-            <th onClick={() => requestSort('_id')} className="cursor-pointer bg-cyan-950 text-white">ID</th>
-            <th onClick={() => requestSort('username')} className="cursor-pointer bg-cyan-950 text-white">Username</th>
-            <th onClick={() => requestSort('email')} className="cursor-pointer bg-cyan-950 text-white">Email</th>
-            <th onClick={() => requestSort('isAdmin')} className="cursor-pointer bg-cyan-950 text-white">Role</th>
-            <th onClick={() => requestSort('isBannedOrDeleted')} className="cursor-pointer bg-cyan-950 text-white">Status</th>
+            <th id='tr1' onClick={(e) => requestSort('_id', 1)} className="cursor-pointer bg-cyan-950 text-white">ID</th>
+            <th id='tr2' onClick={(e) => requestSort('username', 2)} className="cursor-pointer bg-cyan-950 text-white">Username</th>
+            <th id='tr3' onClick={(e) => requestSort('email', 3)} className="cursor-pointer bg-cyan-950 text-white">Email</th>
+            <th id='tr4' onClick={(e) => requestSort('isAdmin', 4)} className="cursor-pointer bg-cyan-950 text-white">Role</th>
+            <th /* onClick={(e) => requestSort('isBannedOrDeleted')}  */className="cursor-pointer bg-cyan-950 text-white">Status</th>
             {/* <th onClick={() => requestSort('formattedTimestamp')} className="cursor-pointer bg-cyan-950 text-white">Created</th> */}
             <th className="cursor-pointer bg-cyan-950 text-white">Delete</th>
             <th className="cursor-pointer bg-cyan-950 text-white">Ban</th>
