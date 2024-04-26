@@ -29,7 +29,7 @@ function Home() {
           userState === undefined ||
           userState === ""
         ) ? (
-        <Navigate to="/app/login" replace />
+        <Navigate to="/login" replace />
       ) : (
         <LoadingSpinner />
       )}

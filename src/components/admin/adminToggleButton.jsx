@@ -1,4 +1,3 @@
-// IMPORT: React
 import { React } from 'react';
 
 function AdminToggleButton({ props }) {

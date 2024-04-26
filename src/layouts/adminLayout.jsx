@@ -1,21 +1,9 @@
 // IMPORT: React
 import { Route, Routes, Navigate } from "react-router-dom";
-import { useRef, useEffect, useState } from 'react';
-
-// IMPORT: Routes
+import { useRef, useEffect } from 'react';
 import adminRoutes from "../routes/adminRoutes.js";
-
-// IMPORT: Components
 import PageNotFound from "../pages/404/pageNotFound404.js";
-import UserNotAuthorized from "../pages/notAuth/notAuthorized.js";
-
-import { AuthContext } from "../contexts/authContext.js";
 import { useTheme } from '../contexts/themeContext.js';
-
-import axios from "axios";
-
-import LoadingSpinner from "../pages/loadingSpinner/loadingSpinner.jsx";
-
 
 const getRoutes = (routes) => {
     return routes.map((prop, key) => {
@@ -29,67 +17,23 @@ function AdminLayout(props) {
 
     const mainPanelRef = useRef(null);
 
-    // Apply synthwave theme on /admin routes only
     const { toggleTheme } = useTheme();
 
     useEffect(() => {
-    
-        // apply synthwave theme when the AdminDashboard mounts
+        // synthwave theme when the AdminDashboard mounts
         toggleTheme('synthwave'); 
-
-        console.log("Toggled to Synthwave theme")
-
     }, [toggleTheme]);
-
-    //check if logged in
-    const [authState, setAuthState] = useState(false);
-    const [userState, setUserState] = useState("");
-    const [userAdminState, setUserAdminState] = useState(""); // SOLI TODO: consider change to props.userAdminState -- must move entire auth context up one level
-
-    useEffect(() => {
-        axios
-            .get(`${process.env.REACT_APP_API_BASE_URL}/auth`, {
-                headers: { accessToken: localStorage.getItem("accessToken") },
-            })
-            .then((response) => {
-                if (response.data.error) {
-                    setAuthState(false);
-                    setUserState("");
-                    setUserAdminState(false);
-                } else {
-                    console.log("response.data >> user state:")
-                    console.log(response.data.username);
-                    
-                    setUserState(response.data.username); // SOLI RISKY CHANGE: this was (response.data)
-                    setAuthState(true);
-                    setUserAdminState(response.data.isAdmin);
-
-                }
-            });
-    }, [localStorage.getItem("accessToken")]);
 
     return (
         <>
             <div className="App bg-slate-800 min-h-screen">
-                {
-                    userAdminState
-                        ?
-                        <div className="main-panel" ref={mainPanelRef}>
-
-                            <Routes>
-                                <Route path="/" element={<Navigate to="/admin/dashboard" replace />} />
-                                {getRoutes(adminRoutes)}
-                                <Route path="/*" element={<PageNotFound />} />
-                            </Routes>
-                        </div>
-                        :
-                        !(userAdminState === null || userAdminState === undefined || userAdminState === "")
-                            ?
-                            <UserNotAuthorized />
-                            :
-                            <LoadingSpinner />
-                }
-
+                <div className="main-panel" ref={mainPanelRef}>
+                    <Routes>
+                        <Route path="/" element={<Navigate to="/admin/dashboard" replace />} />
+                        {getRoutes(adminRoutes)}
+                        <Route path="/*" element={<PageNotFound />} />
+                    </Routes>
+                </div>
             </div>
         </>
     );

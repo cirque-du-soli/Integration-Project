@@ -1,9 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Navigate, Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/authContext";
 import BackgroundImg from "../../assets/bg.jpg";
-import { toast } from "react-toastify";
+import { newToastMessage } from '../../components/customToast';
 
 function Login({ props }) {
 
@@ -16,7 +16,7 @@ function Login({ props }) {
   const { authState } = useContext(AuthContext);
   const { setAuthState } = useContext(AuthContext);
   const { userState } = useContext(AuthContext);
-  const { adminState } = useContext(AuthContext);
+  const userAuthContext = useContext(AuthContext);
 
   // init login state and check
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -30,8 +30,8 @@ function Login({ props }) {
   }, [authState]);
 
   async function handleSubmit(e) {
-    e.preventDefault();
 
+    e.preventDefault();
     const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
     try {
@@ -45,12 +45,16 @@ function Login({ props }) {
         setAuthState(true);
         history("/app/home", { state: { id: username } });
       } else if (response.data === "notexist") {
-        toast.error("User has not signed up");
+        newToastMessage("error", "Bad Credentials. Try Again.");
       }
     } catch (error) {
-      console.error(error);
-      toast.error("Wrong details");
+      //console.error(error);
+      newToastMessage("error", "Login Error. Try Again.");
     }
+  }
+
+  if (userAuthContext.userAuthState === true) {
+    return <Navigate to="/app/home" />;
   }
 
   return (
@@ -99,7 +103,7 @@ function Login({ props }) {
             <p className="text-sm text-gray-600">
               Don't have an account?{" "}
               <Link
-                to="/app/register"
+                to="/register"
                 className="font-medium text-primary-500 hover:text-primary-700"
               >
                 Sign up here

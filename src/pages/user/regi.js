@@ -1,16 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, Navigate } from "react-router-dom";
 import BackgroundImg from "../../assets/bg.jpg";
 import { validatePassword } from "../../util/fe-validations/validatePassword";
+import { newToastMessage } from '../../components/customToast';
+import { AuthContext } from "../../contexts/authContext";
 
 function Registration() {
+
   const history = useNavigate();
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordErrorMsg, setPasswordErrorMsg] = useState("");
+
+  // authState
+  const { authState } = useContext(AuthContext);
+  const { userState } = useContext(AuthContext);
+  const userAuthContext = useContext(AuthContext);
+
+  // init login state and check
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handlePasswordValidation = (value) => {
     const validationMessage = validatePassword(value);
@@ -21,10 +32,19 @@ function Registration() {
     }
   };
 
-  async function submit(e) {
-    e.preventDefault();
+  // if user is already authorized send to menu
+  useEffect(() => {
+    if (authState) {
+      setIsLoggedIn(true);
+      history("/app/home", { state: { id: userState } });
+    }
+  }, [authState]);
 
+  async function submit(e) {
+
+    e.preventDefault();
     const baseUrl = process.env.REACT_APP_API_BASE_URL;
+
     if (passwordErrorMsg === "") {
       try {
         const response = await axios.post(`${baseUrl}/auth/regi`, {
@@ -34,14 +54,19 @@ function Registration() {
         });
 
         if (response.data === "exist") {
-          alert("User already exists");
+          newToastMessage("error", "Username already exists. Try Again.");
         } else if (response.data === "success") {
-          history("/app/login", { state: { id: username } });
+          history("/login", { state: { id: username } });
         }
       } catch (error) {
-        console.error(error);
+        //console.error(error);
+        newToastMessage("error", "Registration Error. Try Again.");
       }
     }
+  }
+
+  if (userAuthContext.userAuthState === true) {
+    return <Navigate to="/app/home" />;
   }
 
   return (
@@ -104,7 +129,7 @@ function Registration() {
             <p className="text-sm text-gray-600">
               Already have an account?
               <Link
-                to="/app/login"
+                to="/login"
                 className="font-medium text-primary-500 hover:text-primary-700"
               >
                 Login here

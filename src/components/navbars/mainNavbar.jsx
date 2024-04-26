@@ -152,9 +152,9 @@ const Navbar = ({ props }) => {
             {userState}
           </Button>
           {
-            userAdminState && (
-              <NavItemAdmin />
-            ) /* SOLI TODO: isAdmin: userAdminState */
+            userAdminState
+            &&
+            <NavItemAdmin />
           }
 
           <Menu
