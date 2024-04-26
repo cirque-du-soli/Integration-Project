@@ -43,7 +43,7 @@ function AdminChartNewUsers({ props }) {
         try {
             const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/admin/getAllUsers`);
             console.log(response.data);
-            props.newToastMessage("success", "Chart Data Fetched");
+            props.newToastMessage("success", "Initial Data Fetched");
             setUsersList(response.data.users);
             setUsersTimestamps(response.data.userTimestamps);
             let ubdData = calcRegiData(response.data.users, response.data.userTimestamps);
@@ -95,7 +95,7 @@ function AdminChartNewUsers({ props }) {
 
         } catch (error) {
             console.error(error);
-            props.newToastMessage("error", "Error fetching chart data.");
+            props.newToastMessage("error", "Error translating chart data.");
         }
     }  
 

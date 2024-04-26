@@ -78,7 +78,7 @@ function AdminTableUsers({ props }) {
 
       const response = await axios.patch(`${baseUrl}/admin/toggleUserIsSoftDeleted`, { user: user });
 
-      if (response.status == 200) {
+      if (response.status === 200) {
         user.isSoftDeleted ? props.newToastMessage("info", "User restored: " + user.username) : props.newToastMessage("warning", "User soft-deleted: " + user.username);
         updateUser(user._id, { isSoftDeleted: !user.isSoftDeleted });
       } else {
@@ -99,9 +99,9 @@ function AdminTableUsers({ props }) {
     try {
       const response = await axios.patch(`${baseUrl}/admin/toggleUserIsBanned`, { user: user });
 
-      if (response.status == 200) {
+      if (response.status === 200) {
 
-        user.isBanned ? props.newToastMessage("info", "User banned: " + user.username) : props.newToastMessage("warning", "User un-banned: " + user.username);
+        user.isBanned ? props.newToastMessage("info", "User un-banned: " + user.username) : props.newToastMessage("warning", "User banned: " + user.username);
 
         updateUser(user._id, { isBanned: !user.isBanned });
 
@@ -121,7 +121,7 @@ function AdminTableUsers({ props }) {
     try {
       const response = await axios.patch(`${baseUrl}/admin/toggleUserIsAdmin`, { user: user });
 
-      if (response.status == 200) {
+      if (response.status === 200) {
 
         user.isAdmin ? props.newToastMessage("warning", user.username + "'s Admin status revoked.") : props.newToastMessage("info", user.username + " promoted to Admin.");
 

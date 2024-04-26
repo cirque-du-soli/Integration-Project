@@ -7,7 +7,7 @@ const AdminNavTabs = ({ props }) => {
     const [currentActiveTab, setCurrentActiveTab] = useState('manageUsers');
     const [manageUsersTab, setManageUsersTab] = useState('userList');
     const [statsTab, setStatsTab] = useState('registrations');
-    const [GATab, setGATab] = useState('URLs');
+    const [GATab, setGATab] = useState('redirects');
 
     function toggleTabs(tab) {
         setCurrentActiveTab(tab);
@@ -69,12 +69,14 @@ const AdminNavTabs = ({ props }) => {
                     <>
                         <div className="bg-base-100 px-2 rounded-lg mx-0" >
                     <div className="bg-base-100 tabs tabs-lifted text-sm md:text-md lg:text-lg mb-2 md:mb-3 lg:mb-4 p-5 m-5">
-                    <a className={`tab ${GATab === 'urls' ? 'tab-active [--tab-bg:#ffbc54] [--tab-border-color:#eb9002] text-black' : '[--tab-border-color:#eb9002]'}`} onClick={() => toggleGATab('urls')}>URLs</a>
-                    <a className={`tab ${GATab === 'redirects' ? 'tab-active [--tab-bg:#ffbc54] [--tab-border-color:#eb9002] text-black' : '[--tab-border-color:#eb9002]'}`} onClick={() => toggleGATab('redirects')}>Redirects</a>
-                    <a className={`tab ${GATab === 'charts' ? 'tab-active [--tab-bg:#ffbc54] [--tab-border-color:#eb9002] text-black' : '[--tab-border-color:#eb9002]'}`} onClick={() => toggleGATab('charts')}>Charts</a>
-                    <a className={`tab ${GATab === 'errors' ? 'tab-active [--tab-bg:#ffbc54] [--tab-border-color:#eb9002] text-black' : '[--tab-border-color:#eb9002]'}`} onClick={() => toggleGATab('errors')}>Errors</a>
+                    <a className={`tab tab-disabled ${GATab === 'urls' ? 'tab-active [--tab-bg:#ffbc54] [--tab-border-color:#eb9002] text-black' : '[--tab-border-color:#eb9002]'}`}/*  onClick={() => toggleGATab('urls')} */>URLs</a>
+                                <a className={`tab ${GATab === 'redirects' ? 'tab-active [--tab-bg:#ffbc54] [--tab-border-color:#eb9002] text-black' : '[--tab-border-color:#eb9002]'}`} onClick={() => toggleGATab('redirects')}>Redirects</a>
+                                <a className={`tab tab-disabled ${GATab === 'charts' ? 'tab-active [--tab-bg:#ffbc54] [--tab-border-color:#eb9002] text-black' : '[--tab-border-color:#eb9002]'}`} /* onClick={() => toggleGATab('charts')} */>Charts</a>
+                                <a className={`tab tab-disabled ${GATab === 'errors' ? 'tab-active [--tab-bg:#ffbc54] [--tab-border-color:#eb9002] text-black' : '[--tab-border-color:#eb9002]'}`} /* onClick={() => toggleGATab('errors')} */>Errors</a>
                         </div>
-                        <div className="text-center p-4 italic">[Data Unavailable]</div>
+                            <div className="text-center p-4 italic">
+                                <p className='text-lg'> Placeholder for future Google Analytics Content</p>
+                            </div>
             </div>
         </>
             )}
