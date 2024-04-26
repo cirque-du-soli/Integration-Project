@@ -25,7 +25,13 @@ ChartJS.register(
 );
 
 function AdminChartNewUsers({ props }) {
+
+    //STATES
+    const [totalUsers, setTotalUsers] = useState(0);
+    const [totalAdmins, setTotalAdmins] = useState(0);
+    const [totalNonAdmins, setTotalNonAdmins] = useState(0);
     const [usersList, setUsersList] = useState([]);
+    const [usersTimestamps, setUsersTimestamps] = useState([]);
     const [allChartData, setAllChartData] = useState([]);
     const [cardReady, setCardReady] = useState(false);
 
@@ -35,40 +41,63 @@ function AdminChartNewUsers({ props }) {
 
     async function getAllUsersData() {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/admin/users}`);
+            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/admin/getAllUsers`);
             console.log(response.data);
-            props.newToastMessage("success", "Users fetched!");
-            setUsersList(response.data);
-            let ubdData = calcRegiData(usersList.data);
-            setAllChartData({
-                labels: ubdData.ubdArray.map(ubd => ubd.label),
+            props.newToastMessage("success", "Chart Data Fetched");
+            setUsersList(response.data.users);
+            setUsersTimestamps(response.data.userTimestamps);
+            let ubdData = calcRegiData(response.data.users, response.data.userTimestamps);
+            
+            console.log("UBD DATA: ", ubdData);
+            let usersPerDayArray = ubdData.usersPerDayArray;
+
+            // FORMAT CHART DATA
+            let calcLabels = [];
+            let calcUserData = [];
+            let calcAdminData = [];
+            let calcNonAdminData = [];
+    
+            usersPerDayArray.forEach((ubd) => {
+                calcLabels.push(ubd.label);
+                calcUserData.push(ubd.dailyUserCount);
+                calcAdminData.push(ubd.adminCount);
+                calcNonAdminData.push(ubd.nonAdminCount);
+            });
+
+            let formattedData = {
+                labels: calcLabels,
                 datasets: [
                     {
                         label: 'All Users',
-                        data: ubdData.ubdArray.map(ubd => ubd.userCount),
+                        data: calcUserData,
                         borderColor: 'rgb(168, 255, 61)',
                         backgroundColor: 'rgba(168, 255, 61, 0.5)',
                     },
                     {
                         label: 'Admins',
-                        data: ubdData.ubdArray.map(ubd => ubd.adminCount),
+                        data: calcAdminData,
                         borderColor: 'rgb(255, 99, 132)',
                         backgroundColor: 'rgba(255, 99, 132, 0.5)',
                     },
                     {
                         label: 'Non-Admins',
-                        data: ubdData.ubdArray.map(ubd => ubd.nonAdminCount),
+                        data: calcNonAdminData,
                         borderColor: 'rgb(98, 159, 208)',
                         backgroundColor: 'rgba(98, 159, 208, 0.5)',
                     },
                 ],
-            });
+            }
+            setAllChartData(formattedData);
+            setTotalUsers(ubdData.totalUserCount);
+            setTotalAdmins(ubdData.totalAdmins);
+            setTotalNonAdmins(ubdData.totalNonAdmins);
             setCardReady(true);
+
         } catch (error) {
             console.error(error);
-            props.newToastMessage("error", "Error fetching users.");
+            props.newToastMessage("error", "Error fetching chart data.");
         }
-    };
+    }  
 
     const chartOptions = {
         responsive: true,
@@ -86,9 +115,9 @@ function AdminChartNewUsers({ props }) {
                     ? <LoadingSpinnerMini />
                     : (
                         <div className="chart-area">
-                            <h4>Total Users Created: {allChartData.totalUsers}</h4>
-                            <h6>Admins: {allChartData.totalAdmins}</h6>
-                            <h6>Non-admins: {allChartData.totalNonAdmins}</h6>
+                            <h4>Total Users: {totalUsers}</h4>
+                            <h6>Admins: {totalAdmins}</h6>
+                            <h6>Non-admins: {totalNonAdmins}</h6>
                             <Line data={allChartData} options={chartOptions} />
                         </div>
                     )

@@ -50,11 +50,10 @@ function MainLayout(props) {
                 } else {
                     console.log("response.data >> user state:")
                     console.log(response.data);
-                    setUserState(response.data); // SOLI TODO: this will be response.data.username
+                    setUserState(response.data.username); // SOLI RISKY: was response.data
                     
                     setAuthState(true);
-                    //setUserAdminState(response.data.isAdmin); // SOLI TODO: check if user is admin
-                    setUserAdminState(true); // SOLI TODO: TEMPORARY
+                    setUserAdminState(response.data.isAdmin); // SOLI RISKY
                 }
             });
     }, [localStorage.getItem("accessToken")]);
