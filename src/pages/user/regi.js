@@ -32,13 +32,6 @@ function Registration() {
     }
   };
 
-  // if user is already authorized send to menu
-  useEffect(() => {
-    if (authState) {
-      setIsLoggedIn(true);
-      history("/app/home", { state: { id: userState } });
-    }
-  }, [authState]);
 
   async function submit(e) {
 
@@ -65,9 +58,25 @@ function Registration() {
     }
   }
 
-  if (userAuthContext.userAuthState === true) {
-    return <Navigate to="/app/home" />;
-  }
+// handle if user is already logged in and/or banned or deleted
+  if (userAuthContext.authState === true) {
+    if (userAuthContext.userDeletedState === true || userAuthContext.userBannedState === true) {
+      // log user out if banned or deleted, and on the registration page
+      localStorage.removeItem("isAdmin");
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("username");
+      userAuthContext.setAuthState(null);
+      userAuthContext.setUserState(null);
+      userAuthContext.setUserAdminState(null);
+      userAuthContext.setUserDeletedState(null);
+      userAuthContext.setUserBannedState(null);
+      newToastMessage("error", "User is banned or deleted. Please register a new account.");
+      // then continue rendering
+    } else {
+      // user is logged in -- redirect to user homepage
+      return <Navigate to="/app/home" />;
+    }
+  } 
 
   return (
     <>

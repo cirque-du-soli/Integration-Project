@@ -27,7 +27,7 @@ import Registration from "./pages/user/regi";
 function App() {
 
   // States for auth context
-  const [authState, setAuthState] = useState(false);
+  const [authState, setAuthState] = useState(null);
   const [userState, setUserState] = useState(null);
   const [userAdminState, setUserAdminState] = useState(null);
   const [userDeletedState, setUserDeletedState] = useState(null);
