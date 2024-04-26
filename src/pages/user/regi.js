@@ -32,7 +32,6 @@ function Registration() {
     }
   };
 
-
   async function submit(e) {
 
     e.preventDefault();
@@ -50,6 +49,7 @@ function Registration() {
           newToastMessage("error", "Username already exists. Try Again.");
         } else if (response.data === "success") {
           history("/login", { state: { id: username } });
+          newToastMessage("success", "Registration successful. Please login.");
         }
       } catch (error) {
         //console.error(error);
@@ -61,10 +61,11 @@ function Registration() {
 // handle if user is already logged in and/or banned or deleted
   if (userAuthContext.authState === true) {
     if (userAuthContext.userDeletedState === true || userAuthContext.userBannedState === true) {
-      // log user out if banned or deleted, and on the registration page
+      newToastMessage("error", "User is banned or deleted. Please register a new account.");
+
+      // logout user if banned or deleted, and on the registration page
       localStorage.removeItem("isAdmin");
       localStorage.removeItem("accessToken");
-      localStorage.removeItem("username");
       userAuthContext.setAuthState(null);
       userAuthContext.setUserState(null);
       userAuthContext.setUserAdminState(null);

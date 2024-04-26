@@ -44,8 +44,11 @@ function Login({ props }) {
         localStorage.setItem("accessToken", response.data);
         setAuthState(true);
         history("/app/home", { state: { id: username } });
+        newToastMessage("success", "Welcome back, " + username);
       } else if (response.data === "notexist") {
-        newToastMessage("error", "Bad Credentials. Try Again.");
+        newToastMessage("error", "That username does not exist.");
+      } else if (response.data === "invalid password") {
+        newToastMessage("error", "Invalid password. Try Again.");
       }
     } catch (error) {
       //console.error(error);
