@@ -1,8 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Navigate, Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/authContext";
 import BackgroundImg from "../../assets/bg.jpg";
+import { newToastMessage } from '../../components/customToast';
 
 function Login({ props }) {
 
@@ -15,7 +16,7 @@ function Login({ props }) {
   const { authState } = useContext(AuthContext);
   const { setAuthState } = useContext(AuthContext);
   const { userState } = useContext(AuthContext);
-  const { adminState } = useContext(AuthContext);
+  const userAuthContext = useContext(AuthContext);
 
   // init login state and check
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -29,8 +30,8 @@ function Login({ props }) {
   }, [authState]);
 
   async function handleSubmit(e) {
-    e.preventDefault();
 
+    e.preventDefault();
     const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
     try {
@@ -43,12 +44,35 @@ function Login({ props }) {
         localStorage.setItem("accessToken", response.data);
         setAuthState(true);
         history("/app/home", { state: { id: username } });
+        newToastMessage("success", "Welcome back, " + username);
       } else if (response.data === "notexist") {
-        alert("User has not signed up");
+        newToastMessage("error", "That username does not exist.");
+      } else if (response.data === "invalid password") {
+        newToastMessage("error", "Invalid password. Try Again.");
       }
     } catch (error) {
-      console.error(error);
-      alert("Wrong details");
+      //console.error(error);
+      newToastMessage("error", "Login Error. Try Again.");
+    }
+  }
+
+  // handle if user is already logged in and/or banned or deleted
+  if (userAuthContext.authState === true) {
+    if (userAuthContext.userDeletedState === true || userAuthContext.userBannedState === true) {
+      // log user out if banned or deleted, and on the registration page
+      localStorage.removeItem("isAdmin");
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("username");
+      userAuthContext.setAuthState(null);
+      userAuthContext.setUserState(null);
+      userAuthContext.setUserAdminState(null);
+      userAuthContext.setUserDeletedState(null);
+      userAuthContext.setUserBannedState(null);
+      newToastMessage("error", "User has been banned or deleted. Please try logging in again.");
+      // then continue rendering
+    } else {
+      // user is logged in -- redirect to user homepage
+      return <Navigate to="/app/home" />;
     }
   }
 
@@ -59,7 +83,7 @@ function Login({ props }) {
         style={{
           backgroundImage: `url(${BackgroundImg})`,
           backgroundSize: "cover",
-          backgroundPosition: "center",
+          Position: "center",
         }}
       >
         <div className="max-w-md w-full bg-white bg-opacity-50 rounded-lg shadow-lg p-8">
@@ -98,7 +122,7 @@ function Login({ props }) {
             <p className="text-sm text-gray-600">
               Don't have an account?{" "}
               <Link
-                to="/app/register"
+                to="/register"
                 className="font-medium text-primary-500 hover:text-primary-700"
               >
                 Sign up here

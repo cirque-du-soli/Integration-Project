@@ -1,24 +1,6 @@
-import { React, useState } from 'react';
-import AdminToggleButton from "../admin/adminToggleButton.jsx";
-import { newToastMessage } from '../customToast.js';
+import { React } from 'react';
 
-function Footer({ props }) {
-  
-  // initial states
-  const [isAdmin] = useState(props.userAdminState);
-  localStorage.setItem("isAdmin", isAdmin);
-
-  function toggleIsAdmin() {
-    // update storage
-    //localStorage.setItem('isAdmin', (localStorage.getItem('isAdmin') === 'true') ? 'false' : 'true');
-    // update state (re-renders div)
-    // setIsAdmin(localStorage.getItem('isAdmin'));
-
-    props.setUserAdminState(!props.userAdminState);
-    // setIsAdmin(userAdminState);
-    localStorage.setItem("isAdmin", props.userAdminState);
-  }
-
+function Footer() {
   return (
     <footer className="bg-teal-500 text-white py-4 fixed bottom-0 w-full">
       <div className="container mx-auto flex flex-wrap justify-between items-center font-semibold">
@@ -35,18 +17,10 @@ function Footer({ props }) {
             Privacy Policy
           </a>
           <span className="text-black"> | </span>
-          <AdminToggleButton
-            props={{
-              isAdmin: props.userAdminState,
-              toggleIsAdmin: toggleIsAdmin,
-              newToastMessage: newToastMessage,
-            }}
-          />
-              </div>
-              
-          </div>
-        </footer>
-    );
+        </div>
+      </div>
+    </footer>
+  );
 }
 
 export default Footer;

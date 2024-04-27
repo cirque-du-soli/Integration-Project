@@ -1,26 +1,21 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { useLocation, useParams } from "react-router-dom";
+//import io from "socket.io-client";
+import { Navigate, useParams } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  Button,
-  Modal,
-  Box,
-  TextField,
-  Menu,
-  MenuItem,
-  Checkbox,
-} from "@mui/material";
+import { Typography, Button, Modal, Box, TextField } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Navbar from "../../components/navbars/mainNavbar";
 import { AuthContext } from "../../contexts/authContext";
 import Chat from "../../components/Chat";
 import { EditOutlined, DeleteOutline } from "@mui/icons-material";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import LoadingSpinner from "../loadingSpinner/loadingSpinner.jsx";
+import UserNotAuthorized from "../notAuth/notAuthorized.js";
 
 const StyledModal = styled(Modal)({
   display: "flex",
@@ -41,10 +36,13 @@ function Main() {
   }, [id]);
   //userState is username
   const { userState } = useContext(AuthContext);
-  const [mosaicAccess, setMosaicAccess] = useState("none");
+  const [mosaicAccess, setMosaicAccess] = useState("");
 
   const [mosaicInfo, setMosaicInfo] = useState({});
   const [tileInfo, setTileInfo] = useState({});
+
+  //const [mosaicSocket, setMosaicSocket] = useState(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const [addCollaboratorModalOpen, setAddCollaboratorModalOpen] =
     useState(false);
@@ -64,22 +62,51 @@ function Main() {
   //Backend URL
   const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
-  // //check user authority
-  // const checkUserAuth = async () => {
-  //   if (mosaicInfo.owner != userState) {
-  //     if (!mosaicInfo.members.includes(userState)) {
-  //       setMosaicAccess("none");
-  //     } else {
-  //       setMosaicAccess("member");
-  //     }
-  //   } else {
-  //     setMosaicAccess("owner");
-  //   }
-  // };
+  //check user authority
+  const checkUserAuth = async () => {
+    console.log("Mosaic owner: " + mosaicInfo.owner);
+    console.log("Mosaic Members: " + mosaicInfo.members);
+    if (mosaicInfo.owner !== userState) {
+      if (localStorage.getItem("isAdmin") === "true") {
+        setMosaicAccess("owner");
+      } else {
+        if (mosaicInfo.members) {
+          if (!mosaicInfo.members.includes(userState)) {
+            setMosaicAccess("none");
+          } else {
+            setMosaicAccess("member");
+          }
+        }
+      }
+    } else {
+      setMosaicAccess("owner");
+    }
+  };
 
+  // //Socket use effect
   // useEffect(() => {
-  //   checkUserAuth();
-  // }, [mosaicInfo]);
+  //   const newSocket = io(baseUrl, { secure: true });
+  //   setMosaicSocket(newSocket);
+  //   return () => newSocket.close();
+  // }, []);
+  // useEffect(() => {
+  //   if (!mosaicSocket) return;
+
+  //   mosaicSocket.emit("joinMosaic", selMosaic);
+
+  //   mosaicSocket.on("mosaic_info", () => {
+  //     console.log("fetching mosaicInfo");
+  //     fetchMosaicInfo();
+  //   });
+  //   return () => {
+  //     mosaicSocket.off("mosaic_info");
+  //   };
+  // }, [mosaicSocket]);
+
+  // const updateMosaicSocket = (id) => {
+  //   console.log("emiting: " + id);
+  //   mosaicSocket.emit("mosaic_info", id);
+  // };
 
   // Fetch mosaic info
   const fetchMosaicInfo = async () => {
@@ -100,6 +127,26 @@ function Main() {
     fetchMosaicInfo();
   }, [selMosaic]);
 
+  useEffect(() => {
+    if (mosaicInfo) {
+      checkUserAuth();
+    }
+  }, [mosaicInfo]);
+
+  const confirmDelete = async () => {
+    try {
+      // Send a request to the backend to delete the mosaic
+      await axios.delete(`${baseUrl}/mosaics/mosaic/${selMosaic}`);
+      toast.success("Mosaic deleted successfully");
+      setIsDeleteModalOpen(false);
+      // Redirect the user to a different page
+      window.location.href = "/app/home";
+    } catch (error) {
+      console.error("Error deleting mosaic:", error);
+      toast.error("Failed to delete mosaic");
+    }
+  };
+
   // Effect to fetch current collaborators when the modal opens
   useEffect(() => {
     if (addCollaboratorModalOpen) {
@@ -114,10 +161,9 @@ function Main() {
         `${baseUrl}/mosaics/${selMosaic}/collaborators`
       );
 
-      setSelectedUsers(response.data); // Set selectedUsers state with the fetched collaborators
+      setSelectedUsers(response.data);
     } catch (error) {
       console.error("Error fetching current collaborators:", error);
-      // Handle error
     }
   };
 
@@ -148,24 +194,45 @@ function Main() {
         `${baseUrl}/users/search?q=${userSearchInput}`
       );
 
+      // If response.data is empty, no user was found
+      if (response.data.length === 0) {
+        toast.error("No user found");
+        return;
+      }
+
       // Assuming response.data contains the user data
       const user = response.data[0];
 
       // Check if the user already exists in selectedUsers
       const isUserAlreadySelected = selectedUsers.some(
-        (selectedUser) => selectedUser.id === user.id
+        (selectedUser) => selectedUser._id === user._id
       );
 
-      // If the user is not already selected, add them to selectedUsers state
-      if (!isUserAlreadySelected) {
-        setSelectedUsers((prevSelectedUsers) => [...prevSelectedUsers, user]);
+      // Check if the user already exists in the members array of the mosaic
+      const isUserAlreadyAdded = mosaicInfo.members.some(
+        (memberId) => memberId === user._id
+      );
+
+      // If the user is already added to either selectedUsers or members array, show error message
+      if (isUserAlreadySelected || isUserAlreadyAdded) {
+        toast.error("User already added as collaborator");
+        return;
       }
+
+      // If the user is not already added, add them to selectedUsers state
+      setSelectedUsers((prevSelectedUsers) => [...prevSelectedUsers, user]);
 
       // Clear the user search input
       setUserSearchInput("");
+
+      // Show success message
+      toast.success("User added as collaborator");
     } catch (error) {
-      console.error("Error searching users:", error);
-      // Handle error
+      if (error.response && error.response.status === 404) {
+        toast.error("User not found");
+      } else {
+        console.error("Error searching users:", error);
+      }
     }
   };
 
@@ -188,6 +255,7 @@ function Main() {
         .then((res) => {
           if (res.status === 200) {
             console.log("Column created");
+            //updateMosaicSocket(selMosaic);
             fetchMosaicInfo();
           } else if (res.status === 400) {
             console.log("Bad request");
@@ -200,9 +268,9 @@ function Main() {
       console.log(error);
     }
   }
-
   //delete column
   async function delColumn(id) {
+    console.log("delete request: " + id);
     try {
       const response = await axios.delete(
         `${baseUrl}/mosaics/deleteColumn?id=${id}`
@@ -217,18 +285,8 @@ function Main() {
       console.error("Error deleting column: ", error);
     }
   }
-
-  //DEAD CODE?
-  const handleRename = (id) => {
-    setRenameColumnId(id);
-  };
-  const handleCancelRename = () => {
-    setRenameColumnId("");
-  };
-
   //renamce column
   const handleRenameSubmit = async (id, newTitle) => {
-    console.log(`New title for column ${id}: ${newTitle}`); //console log for testing
     try {
       const response = await axios.put(`${baseUrl}/mosaics/renameColumn`, {
         id,
@@ -245,20 +303,8 @@ function Main() {
     }
     setRenameColumnId("");
   };
-
-  //DEAD CODE?
-  const handleNewTile = (id) => {
-    setNewTileColumnId(id);
-  };
-  const handleCancelNewTile = () => {
-    setNewTileColumnId("");
-  };
-
   //add new tiles
   const handleNewTileSubmit = async (colId, newTile) => {
-    console.log(
-      `New tile ${newTile} on column ${colId} on mosaic ${selMosaic}`
-    ); //console log for testing
     try {
       const response = await axios.post(`${baseUrl}/mosaics/tile`, {
         colId,
@@ -276,15 +322,8 @@ function Main() {
     }
     setNewTileColumnId("");
   };
-
-  //DEAD CODE? TBD by ben
-  //get tile info for tile modal
-  // useEffect(() => {
-  //   getTileInfo(selTileId);
-  // }, [selTileId]);
-
+  //get tile info
   const getTileInfo = async (id) => {
-    console.log(`fetching tile ${id}`); //console log for testing
     try {
       const response = await axios.get(`${baseUrl}/mosaics/tile?id=${id}`);
       if (response.status === 200) {
@@ -297,7 +336,6 @@ function Main() {
       console.error("Error finding tile: ", error);
     }
   };
-
   //delete tile
   async function delTile(id) {
     try {
@@ -312,7 +350,6 @@ function Main() {
       console.error("Error deleting Tile: ", error);
     }
   }
-
   //rename tile
   const [renameTileToggle, setRenameTileToggle] = useState(false);
   const [newTileName, setNewTileName] = useState(tileInfo.title);
@@ -332,7 +369,6 @@ function Main() {
       console.log("Error renaming tile: ", error);
     }
   }
-
   //add to do
   const [newToDoToggle, setNewToDoToggle] = useState(false);
   const [newToDoTitle, setNewToDoTitle] = useState("");
@@ -543,18 +579,31 @@ function Main() {
     }
   };
 
+  if (mosaicAccess === "") return <LoadingSpinner />;
+
+  if (mosaicAccess === "none") return <UserNotAuthorized />;
+
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div className="bg-gray-200 min-h-screen flex flex-col">
+      <div className="bg-gray-200 min-h-screen flex flex-col items-center justify-center">
         <Navbar />
+        <div className="flex items-center justify-center w-full mb-4">
+          <h1 className="text-3xl font-bold text-gray-800 mb-0 text-center">
+            {mosaicInfo.title}
+          </h1>
+          {mosaicAccess === "owner" && (
+            <button onClick={() => setIsDeleteModalOpen(true)}>
+              <DeleteOutlineIcon />
+            </button>
+          )}
+        </div>
 
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          {mosaicInfo.title}
-        </h1>
-        <Button onClick={() => setAddCollaboratorModalOpen(true)}>
-          Add Collaborator
-        </Button>
-        <Button onClick={() => setChatModalOpen(true)}>Open Chat</Button>
+        <div className="flex justify-center mb-4 space-x-4">
+          <Button onClick={() => setAddCollaboratorModalOpen(true)}>
+            Add Collaborator
+          </Button>
+          <Button onClick={() => setChatModalOpen(true)}>Open Chat</Button>
+        </div>
         <main className="container mx-auto px-4 pt-12 flex-grow overflow-x-auto whitespace-nowrap mb-4 sm:mb-0">
           <div className="flex justify-evenly items-start mb-10">
             {mosaicInfo.columns &&
@@ -566,52 +615,44 @@ function Main() {
                       className="w-80 bg-white p-4 rounded-lg shadow-md mr-4 flex flex-col"
                       style={{
                         height: `${(column.tiles.length + 1.5) * 75}px`,
-                        minWidth: "280px", // Ensure each column has a minimum width
+                        minWidth: "280px",
                       }}
                       ref={provided.innerRef}
                       {...provided.droppableProps}
                     >
                       <div className="flex justify-between items-center mb-2">
-                        <h2 className="text-xl font-semibold mb-2">
-                          {column.title}
+                        <h2
+                          className="text-xl font-semibold mb-2"
+                          onClick={() => setRenameColumnId(column._id)}
+                        >
+                          {renameColumnId === column._id ? (
+                            <input
+                              type="text"
+                              defaultValue={column.title}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                  handleRenameSubmit(
+                                    column._id,
+                                    e.target.value
+                                  );
+                                }
+                              }}
+                              onBlur={() => setRenameColumnId("")}
+                            />
+                          ) : (
+                            <span>{column.title}</span>
+                          )}
                         </h2>
                         <div className="flex items-center space-x-2">
-                          {renameColumnId === column._id ? (
-                            <div className="mb-2">
-                              <input
-                                type="text"
-                                defaultValue={column.title}
-                                onKeyDown={(e) => {
-                                  if (e.key === "Enter") {
-                                    handleRenameSubmit(
-                                      column._id,
-                                      e.target.value
-                                    );
-                                  }
-                                }}
-                                className="border border-gray-300 px-2 py-1 rounded"
-                              />
-                              <button onClick={() => setRenameColumnId("")}>
-                                Cancel
-                              </button>
-                            </div>
-                          ) : (
-                            <>
-                              <EditOutlined
-                                onClick={() => setRenameColumnId(column._id)}
-                                className="cursor-pointer mr-2"
-                              />
-                              <DeleteOutline
-                                onClick={() => delColumn(column._id)}
-                                className="cursor-pointer"
-                              />
-                            </>
-                          )}
+                          <DeleteOutline
+                            onClick={() => delColumn(column._id)}
+                            className="cursor-pointer"
+                          />
                         </div>
                       </div>
 
                       {newTileColumnId === column._id ? (
-                        <div>
+                        <div className="mb-4">
                           <input
                             type="text"
                             defaultValue={"New tile"}
@@ -620,10 +661,11 @@ function Main() {
                                 handleNewTileSubmit(column._id, e.target.value);
                               }
                             }}
+                            className="border px-2 py-1 mb-2 rounded"
                           />
                           <button
                             onClick={() => setNewTileColumnId("")}
-                            className="border px-4 py-1 mb-4 rounded bg-gray-300"
+                            className="border px-4 py-1 rounded bg-gray-300 text-gray-700 hover:bg-gray-400"
                           >
                             Cancel
                           </button>
@@ -631,7 +673,7 @@ function Main() {
                       ) : (
                         <button
                           onClick={() => setNewTileColumnId(column._id)}
-                          className="border px-2 py-1 mb-4 rounded bg-blue-500 text-white hover:bg-blue-400"
+                          className="border px-4 py-1 mb-4 rounded bg-blue-500 text-white hover:bg-blue-400"
                         >
                           Add new Tile
                         </button>
@@ -681,6 +723,43 @@ function Main() {
           </div>
         </main>
       </div>
+
+      {/* Modal for deleting mosaic */}
+      <StyledModal
+        open={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        aria-labelledby="delete-mosaic-modal-title"
+        aria-describedby="delete-mosaic-modal-description"
+      >
+        <ModalBox className="flex justify-center items-center">
+          <div className="bg-white border border-gray-200 p-6 rounded-lg shadow-lg w-96">
+            <Typography
+              id="delete-mosaic-modal-title"
+              variant="h6"
+              component="h2"
+              className="text-lg font-semibold mb-4 text-center"
+            >
+              Confirm Deletion
+            </Typography>
+            <Typography
+              id="delete-mosaic-modal-description"
+              variant="body1"
+              className="mb-4 text-center"
+            >
+              Are you sure you want to delete this mosaic?
+            </Typography>
+            <div className="flex justify-center">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={confirmDelete} // Bind confirmDelete function to onClick event
+              >
+                Confirm
+              </Button>
+            </div>
+          </div>
+        </ModalBox>
+      </StyledModal>
 
       {/* Modal for adding collaborators */}
       <StyledModal
@@ -753,6 +832,7 @@ function Main() {
         </ModalBox>
       </StyledModal>
 
+      {/* Modal for adding new columns */}
       <StyledModal
         open={newColumnModal}
         onClose={() => setNewColumnModal(false)}
@@ -794,6 +874,7 @@ function Main() {
         </ModalBox>
       </StyledModal>
 
+      {/* Modal for tile view */}
       <StyledModal
         open={tileViewModal}
         onClose={() => setTileViewModal(false)}
@@ -959,7 +1040,7 @@ function Main() {
                 value={tileInfo.assigned || ""}
               >
                 <option value={""}>No one</option>
-                <option value={userState}>{userState}</option>
+                <option value={mosaicInfo.owner}>{mosaicInfo.owner}</option>
                 {mosaicInfo.members &&
                   mosaicInfo.members.map((member) => (
                     <option value={member}>{member}</option>
@@ -979,6 +1060,7 @@ function Main() {
           </div>
         </ModalBox>
       </StyledModal>
+      {/* Chat modal */}
       <StyledModal
         open={chatModalOpen}
         onClose={() => setChatModalOpen(false)}
@@ -986,9 +1068,6 @@ function Main() {
         aria-describedby="chat-modal-description"
       >
         <ModalBox>
-          <Typography id="chat-modal-title" variant="h6" component="h2">
-            Chat
-          </Typography>
           <Chat boardId={selMosaic} isOpen={chatModalOpen} />
         </ModalBox>
       </StyledModal>

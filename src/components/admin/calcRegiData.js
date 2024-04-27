@@ -1,15 +1,15 @@
-function calcRegiData(usersList) {
+function calcRegiData(usersList, usersTimestamps) {
 
     // get today's date
     const today = new Date();
     const todayYear = today.getFullYear() - 2000; // e.g. 24 for the year 2024
     const todayMonth = today.getMonth() + 1; // January is 0
-    const todayDate = today.getDate(); // 1-31
+    const todayDate = today.getDate() + 1; // 1-31 (we pretend it's tomorrow so that today's data is included in the chart, and timezones don't mess up the data)
 
     // first day of data collection
     const firstYear = 24; // 2024
-    const firstMonth = 1; // January
-    const firstDate = 1; // 1st
+    const firstMonth = 3;
+    const firstDate = 29;
 
     let usersPerDayArray = []; // contains objects e.g: { label: "2023-10-09", ubd: 0 }
     let totalUserCount = 0;
@@ -22,6 +22,7 @@ function calcRegiData(usersList) {
     let startYear = firstYear;
     let startMonth = firstMonth;
     let startDate = firstDate;
+
 
     setupLoop:
     for (let year = startYear; year <= todayYear; year++) {
@@ -45,12 +46,15 @@ function calcRegiData(usersList) {
         startMonth = 1;
     }
 
-    usersList.map((user) => {
-
-        let userYear = user.createdAt.slice(2, 4);
-        let userMonth = user.createdAt.slice(5, 7);
-        let userDate = user.createdAt.slice(8, 10);
-        let userIsAdmin = user.isAdmin;
+    for (let i = 0; i < usersTimestamps.length; i++) {
+        console.log("i: " + i);
+        console.log("usersTimestamps[i]: " + usersTimestamps[i]);
+        console.log("usersTimestamps.length " + usersTimestamps.length);
+        
+        let userYear = usersTimestamps[i].slice(2, 4);
+        let userMonth = usersTimestamps[i].slice(5, 7);
+        let userDate = usersTimestamps[i].slice(8, 10);
+        let userIsAdmin = usersList[i].isAdmin;
 
         // FORMAT: MM & DD (always contain leading zeros)
         let dateString =
@@ -64,6 +68,9 @@ function calcRegiData(usersList) {
         totalUserCount++;
 
         // increment dailyUserCount in the object located in usersPerDayArray at the index corresponding to the date
+        console.log("dateString: ", dateString);
+        console.log("mapDateToIndex.get(dateString): " + mapDateToIndex.get(dateString));
+        console.log("usersPerDayArray[mapDateToIndex.get(dateString)]: "+ usersPerDayArray[mapDateToIndex.get(dateString)]);
         usersPerDayArray[mapDateToIndex.get(dateString)].dailyUserCount++;
 
         // count admins and count non-admins
@@ -74,8 +81,10 @@ function calcRegiData(usersList) {
             totalNonAdmins++;
             usersPerDayArray[mapDateToIndex.get(dateString)].nonAdminCount++;
         }
-    })
 
+    }
+
+    console.log("finished calcRegiData-------------")
     return { usersPerDayArray, totalUserCount, totalAdmins, totalNonAdmins };
 }
 

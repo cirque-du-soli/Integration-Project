@@ -40,13 +40,13 @@ const Landing = () => {
           </p>
           <div className="flex justify-center">
             <Link
-              to="/app/login" 
+              to="/login" 
               className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 md:py-3 md:px-8 lg:py-4 lg:px-10 rounded mr-4"
             >
               Login
             </Link>
             <Link
-              to="/app/register"
+              to="/register"
               className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-6 md:py-3 md:px-8 lg:py-4 lg:px-10 rounded"
             >
               Register
@@ -100,7 +100,7 @@ const Landing = () => {
             Sign up for free to start organizing your tasks today.
           </p>
           <Link
-            to="/app/register"
+            to="/register"
             className="bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-8 md:py-4 md:px-10 lg:py-5 lg:px-12 rounded shadow-md transition duration-300 ease-in-out"
           >
             Sign Up Now

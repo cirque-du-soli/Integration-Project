@@ -4,7 +4,7 @@ import SpinnerLogo from './spinnerLogo.png';
 
 const LoadingSpinner = () => {
     return (
-        <div className="loading-spinner-mini-container">
+        <div className="loading-spinner-mini-container p-8">
             <div className="loading-spinner-mini-logo">
                 <img src={SpinnerLogo} alt="Loading..." />
             </div>

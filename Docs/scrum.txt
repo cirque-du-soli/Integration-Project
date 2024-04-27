@@ -1052,6 +1052,148 @@ Sophie:
 		- 
 
 ===============================================================================
+Day16: 2024-04-24 
+=============================
+
+Benjamin:
+	Done:
+		- Assign users to tiles
+		- re-render for tiles Fixed
+		- re-styled "add new column" button
+		
+	Not-Done:
+		- websockets for DND
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- websocket for DND
+		- delete column is broken? fix
+
+Soliloquy:
+	Done:
+		- FIX styling conflicts -- install DaisyUI & convert all reactstrap/bootstrap 
+		- Started backend routes + isAdmin indicator
+		
+	Not-Done:
+	 	- finish backend changes
+		
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- push backend routes
+		- backend isAdmin -> protected routes (remove hardcoded isAdmin)
+		- see where chat styling got overwritten :( 
+				- color of chat text should be black not Gray
+				- color of modal title/user text etc
+		- styling change broke delete columns? (check w Ben)
+
+Nicholas: 
+	Done:
+		- N/A
+		
+	Not-Done:
+		- Unit Tests
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- Continue unit tests
+
+Sophie: 
+	Done:
+		- add user to mosaic functionality
+		- remove user from mosaic
+		- user can see mosaic board that they are collaborating
+		- horizontal scrolling
+		
+		
+	Not-Done:
+		- delete mosaic
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- delete mosaic
+		- polish add user modal
+		- polish from styling
+
+		===============================================================================
+Day17: 2024-04-25 
+=============================
+
+Benjamin:
+	Done:
+		- delete routes not working Fixed
+		- user with no mosaics breaking site Fixed
+		- assign members to tiles displaying IDs Fixed
+		
+	Not-Done:
+		- websockets for DND
+	
+	Needs Assistance:
+		- websockets for DND
+
+	Todo Before Next Scrum:
+		- websockets for DND?
+		- deleting column is borken again???
+		- clean dead code
+		- mosaic authorization
+
+Soliloquy:
+	Done:
+		- fix chat & other styling got overwrites (un-toggle theme)
+		- test all but 2 new backend routes
+		
+	Not-Done:
+		- backend isAdmin -> protected routes (remove hardcoded isAdmin)
+	
+	Needs Assistance:
+		- test admin portal after push
+
+	Todo Before Next Scrum:
+		- fix last 2 admin bugs & push
+		- remove dev routes & backdoor/toggle "isAdmin" from site
+
+Nicholas: 
+	Done:
+		- 
+		
+	Not-Done:
+		- 
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- 
+
+Sophie: 
+	Done:
+		- Search user query update
+		- Validation on search user
+		- toast msg added for search
+		- Delete mosaic
+		- New way of reanaming column
+		- Redirect to new mosaic after creation
+		
+	Not-Done:
+		- 
+	
+	Needs Assistance:
+		- 
+
+	Todo Before Next Scrum:
+		- Password error as toast message
+		- continue powerpoint
+		- style chat
+
+
+===============================================================================
 ===============================================================================
 ===============================================================================
       ____  ____  __  __  ____  __      __   ____  ____   
